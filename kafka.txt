@@ -1,0 +1,26 @@
+启动
+	bin/kafka-server-start.sh config/server.properties
+	bin/kafka-server-start.sh -daemon config/server.properties 	后台启动
+
+停止
+	kafka-server-stop.sh stop
+
+常用操作：
+	./kafka-topics.sh --zookeeper master:2181 --list	列出所有主题
+	./kafka-topics.sh --zookeeper master:2181 --create --replication-factor 1 --partitions 1 -topic xiaoxuan	创建主题
+	./kafka-topics.sh --zookeeper master:2181 --delete --topic xiaoxuan
+			注意: 需要 server.properties 中设置 delete.topic.enable=true 否则只是标记删除
+	./kafka-topics.sh --zookeeper master:2181 --describe --topic xiaoxuan 	查看某个主题详情
+	./kafka-topics.sh --zookeeper master:2181 --alter --topic xiaoxuan --partitions 2	修改主题分区数
+			
+	
+	./kafka-console-producer.sh --broker-list master:9092 --topic xiaoxuan 		启动生产者
+	./kafka-console-consumer.sh  --zookeeper master:2181 --topic xiaoxuan	启动消费者(旧API, 将偏移量保存在zookeeper中)
+	./kafka-console-consumer.sh  --bootstrap-server master:9092 --topic xiaoxuan	启动消费者(新API, 将偏移量保存在kafka中) 
+	./kafka-console-consumer.sh  --bootstrap-server master:9092 --from-beginning --topic xiaoxuan 
+	
+	./kafka-consumer-groups.sh --bootstrap-server master:9092 --list	显示使用 java api 创建的消费者组
+	./kafka-consumer-groups.sh --zookeeper master:2181 --list			显示使用 zookeeper 创建的消费者组
+	
+	./kafka-consumer-groups.sh --bootstrap-server master:9092 --group console-consumer-20897 --describe		显示指定组的详细信息(包括消费主题，分区，偏移量，log-end等信息)
+	./kafka-consumer-groups.sh --zookeeper master:2181 --group console-consumer-20897 --describe

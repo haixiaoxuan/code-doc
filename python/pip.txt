@@ -1,0 +1,24 @@
+﻿pip freeze > requirement.txt
+
+内网安装外部依赖包办法：
+
+例如:安装pytest包得时候会顺带安装pytest依赖包
+
+离线下载安装包
+下载单个离线包 - pip download -d your_offline_packages <package_name>
+批量下载离线包 - pip download -d your_offline_packages -r requirements.txt
+ 离线安装
+安装单个离线包 - pip install --no-index --find-links=/your_offline_packages/ package_name
+批量安装离线包 - pip install --no-index --find-links=/your_offline_packages/ -r requirements.txt
+
+清华镜像：
+-i https://pypi.tuna.tsinghua.edu.cn/simple
+
+离线安装方法，".tar.gz"文件安装如下：
+1. 文件解压
+	".tar.gz"文件解压 ，tar -xzvf numpy-1.15.0.tar.gz 
+	".zip"文件解压 ，unzip numpy-1.15.0.zip
+2. 进入目录"numpy-1.15.0"
+    cd numpy-1.15.0
+3. 找到“setup.py”文件，然后安装
+    python setup.py install

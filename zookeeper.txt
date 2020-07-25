@@ -1,0 +1,44 @@
+服务启动：
+	zkServer.sh start		-->每个节点都要启动
+	zkServer.sh status		-->查看状态
+
+客户端连接： 
+	zkCli.sh -server ip:port 或 zkCli.sh
+
+常用命令：
+	help		显示所有操作命令
+	ls path [watch]	使用 ls 命令来查看当前znode中所包含的内容
+	ls2 path [watch]	查看当前节点数据并能看到更新次数等数据
+	get path [watch]	获得节点的值
+	set path data [version]		修改目录数据，如果节点不存在，就会报错
+	create [-s] [-e] path data acl  创建目录
+		  -e  代表创建临时节点
+		  -s  代表创建序列节点
+	stat path [watch]               查看目录的stat信息
+	history                         查看自己曾经执行过的zk命令，类似linux的history
+	delete path [version]           删除该目录及数据，如果目录下有子目录，
+	rmr path			删除目录（递归）
+	quit				退出客户端，相当于ctrl+c
+	
+	
+watch使用：
+*********************************  watch 监听器  ******************************
+注册一次只能用一次
+	ls <--> getChildren 设置watch监听器，只能监控(孩子节点)及(本身节点的增删)事件
+	get <--> 	 设置watch监听器，只能监控该节点的数据更新及该节点删除事件
+	stat <--> exists 设置watch监听器，只能监控该节点的数据更新及该节点删除事件
+	能够设置watch的API操作：exists ,getData ,getChildren 
+	能够触发watch的API操作：create,delete,setData
+
+ zookeeper的watch处理两类事件
+  1）节点事件
+  2）连接状态的事件
+**************************************  事件种类  *******************************
+NodeCreate：节点创建事件
+NodeDeleted：节点删除事件
+NodeDataChange：节点数据改变事件
+NodeChildrenChanged：节点的子节点改变事件
+
+
+
+

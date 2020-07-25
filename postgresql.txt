@@ -1,0 +1,26 @@
+1. 查看表的统计信息：
+	SELECT relname, relkind, reltuples, relpages FROM pg_class WHERE relname LIKE 'tb_grid_export%'
+	包含 表名，类型，行数，所占页数（在执行某些DDL操作时才会更新这些统计信息）
+	
+2. 使用 with 建临时表的方式，效率更高。
+
+3. 参数修改
+	配置文件名称 postgresql.conf
+	查看当前会话的参数 show all
+	查看某个参数的值  show enable_bitmapscan
+	查看此参数的详细信息  select * from pg_settings where name in ('enable_bitmapscan')
+	在当前会话进行修改  set work_mem='16MB'; （reset 参数名|all	）恢复
+	只在当前事务内生效 set local work_mem='8MB';
+	
+4. join的三种（https://yq.aliyun.com/articles/70992）
+	（如果想强制使用某种join，则可以将另外两种设置为off）
+	nestloop 参数名称： enable_nestloop
+	merge				enable_mergejoin
+	hash 				enable_hashjoin
+	
+5. 查看所有表的大小：
+	select relname, pg_size_pretty(pg_relation_size(relid)) from pg_stat_user_tables 
+	where schemaname='public' order by pg_relation_size(relid) desc;
+
+	
+	

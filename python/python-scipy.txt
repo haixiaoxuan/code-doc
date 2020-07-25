@@ -1,0 +1,11 @@
+from scipy import sparse as sp
+
+# 创建一个一行五列的矩阵（系数矩阵 compressed sparse columns）
+m=sp.csc_matrix((1,5))
+m[0,2]=5    # 将矩阵第一行第二列赋值为5
+
+# 将矩阵转换为图片
+pip install pillow
+from PIL import Image
+img = Image.fromarray(image_array, mode="1")
+img.save(filename)

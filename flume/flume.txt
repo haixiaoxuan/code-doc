@@ -1,0 +1,22 @@
+
+flume-ng命令：
+	--conf conf/  	表示配置文件存储在conf/目录
+	--name a1		表示给agent起名为a1
+	--conf-file job/flume-netcat.conf 	flume本次启动读取的配置文件是在job文件夹下的flume-netcat.conf文件。
+	-Dflume.root.logger==INFO,console 	-D表示flume运行时动态修改flume.root.logger参数属性值，并将控制台日志打印级别设置为INFO级别。
+										日志级别包括:log、info、warn、error。
+										
+										
+如果需要定义多个agent则需要分开启动
+
+bin/flume-ng agent \
+	--conf conf/ \
+	--name a1 \
+	--conf-file job/flume-netcat-logger.conf \
+	-Dflume.root.logger=INFO,console
+	
+bin/flume-ng agent \
+	-c conf/ \
+	-n a1 \
+	–f job/flume-netcat-logger.conf \
+	-Dflume.root.logger=INFO,console

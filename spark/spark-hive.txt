@@ -1,0 +1,8 @@
+如果有此类错误：
+	Hive Schema version 1.2.0 does not match metastore's schema version 2.3.0 Metastore is not upgraded or corrupt
+可进入hive-site.xml中关闭版本验证
+	hive.metastore.schema.verification=false
+
+	
+hive on spark
+	set spark.execution.engine=spark

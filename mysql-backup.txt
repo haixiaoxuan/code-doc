@@ -1,0 +1,22 @@
+--仅对 myisam 类型的表有用--
+mysql备份（server）：
+	mysqldump -uroot -pabcd1234 --all-databases > /home/hadoop/backup-root.sql
+	mysqldump -uhive -pabcd1234 --all-databases > /home/hadoop/backup-hive.sql
+	
+mysql还原（datanode01）：
+	开启mysql服务：
+		systemctl start mariadb
+		systemctl enable mariadb
+	创建hive用户并授予权限：
+		CREATE DATABASE hive CHARACTER SET utf8 ;  
+		CREATE USER 'hive'@'%' IDENTIFIED BY 'abcd1234';
+		GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'%';
+		CREATE USER 'hive'@'master' IDENTIFIED BY 'abcd1234';
+		GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'master';
+		CREATE USER 'hive'@'localhost' IDENTIFIED BY 'abcd1234';
+		GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'localhost';
+		FLUSH PRIVILEGES;
+	进行备份恢复：
+		mysql -uroot -pabcd1234 < backup-root.sql
+		mysql -uhive -pabcd1234 < backup-hive.sql
+		

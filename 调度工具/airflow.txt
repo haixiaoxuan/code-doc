@@ -1,0 +1,34 @@
+# 生产部署airflow
+https://www.jianshu.com/p/2ecef979c606		
+
+守护进程：
+	webserver
+	scheduler
+	worker
+	flower
+安装：
+	pip install apache-airflow[all]
+	
+	CREATE DATABASE airflowdb CHARACTER SET utf8 ;  
+	CREATE USER 'airflow'@'%' IDENTIFIED BY 'abcd1234';
+	GRANT all privileges on airflowdb.* TO 'airflow'@'%' IDENTIFIED BY 'abcd1234';
+	FLUSH PRIVILEGES;
+	
+	vim airflow.cfg
+		executor = LocalExecutor
+		sql_alchemy_conn = mysql://airflow:abcd1234@server:3306/airflowdb
+	
+	airflow version
+	airflow initdb
+		报错：sqlalchemy.exc.OperationalError: (_mysql_exceptions.OperationalError) (1193, "Unknown system variable 'explicit_defaults_for_timestamp'") [SQL: 'SELECT @@explicit_defaults_for_timestamp'] (Background on this error at: http://sqlalche.me/e/e3q8)
+		https://stackoverflow.com/questions/53027832/1193-unknown-system-variable-explicit-defaults-for-timestamp-sql-selec
+		systemctl restart  mariadb.service
+	airflow webserver -p 8085 -D
+	airflow scheduler -D
+	airflow worker -D
+
+
+command:
+	airflow list_dags
+	airflow list_tasks hello_world_test
+	airflow test hello_world_test date_task 20190531

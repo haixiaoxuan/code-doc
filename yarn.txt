@@ -1,0 +1,47 @@
+yarn application -kill appid
+yarn logs -applicationId application_1557381717644_0012	
+
+将yarn平台修改为公平调度策略：
+		<property>
+		<name>yarn.resourcemanager.scheduler.class</name>
+		<value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
+		</property>
+		<property>
+		<name>yarn.scheduler.fair.preemption</name>
+		<value>true</value>
+		</property>
+		<!-- 下面配置用来设置集群利用率的阀值， 默认值0.8f，最多可以抢占到集群所有资源的80% -->
+		<property>
+		<name>yarn.scheduler.fair.preemption.cluster-utilization-threshold</name>
+		<value>1.0</value>
+		</property>
+
+调节yarn 平台资源
+	yarn.nodemanager.resource.memory-mb 每个节点分配的内存 
+	yarn.nodemanager.resource.cpu-vcores 每个节点分配的虚拟CPU
+
+
+查看hadoop的配置参数
+	hdfs getconf -confkey  dfs.data.dir
+hdfs 扩容：
+	https://www.cnblogs.com/Stomach-ache/p/3703179.html
+	可以指定两个目录或者做目录迁移（https://blog.csdn.net/qq1010885678/article/details/50513425）
+	加上如下配置，重启集群即可。
+	<!-- 指定两个目录 -->
+	<property>
+		<name>dfs.datanode.data.dir</name>
+		<value>file:///${hadoop.tmp.dir}/dfs/data,file:///home/hadoop/hdfs-data/data</value>
+	</property>
+	如果两个磁盘分配不均，可以设置如下策略（默认是轮询，这样设置时，会根据空间大小来判断写入）
+	https://blog.csdn.net/doudoukb24/article/details/8184726
+	<property>
+		<name>dfs.datanode.fsdataset.volume.choosing.policy</name>
+		<value>org.apache.hadoop.hdfs.server.datanode.fsdataset.AvailableSpaceVolumeChoosingPolicy</value>
+	</property>
+	
+yarn restful api
+	http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/ResourceManagerRest.html#Cluster_Application_State_API
+	http://172.30.5.211:8088/ws/v1/cluster/apps/{app_id}
+
+
+	

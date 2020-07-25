@@ -1,0 +1,31 @@
+环境搭建：
+	https://www.cnblogs.com/hello-yz/p/9306099.html
+	如果使用pip安装 pyspark之后，运行报错 
+		org.apache.spark.SparkException: Python worker failed to connect back
+	可以直接将spark安装包里的pyspark 复制到 D:\myprogram\anaconda\Lib\site-packages
+	os.environ['SPARK_HOME'] = ''
+	os.environ['PYSPARK_PYTHON'] = '/usr/bin/python3'
+    os.environ['PYSPARK_DRIVER_PYTHON'] = '/usr/bin/python3'
+
+任务提交：
+	./spark-submit \
+	--master yarn \
+	--deploy-mode cluster \
+	--num-executors 1 \
+	--executor-memory 1G \
+	/home/hadoop/xiexiaoxuan-test/pyspark-test/LR.py
+	
+rdd 转 dataframe
+	from pyspark import SparkContext, HiveContext
+	from pyspark.sql import Row
+	from pyspark.sql.types import StructType, StructField, StringType
+	or
+	spark.createDataFrame(rdd,["c1","c2"])
+	
+	
+	
+spark sql
+---------
+df=spark.read.csv("hdfs-path",header=True,inferSchema=True)	inferSchema表示自动类型推断
+df.select("column1","c2")
+	

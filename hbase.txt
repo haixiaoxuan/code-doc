@@ -1,0 +1,89 @@
+集群操作
+	start-hbase.sh
+	stop-hbase.sh
+
+
+webUI
+	16010
+
+
+常用操作
+	hbase shell 	 进入shell
+	status		查看集群状态
+	help		查看帮助
+	—————————— general ——————————————
+	help 'general'			-->查看帮助
+	table_help       		-->显示关于表的命令帮助
+	version        			-->查看版本
+	whoami             		-->查看用户信息
+
+	————————— namespace ——————————————
+
+	list_namespace					-->列出所有的namespace
+	create_namespace '名字'			-->创建一个namespace
+	drop_namespace '名字'			-->删除namespace
+	describe_namespace '名字'		-->描述
+	list_namespace_tables '名字'    -->查看一个库中的所有的表
+
+	——————————— ddl —————————————————
+	 （直接输入命令会显示帮助）
+
+	list                                         	-->显示出所有的表
+	create '表名','列族1','列族2'               	-->在default库下创建一张表
+	create '库名:表名','列族1','列族2'          	-->在指定库名下创建一张表
+	create '库名:表名' {NAME=>'',VERSION=>''}
+
+	desc '库名:表名' | '表名'
+	describe '库名:表名' | '表名'                	-->描述
+
+	disable  '库名:表名' | '表名'                	-->要删除表，首先要将表disable
+	enable '库名:表名' | '表名'
+	exists '库名:表名' | '表名'                   	-->表是否存在
+	drop '库名:表名' | '表名'                    	 -->删除表
+	is_disabled, is_enabled, disable_all, enable_all, drop_all....
+
+	alter '表名', { NAME => '列族名', VERSIONS => 3 }	--> 将指定列族中的数据存放三个版本, 默认只会存在一个版本
+	alter '表名', '列族名'		--> 新增列族
+	alter '表名', 'delete' => '列族名'
+	
+
+
+	————————————— dml ———————————————————
+    
+    put '库名:表名','行键','列族名:列名','值'                 	-->添加值
+    get '库名:表名','行键'                                    		-->查看表指定行键
+    get '库名:表名','行键',{ NAME => '列族名', VERSIONS => 3 }
+    scan '库名:表名'                              
+    scan '表名',{columns => [列族:列1，列族:列2],limit => 2,, STARTROW => '行键名'}   -->查看所有数据(可以指定范围，限制条数)
+	scan 'student',{STARTROW => '1001', STOPROW => '1001'}		--> 按照rowkey范围查询
+
+    count '库名:表名'                                         	-->统计条数
+    delete '库名:表名','行键','列名'                       （不能直接按行键删除，只要吧所有的列都删除，行键就自动删除）
+	delete '库名:表名','行键','列名', 版本号				删除此版本以及之前的所有版本。
+															其实数据并没有被真正删除，查询时加上{ROW => true}即可。
+    deleteall   '库名:表名','行键'                          可以按行键删除整行数据）
+    truncate '库名:表名'                                   	-->清空表中数据	note: 要先 disable
+	
+	
+预分区：
+	1. 手动预分区
+		create 'staff1','info','partition1',SPLITS => ['1000','2000','3000','4000']
+	2. 生成 16 进制序列预分区(-无穷 -> 11111111, 11111111 -> 22222222 .....)
+		create 'staff2','info','partition2',{NUMREGIONS => 15, SPLITALGO => 'HexStringSplit'}
+	3. 按照文件中设置的预分区
+		create 'staff3','partition3',SPLITS_FILE => 'splits.txt'
+		
+		
+		
+启用压缩：
+	alter 'table', {NAME => 'cf', COMPRESSION => 'snappy'}
+	
+检查所具备的压缩算法：
+	hbase --config $HADOOP_HOME/conf org.apache.hadoop.util.NativeLibraryChecker	
+
+
+
+
+
+
+

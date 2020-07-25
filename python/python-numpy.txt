@@ -1,0 +1,115 @@
+#! -*-encoding=utf8-*-
+import numpy as np
+
+np.set_printoptions(threshold=np.inf)#使print大量数据不用符号...代替而显示所有
+np.set_printoptions(suppress=True)
+
+
+# 属性
+	ndim | shape | dtype
+# 方法
+	ones | zeros | empty 创建一个内容随机的数组
+	np.expand_dims(a, axis=-1)		为矩阵a增加一个维度
+
+# 控制显示的行数，超过的使用省略号代替
+np.set_printoptions(threshold=10)
+
+
+# 数组与矩阵转换
+np.mat()	转为矩阵
+矩阵.I		矩阵求逆
+矩阵.T		转置
+np.dot(a,b)	# 点乘
+np.linalg.det	# 求行列式
+np.linalg.eig	# 特征值与特征向量
+np.linalg.svd()	# 计算svd
+a.transpose()	# 转置
+np.eye(5)		# 生成5*5的单位矩阵 
+
+
+# 数组切片操作
+arr[::2]	# 每两个取一个（一维数组）
+arr[:,:2]	# 拿取数组前两列
+arr[:,2]	# 取第二列
+arr[:,np.newaxis]	# 将一维数组变为两维 (10)——> (10,1)
+np.split(data,(4,),axis=1)	# 按照第四列将data分为两个数组
+arr[::-1]	# 反转
+arr[arr==2]=0	# 对符合条件的赋值
+
+
+# 分段统计
+a = np.array([22, 87, 5, 43, 56, 73, 55, 54, 11, 20, 51, 5, 79, 31, 27])
+hist, bins = np.histogram(a, bins=[0, 20, 40, 60, 80, 100]) # 将数据分为五段
+print(hist)     # 每一段所拥有的元素个数
+print(bins)     # 分段标准
+
+# 矩阵合并  stack hstack vstack concatenate vsplit
+a = np.array([1, 2, 3])
+b = np.array([2, 3, 4])
+np.stack((a, b))    # 一维变两维
+np.stack((a,b),axis=-1)
+
+np.hstack((a,b))        # 等价于np.concatenate(tup, axis=1)
+np.vstack((a,b)) 		# 等价于np.concatenate(tup, axis=0）
+np.vsplit((a,b),2)   	# 切割成两份
+np.hsplit((a,b),(2,3))	# 沿着第二列和第三列切割
+
+
+# 加载文本，可以指定分隔符
+np.loadtxt()
+
+# 构造等比数列 | 等差数列
+np.logspace(-3, 2, 10)
+np.linspace()
+
+# 数组切分
+x,y = np.split([], (4,), axis=1)	# 前四列为x，剩余的列为y
+
+# 类型转换
+a.astype(np.int)
+
+# 数组降维(降成1维)
+[].ravel()
+[].flat
+
+
+# np.random
+np.random.seed(1)   # 每次生成随机数前调用一次，就可以使每次生成的随机数相同
+np.random.permutation(20)   # 生成乱序的0-19
+np.random.normal(loc=0.0, scale=1.0, size=None)	# 生成一个高斯分布的随机值（均值，方差，维度）
+np.random.randint(1,100,20)	# 从1-100之间生成随机的二十个值
+
+
+# 拿到元素从小到大排序的索引值
+np.argsort(arr,axis=)
+arr[np.argsort(arr)] # 拿到排序后的数组
+np.argmax	| np.argmin 
+
+# 中位数
+np.median
+np.mean		# 均值
+np.square	# 取平方
+np.ceil		# 向上取整
+np.floor	# 向下取整
+
+
+# 过滤	
+np.where(array==1900)	# 拿到符合条件的索引
+
+# 矩阵操作
+linalg.inv() #矩阵求逆
+linalg.det() #矩阵求行列式（行列式的意义）
+linalg.matrix_rank(matrix, tol) #利用SVD的方法求解矩阵的秩（若值小于tol，认为是零） 
+np.linalg.eig() #计算特征值与特征向量
+np.linalg.norm(x)	# 求矩阵范数	可以用来做特征规范化，用 矩阵元素 / 范数
+
+# 统计非零个数
+np.count_nonzero()	# 可以使用参数 y==y_ 
+np.nonzero()	# 返回数组中非零元素的位置
+
+
+# 修改维度
+a = a[..., None] 	# 如果a是(3, ), 修改之后会变成 (3, 1)
+
+
+

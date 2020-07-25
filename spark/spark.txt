@@ -1,0 +1,182 @@
+脚本参数设置：
+	/bin/spark-submit --class org.apache.spark.examples.SparkPi \
+	    --master yarn \
+	    --deploy-mode cluster \
+	    --driver-memory 4g \
+	    --executor-memory 2g \
+	    --executor-cores 1 \
+		--num-executors 3 \
+	    examples/jars/spark-examples*.jar 
+
+RDD特殊方法：
+	glom	将每一个分区形成一个数组，形成新的RDD类型时RDD[Array[T]]
+	sample(withReplacement, fraction, seed)		withReplacement表示是抽出的数据是否放回，true为有放回的抽样，false为无放回的抽样
+	coalesce	可选择是否进行shuffle，repartition实际上是调用coalesce
+	sortBy(func,[ascending], [numTasks])	先按照func进行处理，然后根据结果进行排序
+	pipe(command, [envVars])	针对每个分区，都执行一个shell脚本，返回输出的RDD，note脚本需要放置到worker节点可以访问到的位置
+	
+	subtract 	去除两个RDD相同的部分，留下第一个RDD不同的部分
+	intersection	对两个RDD求交集
+	cartesian	笛卡儿积
+	zip
+	
+	partitionBy 	例： rdd.partitionBy(new org.apache.spark.HashPartitioner(2))
+	reducebykey and groupbykey	建议优先reducebykey
+	aggregateByKey(zeroValue:U)(seqOp: (U, V) => U,combOp: (U, U) => U)
+		（1）zeroValue：给每一个分区中的每一个key一个初始值；
+		（2）seqOp：函数用于在每一个分区中用初始值逐步迭代value；
+		（3）combOp：函数用于合并每个分区中的结果
+	foldByKey aggregateByKey的简化操作，seqop和combop相同
+	combineByKey(createCombiner: V => C,  mergeValue: (C, V) => C,  mergeCombiners: (C, C) => C) 
+		1.	作用：对相同K，把V合并成一个集合。
+		2.	参数描述：
+			（1）createCombiner: combineByKey() 会遍历分区中的所有元素，因此每个元素的键要么还没有遇到过，要么就和之前的某个元素的键相同。如果这是一个新的元素,combineByKey()会使用一个叫作createCombiner()的函数来创建那个键对应的累加器的初始值
+			（2）mergeValue: 如果这是一个在处理当前分区之前已经遇到的键，它会使用mergeValue()方法将该键的累加器对应的当前值与这个新的值进行合并
+			（3）mergeCombiners: 由于每个分区都是独立处理的， 因此对于同一个键可以有多个累加器。如果有两个或者更多的分区都有对应同一个键的累加器， 就需要使用用户提供的 mergeCombiners() 方法将各个分区的结果进行合并。
+	sortByKey()
+	mapValues()		针对于(K,V)形式的类型只对V进行操作
+	join(otherDataset, [numTasks])		返回一个相同key对应的所有元素对在一起的(K,(V,W))的RDD
+	cogroup(otherDataset, [numTasks])	返回一个(K,(Iterable<V>,Iterable<W>))类型的RDD
+	
+	takeOrdered(n)	返回该RDD排序后的前n个元素组成的数组
+	reduce | aggregate | fold
+	countByKey()	是action算子
+	
+分区：
+	import org.apache.spark.HashPartitioner
+	import org.apache.spark.RangePartitioner
+			第一步：先重整个RDD中抽取出样本数据，将样本数据排序，计算出每个分区的最大key值，形成一个Array[KEY]类型的数组变量rangeBounds；
+			第二步：判断key在rangeBounds中所处的范围，给出该key值在下一个RDD中的分区id下标；该分区器要求RDD中的KEY类型必须是可以排序的
+	自定义分区继承org.apache.spark.Partitioner
+	
+压缩：
+	尽管Spark 的textFile() 方法可以处理压缩过的输入，但即使输入数据被以可分割读取的方式压缩，Spark 也不会打开splittable。
+	要提高效率，应该使用newAPIHadoopFile,指定压缩编码
+	
+================================================================================================
+spark sql
+注意：如果需要RDD与DF或者DS之间操作，那么都需要引入 import spark.implicits._  【spark不是包名，而是sparkSession对象的名称】
+	select("name")
+	select($"name", $"age" + 1)
+	df.as[Person]		df转换为ds
+	DataFrame通过模式匹配获取值：
+			testDF.map{
+			  case Row(col1:String,col2:Int)=>col1
+			  case _=> ""
+			}
+	
+	三种join方式：
+		广播join: spark.sql.autoBroadcastJoinThreshold， 或者增加 broadcast join的hint
+					note: 基表不能被广播，比如 left outer join 只能广播右表
+		shuffle hash join: 
+				1. 分区的平均大小不能超过 spark.sql.autoBroadcastJoinThreshold
+				2. 基表不能被广播
+		sort merge join:
+
+
+=============================================================================================================
+spark-submit参数设置：
+	--conf参数设置
+	spark.sql.join.preferSortMergeJoin=false
+	spark.sql.shuffle.partitions=160
+			
+
+
+================================================================================================		
+spark sql 并行度设置：
+	SQLContext.set("spark.sql.shuffle.partitions",)
+	
+spark sql 广播join小表
+	spark.sql.autoBroadcastJoinThreshold(默认是 10485760 ，即 10M)
+	
+sparksql 读取csv文件：
+	option("inferSchema", true)		--> 自动类型推断
+	option("header", true)			--> 将第一行作为元数据信息
+	option("delimiter","|")			--> 指定分隔符
+	option("path","hdfs://hadoop102:9000/test")
+	
+sparksql 连接mysql数据库：
+	spark.read.format("jdbc").options(Map("url" -> "jdbc:mysql://server:3306/test","driver" -> "com.mysql.jdbc.Driver","dbtable" -> "student1" ,"user" -> "root", "password" -> "abcd1234")).load()
+	
+	spark.read.format("jdbc").options(Map("url" -> "jdbc:postgresql://172.30.4.48:5432/postgres","driver" -> "org.postgresql.Driver","dbtable" -> "mnist" ,"user" -> "postgres", "password" -> "Radar.1234")).load()
+	.option("fetchsize", 1000) 可以指定一次拉取多少条数据
+
+----------	连接数据库的第二种方式	
+	numPartitions:Int,columnName:String,lowerBound:Long,upperBound:Long,		-> 指定分区字段，范围，和个数（只能用整型字段，num不宜过大，容易搞垮数据库）
+	val prop = new java.util.Properties
+	prop.setProperty("user","root")
+	prop.setProperty("password","abcd1234")
+	spark.read.jdbc("jdbc:mysql://server/test","test","id", 4, 21643, 20,prop)
+	
+---------- 	连接数据库的第三种方式
+	predicates:Array[String], 	通过此参数，手动设置分区范围 例：Array[String]("reportDate <= '2014-12-31'", "reportDate > '2014-12-31' and reportDate <= '2015-12-31'")
+
+----------  写入数据
+	df.write.mode("append").format("jdbc")
+			.option("user", "postgres")
+			.option("password", "postgres")
+			.option("url", "jdbc:postgresql://172.30.4.106:5432/netop_optimize")
+			.option("dbtable", "cov_problemcellmrstat_lte")
+			.save()
+====================================================================================================
+Spark Streaming
+	ssc.textFileStream(dataDirectory)	通过监控目录新增文件来生成RDD，目前不支持嵌套目录
+	ssc.queueStream(queueOfRDDs)	往队列中推送RDD
+	ssc.receiverStream(new MyReceiver)	自定义数据源
+	
+	window(windowLength, slideInterval)
+	countByWindow(windowLength, slideInterval)
+	reduceByWindow(func, windowLength, slideInterval)
+	reduceByKeyAndWindow(func, windowLength, slideInterval, [numTasks])
+	countByValueAndWindow(windowLength,slideInterval, [numTasks])
+	
+	transform 	
+	
+
+====================================================================================================
+spark on yarn 动态资源调整
+	l.用YARNprofile构建Spark。如果使用预打包的发行版，可以跳过这一步。
+	2.找到spark-<version＞－yarn-shuffle.jar。如果你是自己构建的Spark，那么它应该在$SPARK_HOME/network/yarn/target/scala-<version＞下，如果你用的是发行版，它就在lib下。
+	3.在集群所有NodeManager的类路径下添加此jar。
+	4.在每个节点的yarn-site.xml文件中，把spark_shfuffle加入yarn.nodemanager.aux-services。
+	5.在每个节点的yarn-site.xml文件中，将yarn.nodemanager.aux.servies.sparkshuffle.class设置为org.apache.spark.network.yarn.YarnShuffleService。
+	6.设置spark.shuffle.service.enabled为true。
+	7.设置spark.dynamicAllocation.enabled为true。
+	8.重启nodemanger
+	
+=======================================================================================================
+spark 任务监控
+比如说，http://192.168.0.103:18080/api/v1/applications，就可以获取到所有历史作业的基本信息
+
+	以下是所有API的说明
+
+	/applications																	获取作业列表
+	/applications/[app-id]/jobs														指定作业的job列表
+	/applications/[app-id]/jobs/[job-id]											指定job的信息
+	/applications/[app-id]/stages													指定作业的stage列表
+	/applications/[app-id]/stages/[stage-id]										指定stage的所有attempt列表
+	/applications/[app-id]/stages/[stage-id]/[stage-attempt-id]						指定stage attempt的信息
+	/applications/[app-id]/stages/[stage-id]/[stage-attempt-id]/taskSummary			指定stage attempt所有task的metrics统计信息
+	/applications/[app-id]/stages/[stage-id]/[stage-attempt-id]/taskList			指定stage attempt的task列表
+	/applications/[app-id]/executors												指定作业的executor列表
+	/applications/[app-id]/storage/rdd												指定作业的持久化rdd列表
+	/applications/[app-id]/storage/rdd/[rdd-id]										指定持久化rdd的信息
+	/applications/[app-id]/logs														下载指定作业的所有日志的压缩包
+	/applications/[app-id]/[attempt-id]/logs	
+
+# 也可以通过 继承 sparkListener，获取spark运行信息，来实现自定义监控	
+
+========================================================================================================
+问题 ：
+	1. oom GC overhead limit exceeded
+		原因（当时 jdbc连接的postgresql表字段 700多）
+		driver内存过小，调大
+
+=========================================================================================================
+参数调优：
+	spark.memory.fraction		统一内存占比,默认0.6
+	spark.memory.storageFraction	存储内存占统一内存的比例，默认0.5. 		统一内存 = Storage Memory + Execution Memory
+	spark.memory.offHeap.enabled	开启堆外内存
+	spark.memory.offHeap.size
+
+

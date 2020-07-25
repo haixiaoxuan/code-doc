@@ -1,0 +1,103 @@
+#! -*-coding=utf8-*-
+
+import json, pprint, requests, textwrap
+
+
+# 启动一个会话
+host = 'http://namenode01:8998'
+data = {'kind': 'spark'}
+headers = {'Content-Type': 'application/json'}
+response = requests.post(host + '/sessions', data=json.dumps(data), headers=headers)
+print(response.json())
+"""
+{'id': 1, 'appId': None, 'owner': None,
+ 'proxyUser': None, 'state': 'starting',
+ 'kind': 'spark', 'appInfo': {'driverLogUrl': None, 'sparkUiUrl': None},
+ 'log': ['stdout: ', '\nstderr: ', '\nYARN Diagnostics: ']}
+"""
+
+# 会话启动完成之后会转变为空闲状态
+session_url=host+response.headers["location"]
+print(session_url)  # 'http://namenode01:8998/sessions/3'
+response = requests.get(session_url, headers=headers)
+print(response.json())
+"""
+{'id': 3,
+ 'appId': 'application_1553667622322_0021',
+ 'owner': None,
+ 'proxyUser': None,
+ 'state': 'idle',   
+ 'kind': 'spark',
+ 'appInfo': {'driverLogUrl': 'http://datanode01:8042/node/containerlogs/container_1553667622322_0021_01_000001/hadoop',
+  'sparkUiUrl': 'http://namenode01:8088/proxy/application_1553667622322_0021/'},
+}
+"""
+
+# 执行 scala 命令
+statements_url = session_url + '/statements'
+data = {'code': '1 + 1'}
+response = requests.post(statements_url, data=json.dumps(data), headers=headers)
+print(response.json())
+"""
+{'id': 0, 'code': '1 + 1', 'state': 'waiting', 'output': None, 'progress': 0.0}
+"""
+
+# 查询结果
+statement_url = host + response.headers['location']
+print(statement_url)  # http://namenode01:8998/sessions/3/statements/0
+response = requests.get(statement_url, headers=headers)
+print(response.json())
+"""
+{'id': 0,
+ 'code': '1 + 1',
+ 'state': 'available',
+ 'output': {'status': 'ok',
+  'execution_count': 0,
+  'data': {'text/plain': 'res0: Int = 2\n'}},
+ 'progress': 1.0}
+"""
+
+# 关闭session
+session_url = 'http://localhost:8998/sessions/0'
+requests.delete(session_url, headers=headers)
+
+# batches
+# http://livy.apache.org/docs/latest/rest-api.html#pyspark
+
+data = { "conf": {"spark.master":"yarn-cluster"},
+         "file": "/home/hadoop/xiexiaoxuan-test/code/softmax.py",
+         "pyFiles": ["/home/hadoop/xiexiaoxuan-test/code/softmax_dist.py"],
+         "name": "Scala Livy Test",
+         "executorCores":1,
+         "executorMemory":"4g",
+         "driverCores":1,
+         "driverMemory":"4g",
+         "numExecutors":4,
+         "queue":"default",
+         "args":[
+                 "--features",
+                 "/home/hadoop/xiexiaoxuan-test/data/mnist/train",
+                 ]
+         }
+
+GET /batches/{batchId}/state
+
+GET /batches/{batchId}/log
+
+
+data = { "conf": {"spark.master":"yarn-cluster"},
+"file": "/home/gbdt/gbdt_test.py",
+"name": "GBDT Test",
+"executorCores":10,
+"executorMemory":"8g",
+"driverCores":4,
+"driverMemory":"8g",
+"numExecutors":15,
+"queue":"default",
+"proxyUser":"etluser"
+}
+
+import requests
+import json
+requests.post(host,data=json.dumps(data),headers=headers).json()
+

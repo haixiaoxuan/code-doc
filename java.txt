@@ -1,0 +1,72 @@
+-verbose:gc
+-XX:+printGC		打印gc信息
+-XX:+PrintGCDetails		打印详细gc
+-XX:+PrintGCTimeStamps	打印CG发生的时间戳
+-Xloggc:log/gc.log		将gc日志写入 log/gc.log 文件
+-XX:+PrintHeapAtGC		每一次gc之后都打印堆信息
+-XX:+TraceClassLoading	监控类的加载
+
+
+-Xmx 	指定最大堆大小 -Xmx50M
+–Xms	指定最小堆大小
+-Xmn	指定新生代大小
+-Xss	设置栈的大小
+-XX:NewRatio	指定新生代与年老代的比值
+-XX:SurvivorRatio	指定两个supervivor与eden的比值
+-XX:PermSize  
+-XX:MaxPermSize	设置永久代的最大大小
+-Xss		分配栈大小
+
+
+
+XX:OnOutOfMemoryError=D:/scrip_path		在OOM时执行指定脚本，发邮件或者重启程序
+
+-XX:+HeapDumpOnOutOfMemoryError 		在OOM时将堆导出到文件
+-XX:HeapDumpPath=d:/a.dump		指定文件路径
+
+
+-XX:+UseSerialGC		新生代老年代串行回收，新生代复制算法，老年代标记压缩算法
+-XX:+UseParNewGC		新生代并行，老年代串行 （-XX:ParallelGCThreads 限制线程数量）
+-XX:+UseParallelGC 		使用Parallel收集器+ 老年代串行
+-XX:+UseParallelOldGC	使用Parallel收集器+ 并行老年代
+-XX:MaxGCPauseMills	设置最大停顿时间，毫秒
+-XX:GCTimeRatio		默认99，即允许使用百分之一的时间做gc
+
+-XX:+UseConcMarkSweepGC	年老代收集器，新生代使用ParNew
+			会影响系统整体吞吐量和性能
+			比如，在用户线程运行过程中，分一半CPU去做GC，系统性能在GC阶段，反应速度就下降一半
+-XX:ParallelCMSThreads	设置CMS线程数量
+-XX:CMSInitiatingOccupancyFraction：		设置CMS收集器在老年代空间被使用多少后触发
+-XX:+UseCMSCompactAtFullCollection：		设置CMS收集器在完成垃圾收集后是否要进行一次内存碎片的整理
+-XX:CMSFullGCsBeforeCompaction：		设定进行多少次CMS垃圾回收后，进行一次内存压缩
+-XX:+CMSClassUnloadingEnabled：		允许对类元数据进行回收
+-XX:CMSInitiatingPermOccupancyFraction：	当永久区占用率达到这一百分比时，启动CMS回收
+-XX:UseCMSInitiatingOccupancyOnly：		表示只在到达阀值的时候，才进行CMS回收
+
+	
+-XX:PretenureSizeThreshold		设置大对象直接进入年老代的阈值，避免对象在eden和survivor之间频繁复制
+-XX:MaxTenuringThreshold		设置进入年老代年龄阈值
+
+-XX:+UseG1GC		G1(Garbage First)
+=======================================================================================================
+jvm 监控：
+	jconsole
+	jvisualvm
+	jstat
+		例： jstat -gcutil pid 1000 5	每隔一秒输出一次gc信息，一共输出五次
+							Eden    old   				gc次数			fullgc次数
+			   S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT
+			  0.00  99.31  73.38  22.58  71.36  73.68      1    0.016     0    0.000    0.016
+			  0.00  99.31  73.38  22.58  71.36  73.68      1    0.016     0    0.000    0.016
+			  0.00  99.31  73.38  22.58  71.36  73.68      1    0.016     0    0.000    0.016
+			  0.00  99.31  73.38  22.58  71.36  73.68      1    0.016     0    0.000    0.016
+			  0.00  99.31  73.38  22.58  71.36  73.68      1    0.016     0    0.000    0.016
+	jmap -histo:live pid | more		查看所有对象大小
+	jmap -dump:live,format=b,file=test.hprof 6752		dump jvm内存信息到文件test.hprof
+														note:(如果使用IDEA的jprofiler插件,后缀必须是hprof结尾)
+	jprofile 	可以加载hprof(即dump文件),加载snapshot
+	
+	jstack 可以打印堆栈信息
+
+
+

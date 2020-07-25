@@ -1,0 +1,185 @@
+将查询结果导入到hive新表中
+	create table test1 as (select id from test where id = 1);
+将查询结果导入到hive中已存在的表中
+	insert into table test1 select * from test;
+修改列的类型
+	alter table resource_ltecell change enodebid enodebid string;
+	select cast(ash as int) from wine limit 10;
+修改表名
+	alter table ltekpi_day rename to ltekpi_day_1;
+复制表结构
+	create table table2 like table1;
+添加列：
+	alter table table_name add columns (new_col int comment 'a comment');
+删除表的数据
+	truncate table table_name partition (dt='日期');
+插入数据：
+	insert overwrite table table_name select * from table_name where 条件;
+	insert overwrite table table_name partition (a=1, b=2) select * from table_name where 条件;	# 可以自动创建分区
+	insert overwrite table table_name partition (a, b) select *, '' as a, '' as b from table_name where 条件;	# 动态创建分区
+
+删除分区：
+	alter table test drop if exists partition (job="${JOBNAME}");
+	alter table test drop if exists partition (job="${JOBNAME}") , partition (job="...");
+查看分区
+alter table table1 add partition(p_day = '20190708',p_city = '932',p_city = 'MDT');
+alter table table1 add partition(p_day = '20190708',p_city = '932',p_city = 'MDT') partition(p_day = '20190708',p_city = '932',p_city = 'MDT');
+show partitions table1;
+修改分区名称：
+alter table 表名 partition (grade='oldname') rename to partition (grade='newname');
+修改分区位置：
+alter table 表名 partition (grade=' ') set location 'hdfs://vdata1:9000/'
+
+desc formatted 表名; 查看详细信息
+
+============================================================
+函数：
+	collect_list		group by之后，将指定的列转为数组, 取值可以使用 [index]
+	collect_set			
+	
+	explode		 传入数组，返回多列，相当于flatmap
+		使用实例：lateral view explode(split(student, ','))t 相当于是一个虚拟表，与原表笛卡儿积
+			select id, student_name from classinfo lateral view explode(split(student, ','))t as student_name;
+	posexplode	增加递增编号
+		使用实例：
+			select id, student_id + 1 as student_id, student_name from classinfo lateral view posexplode(split(student, ','))t as student_id, student_name; 
+	explode		多列使用  
+		使用实例：
+		select id, student_name, student_score from classinfo 
+		lateral view explode(split(student, ','))t as student_name
+		lateral view explode(split(score, ','))t as student_score
+	posexplode 多列使用 ... 
+	
+	row_number() over(partition by .. order by .. )		row_number 可以替换为 rank()、dense_rank() 在处理相同值的排名有些不同而已
+
+	
+============================================================
+数据导入导出：
+import/export
+	Export命令可以导出一张表或分区的数据和元数据信息到一个输出位置，并且导出数据可以被移动到另一个hadoop集群或hive实例，
+	并且可以通过import命令导入数据。
+	
+============================================================
+参数设置：(查看当前参数可以：set hive.mapred.mode)
+
+	设置map内存大小：
+	set mapreduce.map.memory.mb=4096;
+	set mapreduce.map.java.opts=-Xmx3600m;
+
+	当有笛卡尔积产生时：
+	set hive.mapred.mode=nonstrict;
+	set hive.strict.checks.cartesian.product=false;
+
+	hive.exec.parallel=true
+　　hive.exec.parallel.thread.number=8					并行度 （默认是8）
+
+	set mapreduce.input.fileinputformat.split.maxsize=50000000(50M);		设置map数；
+	hive.exec.reducers.bytes.per.reducer=256000000		（每个reduce处理的数据量）reduce数量= reduce输入数据大小 / 256M
+	mapred.reduce.tasks=-1								如果这个参数指定了，就不会用别的函数来估算reduce个数(经测试不可以改变map数，可以改变reduce数)
+	set mapred.task.timeout=6000000;					设置超时时间
+	set mapreduce.job.reduces=20;						可以设置reduce个数
+	
+	
+	************* 输入端小文件合并
+	set mapred.max.split.size=256000000		每个map的最大大小，决定了合并后的文件数
+	set mapred.min.split.size.per.node=100000000		每个map的最小大小，决定了是否需要合并
+	set mapred.min.split.size.per.rack=100000000		一个交换机下最小的split的大小，决定了是否需要跨机架合并
+	set hive.input.format=org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;   执行前进行小文件合并
+	************* 结果端小文件合并
+	set hive.merge.mapfiles			在map-only job后合并文件，默认是 true
+	set hive.merge.mapredfiles		在map-reduce job后合并文件，默认是false		
+	set hive.merge.size.per.task	合并后的每个文件的大小，默认是256000000
+	set hive.merge.smallfiles.avgsize	平均文件大小，是决定是否合并的阈值，默认是160000000 (16M)
+	
+	************* 防止数据倾斜
+	set hive.optimize.skewjoin=true			join时进行数据倾斜处理
+	set hive.skewjoin.key=100000			如果同一个key超过 100000则进行处理
+	set hive.groupby.skewindata=true		有数据倾斜的时候会进行负载均衡
+	
+	************ map端聚合和join
+	hive.map.aggr=true
+	hive.auto.convert.join=true					开启map端join（v0.7之前需要使用 /*+ mapjoin(A)*/ 暗示）
+	hive.mapjoin.smalltable.filesize=25000000	设置小表大小（使用map端join之前先设置）
+	select /*+ mapjoin(A)*/ f.a,f.b from A t join B f  on ( f.a=t.a and f.ftime=20110802) 
+	
+	************ 本地模式
+	hive.exec.mode.local.auto=true
+	
+	************* 开启动态分区
+	hive.exec.dynamic.partition=true
+	hive.exec.dynamic.partition.mode=nonstrict
+	
+	************* 正则 （设为none时，可以使用）
+	hive.support.quoted.identifiers=none
+	
+很多时候你会发现任务中不管数据量多大，不管你有没有设置调整reduce个数的参数，任务中一直都只有一个reduce任务；
+其实只有一个reduce任务的情况，除了数据量小于hive.exec.reducers.bytes.per.reducer参数值的情况外，还有以下原因：
+	a)    没有group by的汇总
+	b)    用了Order by
+	c)    有笛卡尔积
+===========================================================
+
+create table resource_ltecell ( )
+PARTITIONED BY (grade string)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n' 
+STORED AS TEXTFILE;
+
+===========================================================
+数据导入：	
+	load data local inpath '/home/hadoop/xiexiaoxuan-test/softmax/data/train.feature3' into table test1;
+	load data local inpath '/home/vdata/day15/*' into table test partition ();	// 直接导入数据到分区
+	load data local inpath '/home/vdata/day15/data3' overwrite into table test; // 覆盖导入
+数据导出：
+	insert overwrite local directory '/home/hadoop/xiexiaoxuan-test/3-20/day_result' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' select * from day_result;
+
+============================================================
+
+存储格式： 
+	textfile	默认的存储行格式，可以使用gzip方式压缩（压缩后不支持split，即不支持并行处理） 
+	Sequencefile	支持split，支持三种压缩选择 NONE，RECORD，BLOCK （通过 set mapred.output.compression.type 设置）
+	orc | parquet
+	
+压缩问题：
+	只有textfile 格式的数据才能本地load进入hive表，如果是其他格式的表，先导入到textfile格式的表中，然后再 insert overwrite table test select * from test;
+
+	SET hive.exec.compress.intermediate=true;	开启中间数据压缩
+	set hive.intermediate.compression.codec= ....
+	SET hive.exec.compress.output=true;			对最终生成hive表压缩 或 （ SET mapred.output.compress=true; ）
+	SET mapred.output.compression.codec=org.apache.hadoop.io.compress.DefaultCodec;  （GzipCodec | BZip2Codec | SnappyCodec | Lz4Codec）	
+										com.hadoop.compression.lzo.LzoCodec
+	set io.compression.codecs = ...
+	也可以通过建表时指定压缩格式  stored as orc tblproperties ("orc.compress"="SNAPPY") 
+
+	
+============================================================
+解决comment注释乱码问题：
+	当使用mysql存储元数据时，会将元数据库hive设为 alter database hive character set latin1;
+	只需要把数据库中存储中文注释的某些列改为 utf8 即可
+	alter table COLUMNS_V2 modify column COMMENT varchar(256) character set utf8;
+	alter table TABLE_PARAMS modify column PARAM_VALUE varchar(4000) character set utf8;
+	
+	
+	
+============================================================
+
+错误
+	1. Error: Java heap space
+		container: org.apache.hadoop.mapred.YarnChild: Error running child : java.lang.OutOfMemoryError: Java heap space
+		mnist数据集, 文本文件213M, 768个字段, 转换为ORC格式时出错。
+		方案1：将map任务增多，增至40个仍然失败，每个map默认1G内存
+		方案2：将map内存增大至8G，解决。
+		note: 在orc表中有一个属性 rawDataSize：原始数据大小 = 数据类型大小 * numRows.(不等于物理文件大小) 
+	
+
+
+
+
+
+
+
+
+
+
+	

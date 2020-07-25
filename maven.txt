@@ -1,0 +1,17 @@
+阿里云仓库地址：
+	<mirror>
+      <id>nexus-aliyun</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus aliyun</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+    </mirror>
+	
+使用 maven 下载 jar ：
+	call mvn -f pom.xml dependency:copy-dependencies	会在同级目录出现 traget/dependency 文件夹（jar包在里面）。
+	
+	
+IDEA配置 junit4 ——> https://blog.csdn.net/hanchao5272/article/details/79197989
+IDEA自带的打jar包方式不适用于 maven工程，https://blog.csdn.net/freecrystal_alex/article/details/78296851
+
+json与map互转 --> https://www.cnblogs.com/heqiyoujing/p/9840424.html
+

@@ -1,0 +1,37 @@
+sqoop导数据到hive
+	一亿七千条数据，24G数据，30个map     20分钟（有稍微的数据倾斜） | 无数据倾斜 8 分钟
+spark-sql 导数据到HDFS
+	八千万数据，10G数据，128个task，32个executor（4G） |  9 分钟  （容易出问题）
+
+sql:
+	insert into  	一百万万数据两个字段（5s）
+					一亿七千万数据 14 个字段（28分钟）
+	count操作		一亿七千万数据 14 个字段（78s）
+	
+	pymysql插数据：	一百万条数据（15 分钟）
+					一百万条数据（多线程 两分半）
+					
+	mysql 10G 8000万数据 建索引 （5分钟）
+					
+					
+					
+================================================================================
+故障记录：
+	1. hive （3个节点，跑37G数据 ，select count(distinct(id)) from xx）
+		进程挂掉，显示 ：java.lang.OutOfMemoryError: unable to create new native thread
+		解决：可以通过修改 ulimit，vim /etc/security/limits.conf	
+			调大用户进程数
+		（本来半个小时都跑不完，进程一直挂掉，修改后三十秒跑完）
+	2. tensorflowonspark 报错
+		No such file or directory: 'executor_id'
+		需要关闭动态资源分配
+		--conf spark.dynamicAllocation.enabled=false
+	3. tensorflowonspark 中 TF节点不能访问 HDFS
+		原因： 没有配置hadoop动态链接库的Path
+	4. spark sql 内存溢出
+		原因： 没有调节sql并行度
+	5. spark sql 栈内存溢出
+		使用 || 拼接 七百个字段，导致方法嵌套过深，内存溢出
+		改进，使用 concat拼接
+	6. spark-sklearn
+		提升效率

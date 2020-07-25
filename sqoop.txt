@@ -1,0 +1,195 @@
+常用命令：
+	sqoop help
+	sqoop list-databases --connect jdbc:mysql://hadoop102:3306/ --username root --password root
+	sqoop list-databases --connect jdbc:postgresql://172.30.4.160:5432/ --username postgres --password Radar.1234
+
+	# pg库 -> HDFS
+	sqoop import \
+	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
+	--username postgres --password Radar.1234 \
+	--table tmp_flex_bak \
+	--target-dir /xiexiaoxuan \
+	--delete-target-dir \
+	--num-mappers 1 \
+	--fields-terminated-by "\t"
+	
+	# 查询导入
+	sqoop import \
+	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
+	--username postgres --password Radar.1234 \
+	--target-dir /xiexiaoxuan \
+	--delete-target-dir \
+	--num-mappers 1 \
+	--fields-terminated-by "\t" \
+	--query 'select building_id from tmp_flex_bak where 1=1 and $CONDITIONS;'
+	
+	# 导入指定列(多列时，逗号分割时不能夹空格)
+	sqoop import \
+	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
+	--username postgres --password Radar.1234 \
+	--target-dir /xiexiaoxuan --delete-target-dir \
+	--num-mappers 1 --fields-terminated-by "\t" \
+	--columns google_gri,google_gci \
+	--table tmp_flex_bak
+	
+	# RDBMS -> Hive (分两步，先导入到HDFS临时目录/user/..,在导入到Hive,自动创建hive表)
+	sqoop import \
+	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
+	--username postgres --password Radar.1234 \
+	--table tmp_flex_bak \
+	--num-mappers 1 \
+	--hive-import \
+	--fields-terminated-by "\t" \
+	--hive-overwrite \
+	--hive-table tmp_flex
+
+	# RDBMS -> HBase (版本不同，有时不会创建Hbase表，需要手动创建)
+	sqoop import \
+	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
+	--username postgres --password Radar.1234 \
+	--table tmp_flex_bak \
+	--columns "id,name,sex" \
+	--column-family "info" \
+	--hbase-create-table \
+	--hbase-row-key "id" \
+	--hbase-table "hbase_company" \
+	--num-mappers 1 \
+	--split-by id
+
+	
+	# 导出 Hive/HDFS -> RDBMS (RDBMS中的表需要事先创建)
+	sqoop export \
+	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
+	--username postgres --password Radar.1234 \
+	--table tmp_flex2 \
+	--num-mappers 1 \
+	--export-dir /user/hive/warehouse/tmp_flex \
+	--input-fields-terminated-by "\t"
+	
+	# script方式(sqoop --options-file xx.opt)
+	export 
+	--connect 
+	jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 
+	--username 
+	postgres 
+	--password 
+	Radar.1234 
+	--table 
+	tmp_flex2 
+	--num-mappers 
+	1 
+	--export-dir 
+	/user/hive/warehouse/tmp_flex 
+	--input-fields-terminated-by 
+	"\t"
+	
+	
+=======================================================================
+问题1. Hive中的Null在底层是以“\N”来存储，而MySQL中的Null在底层就是Null，为了保证数据两端的一致性。
+	在导出数据时采用--input-null-string和--input-null-non-string两个参数。
+	导入数据时采用--null-string和--null-non-string。
+
+问题2. export map任务失败导致数据重复问题
+	--staging-table app_cource_study_report_tmp 
+	--clear-staging-table 
+	--input-null-string '\N'
+	采用临时表 --staging-table
+	用来保证在数据导入关系数据库表的过程中事务安全性的
+=======================================================================
+
+
+
+使用sqoop 将postgresql中的表导入hive中：
+	-------------------------------------------------------------------
+	简单使用：
+	sqoop import --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
+		--username postgres --password Radar.1234 \
+		--table a_test \
+		--delete-target-dir \
+		--fields-terminated-by '\t' \
+		--hive-import \
+		--hive-database postgresql_data \
+		--hive-table test \
+		--hive-partition-key job \
+		--hive-partition-value ${JOBNAME} \
+		--fields-terminated-by "," \
+		--num-mappers 1 \
+		-m 1
+
+		
+	-----------------------------------------------------------------
+	直接导入，不用创建hive表
+	spm_grid  hz_anntenna_5g	
+	sqoop import --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
+		--username postgres --password Radar.1234  \
+		--table a_test \
+		--hive-import \
+		--hive-database postgresql_data \
+		-m 30
+		
+	如果没有主键，请添加 -m 1 参数(表示只有一个map)
+		一般与 --split-by 连用，指定用哪个字段进行切割map任务
+		一般 --split-by 只可以指定数字类型的字段
+
+
+	-------------------------------------------------------------------
+	将postgresql导入hive时，如果有特殊数据类型会报 ERROR orm.ClassWriter: No Java type for SQL type 1111 for column geom
+	此时可以使用 query 进行数据类型转换
+	sqoop import  --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
+		--username postgres --password Radar.1234 \
+		--query "select google_gci, google_gri, clutter, height, building_height, building_id, building_group_id, lon,lat, geom::text from  spm_grid where \$CONDITIONS" \
+		--hive-import --hive-database postgresql_data --hive-table spm_grid \
+		--target-dir /data/postgresql \
+		--split-by google_gci
+	导入过程；
+		1.先将数据库中的数据导入到 HDFS 指定目录或者是 默认的路径
+		2.创建hive表
+		3.将临时目录的数据load进入hive表
+----------------------------------------------------------------------
+
+	参数：
+		--lines-terminated-by "\n"  \ 指定行分隔符
+		--hive-overwrite  \	指定覆盖导入
+		--create-hive-table  \	指定自动创建hive表（只会创建表，不会创建库）
+
+
+======================================================================================================================
+======================================================================================================================
+======================================================================================================================
+导出：(关系型数据库中的表需要手动创建,如果报错，指明字段)
+这属于追加的方式导入
+sqoop export --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
+--username postgres --password Radar.1234 \
+--table a_test \
+--columns "height,area,st_x,st_y,google_gci,google_gri,clutter,building_id,cell_id,antenna_height,horizontal_angle,lon,lat,send_power" \
+--fields-terminated-by ',' \
+--export-dir /user/hive/warehouse/postgresql_data.db/building_cell_grid_7
+	
+
+
+注意：在使用sqoop的时候用jdbc连接数据库的时候尽量不要使用localhost或127.0.0.1，应该用主机的IP，为什么呢？因为在使用sqoop底层是会调用mapreduce去做数据的迁移，采用localhost时，resourcemanager把task分到每个worker的时候，他们的jdbc也是连接localhost或127.0.0.1，是无法与远程的数据通信的，这时候跑mapreduce就会报错。
+
+==================================================================================
+successful example
+
+sqoop import --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
+--username postgres --password Radar.1234  \
+--query "select google_gci, google_gri, clutter, height, building_height, building_id, building_group_id, x, y, id, the_geom::text, cell_id, horizontal_angle, lon, lat, angle, radius from spm_grid_cell_1 where \$CONDITIONS" \
+--hive-import \
+--target-dir /data/postgresql/spm_grid_cell_1 \
+--hive-database postgresql_data \
+--hive-table spm_grid_cell_1 \
+--split-by id \
+-m 40
+
+
+
+sqoop export --connect jdbc:postgresql://172.30.4.49/radar5g1 \
+--username postgres --password Radar.1234 \
+--table spm_grid_cell \
+--columns "google_gci, google_gri, clutter, height, building_height, building_id, building_group_id,x, y,id,cell_id, horizontal_angle, lon, lat, angle, radius" \
+--fields-terminated-by '\001' \
+--export-dir /user/hive/warehouse/postgresql_data.db/spm_grid_cell \
+-m 60
+
+

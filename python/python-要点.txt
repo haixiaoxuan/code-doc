@@ -1,0 +1,16 @@
+pickle 自定义对象：
+	https://www.ibm.com/developerworks/cn/linux/l-pypers/
+
+# 对列表中两两排列组合	
+from itertools import combinations
+for i in combinations([1,2,3,4],2):
+
+# 对列表中元素进行计数
+from collections import Counter
+Counter([])
+
+# 对嵌套列表进行解嵌套
+sum([[],[],[]],[])
+
+# 将数字转换为指定字节数的字节数组
+(300).to_bytes(length=2, byteorder='little')
