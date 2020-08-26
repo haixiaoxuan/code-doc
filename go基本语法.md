@@ -1154,6 +1154,74 @@ func TestAdd(t *testing.T){
 
 
 
+
+
+##### 压力测试
+
+```go
+--- main.go
+package main
+
+import "fmt"
+
+func test1(n int) int {
+	var arr = make([]int, n)
+	arr[0], arr[1] = 1, 1
+	for i := 2; i < len(arr); i++ {
+		arr[i] = arr[i-1] + arr[i-2]
+	}
+	return arr[n-1]
+}
+
+func test2(n int) int {
+	if n == 1 {
+		return 1
+	}
+	if n == 2 {
+		return 1
+	}
+	return test2(n-1) + test2(n-2)
+}
+
+func main(){
+	fmt.Println(test1(50))
+}
+
+
+--- pressure_test.go
+package main
+
+import "testing"
+
+/*
+	go test -bench=./
+ */
+func BenchmarkTest1(b *testing.B) {
+	b.Log("test1....")
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		test1(30)
+	}
+}
+func BenchmarkTest2(b *testing.B) {
+	b.Log("test2....")
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		test2(30)
+	}
+}
+
+// 运行方式：goland软件，鼠标右击需要进行bench压力测试的文件夹(包)，run -> go bench ...
+```
+
+
+
+
+
+
+
 ##### 携程
 
 ```go
