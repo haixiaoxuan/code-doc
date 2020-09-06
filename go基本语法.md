@@ -1264,6 +1264,53 @@ func main() {
 
 
 
+携程调度
+
+```go
+	// 让出携程资源，让其他携程优先执行, 等同于 yield
+	// runtime.Gosched()
+
+	//for i := 1; i < 3; i++ {
+	//	go func() {
+	//		for j := 1; j < 5; j++ {
+	//
+	//			// 此处这样写的话会有闭包问题，应该将i当作参数传进来
+	//			fmt.Printf("携程%d: %d \n", i, j)
+	//		}
+	//	}()
+	//}
+
+	for i := 1; i < 3; i++ {
+		go func(num int) {
+
+			if num == 1  {
+				runtime.Gosched()
+			}
+
+			for j := 1; j < 5; j++ {
+				fmt.Printf("携程%d: %d \n", num, j)
+			}
+		}(i)
+	}
+```
+
+
+
+```
+// 携程自杀
+// 如果主携程以这种方式自杀，程序不会结束，子携程执行完成之后会报死锁的错
+runtime.Goexit() // 退出当前携程
+// 退出前会触发 defer
+```
+
+
+
+##### 读写锁
+
+...
+
+
+
 ##### 互斥锁
 
 ```go
@@ -1461,6 +1508,7 @@ select
 
 	label:
 	// 如果不确定管道什么时候关闭,可以使用select,不会进行阻塞
+	// 从所有的case中选择一个不阻塞的，如果都阻塞，则走default
 	for {
 		select {
 			case i := <- ch1 :
@@ -1471,6 +1519,7 @@ select
 			default:
 				fmt.Println("都拿不到数据了,可以由自己逻辑")
 				break label
+            	// 如果只写break，则只会跳出 select
 		}
 	}
 
@@ -1482,6 +1531,11 @@ select
 ##### 反射
 
 ```go
+/*
+	reflect.TypeOf
+	reflect.ValueOf
+ */
+
 func reflectTest(b interface{}){
 
 	// 通过反射获取变量的 type
@@ -1531,5 +1585,228 @@ func main() {
 
 	reflectTest(10)
 }
+```
+
+
+
+```go
+import (
+	"fmt"
+	"reflect"
+)
+
+type Person struct{
+	Name string
+	Age int
+}
+
+func main(){
+
+	var p = Person{Name: "xiaoxuan", Age: 19}
+
+	rType := reflect.TypeOf(p)
+	fmt.Println(rType.Name())	// Person
+	fmt.Println(rType.Kind())	// struct
+	fmt.Println(rType.NumField())
+	fmt.Println(rType.NumMethod())
+	fmt.Println(rType.Field(0)) // field.Name field.Type
+	//fmt.Println(rType.Method(0)) // method.Name method.Type
+	//fmt.Println(rType.FieldByIndex([]int{0, 1}))	// 找出第0个父结构体中的第一个属性
+
+	pValue := reflect.ValueOf(p)
+	fmt.Println(pValue.Field(0))		// 此时拿出来的值不能直接使用，需要调用 .Interface() 方法
+	pValue.FieldByName("Name")
+
+    // 指针形式，可以修改原来对象的值
+	p2Value := reflect.ValueOf(&p)
+	p2Value.Elem()		// 获取地址&p 中的值
+	p2Value.Elem().CanSet()	// 检查当前地址value内的值可以改变
+	//p2Value.Elem().set
+    
+    method := p2Value.Elem().MethodByName("test")
+    method.call([]reflect.Value{reflect.ValueOf("xx")})	// 调用对象方法
+}
+```
+
+
+
+
+
+##### 网络编程
+
+```go
+	// TCP
+	// 服务端
+	listen, err := net.Listen("tcp", "127.0.0.1:5000")
+	listen.Accept()
+
+	// 客户端
+	conn, err := net.Dial("tcp", "127.0.0.1:5000")
+
+
+	// UDP
+	udp_addr, err := net.ResolveUDPAddr("udp", "127.0.0.1:5001")
+	conn, err = net.ListenUDP("udp", udp_addr)
+
+	conn.Close()
+	conn.Read()
+	conn.Write()
+```
+
+
+
+```go
+
+	// http
+	http.HandleFunc("/hello", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Write([]byte("hello world"))
+	})
+
+	http.ListenAndServe("127.0.0.1:5000", nil)
+
+
+	// client
+	response, _ := http.Get("http://www.baidu.com")
+	fmt.Println(response)
+
+	http.Post("http://www.baidu.com", "application/x-www-form-urlencoded", 
+		strings.NewReader("hello_world"))
+
+```
+
+
+
+
+
+##### 定时器
+
+```go
+	// 定时器
+	timer := time.NewTimer(3 * time.Second)
+	fmt.Println(time.Now())
+
+	// 触发之前可以删除定时器
+	//timer.Stop()
+
+	// 定时器重置, 从当前时间开始，2s之后触发
+	time.Sleep(2 * time.Second)
+
+	// 此处会阻塞，直到定时器触发
+	endTime := <-timer.C
+	fmt.Println(endTime)
+```
+
+```go
+	// 周期定时器
+	ticker := time.NewTicker(1 * time.Second)
+
+	for {
+		fmt.Println(ticker.C)
+	}
+```
+
+
+
+##### 等待组
+
+可以每开启一个携程加一，每结束一个携程-1，等所有携程都结束的时候主线程结束
+
+```go
+	// 等待组
+	var waitGroup sync.WaitGroup
+	
+	// + 1
+	waitGroup.Add(1)
+	
+	// - 1
+	waitGroup.Done()
+	
+	// 等待直到 为 0
+	waitGroup.Wait()
+```
+
+
+
+##### once
+
+```go
+func test(){
+	fmt.Println("once")
+}
+
+
+func main() {
+	
+	var once sync.Once
+
+	for i := 0; i < 4; i++ {
+		// test 指挥执行一次
+		once.Do(test)
+	}
+
+	time.Sleep(time.Second)
+}
+```
+
+
+
+##### 信号量
+
+可以通过 固定长度的管道 来实现并发控制
+
+
+
+##### condition
+
+```go
+func testCond(){
+
+	condition := false
+	cond := sync.NewCond(&sync.Mutex{})
+
+	go func() {
+		cond.L.Lock()
+		condition = true
+		cond.Signal()
+		//cond.Broadcast() // 通知所有等待的携程
+		cond.L.Unlock()
+	}()
+
+	cond.L.Lock()
+	for !condition {
+		cond.Wait()
+	}
+	cond.L.Unlock()
+}
+
+func main() {
+	testCond()
+}
+```
+
+
+
+
+
+##### 原子操作
+
+只支持基本类型
+
+```go
+	var a int64 = 123
+	value := atomic.LoadInt64(&a)
+	fmt.Println(value)
+	
+	atomic.StoreInt64(&a, 456)
+	fmt.Println(a)
+	
+	// 对 a 进行 +1，并返回
+	atomic.AddInt64(&a, 1)
+	
+	// 交换 a 和 789，并将a的旧值返回
+	atomic.SwapInt64(&a, 789)
+	
+	// 比较并交换
+	atomic.CompareAndSwapInt64(&a, 789, 123)
 ```
 
