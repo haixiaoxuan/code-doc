@@ -1912,3 +1912,236 @@ int main(){
 
 
 
+### STL
+
+```properties
+标准模板库
+
+广义上分为：容器 算法 迭代器
+容器算法之间通过迭代器连接
+
+六大组件：
+	容器
+	算法
+	迭代器
+	仿函数
+	适配器
+	空间适配器
+	
+迭代器种类：
+	输入迭代器
+	输出
+	前向
+	双向
+	随机访问
+```
+
+
+
+### Vector
+
+```c++
+
+/*
+	特点可以动态扩展的数组
+ */
+
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<algorithm>
+
+
+void myPrint(int a){
+    cout << a << endl;
+}
+
+
+int main(){
+
+    vector<int> v;
+    v.push_back(1);
+    v.push_back(2);
+
+    // 第一种方式
+    vector<int>::iterator itBegin = v.begin();  // 初始迭代器，指向第一个元素
+    vector<int>::iterator itEnd = v.end();    // 终止迭代器，指向最后一个元素的下一个元素
+
+    // 遍历
+    while(itBegin != itEnd){
+        cout << *itBegin << endl;
+        itBegin++;
+    }
+
+    // 第二种方式
+    for(vector<int>::iterator itBegin = v.begin(); itBegin != v.end(); itBegin ++){
+        cout << *itBegin << endl;
+    }
+    
+
+    // 第三种方式
+    for_each(v.begin(), v.end(), myPrint);
+    
+    
+    // 构造函数
+    vector<> v(v.begin(), v.end())		// 将[begin, end) 之间的元素拷贝到新vector
+    vector<int> v(10, 100)	// 10个100
+    // 拷贝构造
+        
+    
+    // 赋值
+    = 
+    assign(v.begin(), v.end()), assign(10, 100)
+    
+    // 大小
+    empty()
+    capacity()
+    size()
+    resize(n)	// 重新指定size，如果大于之前size，以默认值0填充，小于则删除多余值
+    resize(n,ele)	// 以ele填充
+        
+    // 插入
+    push_back
+    pop_back
+    insert(pos, ele)    // 向指定位置插入元素， pos使用迭代器指定 v.begin()
+    insert(pos, n, ele) // 向指定位置插入n个元素
+    erase(pos)             // 删除指定位置的元素
+    erase(start, end)       // 删除start，end之间的元素, start ,end 也是迭代器
+    clear()             // 删除容器中所有元素
+    
+        
+    // 数据存取
+    at(index)   
+    []
+    front()     // 获取第一个元素
+    back()      // 返回最后一个元素
+        
+    // 互换容器
+    v1.swap(v2)
+    // 用法, 当v1的capacity和size相差过多，造成空间浪费，可以使用这种方式将size==capacity
+    vector<int>(v1).swap(v1)	// vector<int>(v1) 表示匿名对象
+        
+    // 预留空间,减少vector动态扩容时的次数
+    reserve(len)	// 预留位置不初始化，所以不能访问
+	
+    return 0;
+}
+```
+
+
+
+### String
+
+```c++
+    // 构造函数
+    // string s;
+    char * c = "hello world";   // c 风格的字符串
+    string s(c);
+    cout << s << endl;
+
+    string s2(s);  // 拷贝构造
+
+
+
+    // 赋值
+    string s = "hello world";
+    string s2 = s;
+
+    string s3;
+    s3.assign("hello c++");
+    s3.assign("hello c++", 4);  // 将前四个字符拿出来进行赋值
+    s3.assign(10, 'w');     // 10个w累加
+
+
+	// 字符串拼接
+	// +=, append
+	"".append("hello", 2) 	// 只追加前两个字符
+    "".append("hello", 0, 2)
+        
+    
+        
+    // 查找
+    find， rfind
+    
+    // 替换
+    replace(1, 3, "hello,world")	// 从一号起的三个字符替换为 "hello,world"
+        
+    // 比较
+    compare		// 大于返回1，小于返回-1
+        
+        
+    // 访问字符, 字符串可以通过这种方式修改，go中不可以
+    [], at
+        
+    // 长度
+    size()
+        
+    // 插入
+    insert(2, "hello")
+	// 删除
+    erase(1, 2)	// 从角标1开始，删除两个
+    
+    // 截取
+    substr(1, 3) 	// 从角标1开始截取三个   
+    
+```
+
+
+
+### deque
+
+```c++
+    // 双端数组
+    /*
+        不是链表，使用中控器实现(类似二维数组)
+        与vector区别：
+            vector对于头部插入删除效率低
+            vector访问元素的速度更快
+     */
+
+    push_back, push_front, pop_back, pop_front
+        
+    剩余操作基本上和 vector一样
+    
+    // 排序，支持随机访问的迭代器都可以使用这种方式
+    sort(d.begin(), d.end())
+```
+
+
+
+
+
+### stack
+
+```
+push pop top empty size
+```
+
+
+
+
+
+### queue
+
+```
+push pop back front empty size
+```
+
+
+
+
+
+### list
+
+```c++
+
+    // 双向循环链表，链表的迭代器属于双向迭代器
+    // 不同点：插入和删除(insert delete)都不会造成迭代器失效，在vector中是不成立的
+    remove(ele)     // 删除容器中所有与ele一样的元素
+
+    reverse()   // 反转
+    sort()        // 不支持，因为此迭代器不支持随机访问
+    l.sort()       // 不支持algo算法库中的，但是本身有自带的
+    l.sort(func)    // 支持传入自定义函数 bool compare(int a, int b)
+```
+
