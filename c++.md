@@ -2145,3 +2145,116 @@ push pop back front empty size
     l.sort(func)    // 支持传入自定义函数 bool compare(int a, int b)
 ```
 
+
+
+
+
+### set
+
+```c++
+    // set 所有元素在插入的时候会被自动排序
+    // set/multiset 属于关联式容器，底层是用二叉树实现， 两者在同一个头文件中
+    // 两者的区别，前者不允许有重复元素
+    set<int> s;
+    s.insert(20);
+    s.insert(40);
+    s.insert(10);
+
+    for(set<int>::iterator it = s.begin(); it != s.end(); it ++){
+        cout << *it << endl;
+    }
+
+    // size empty swap clear erase() 可以根据迭代器或者元素值删除
+	// find		返回元素的迭代器，否则返回end迭代器
+	// count	要么是0要么是1
+
+
+	// 自定义排序规则
+    class MyCompare{
+        public:
+        // 从大到小
+        bool operator()(int v1, int v2){
+            return v1 > v2;
+        }
+    };
+
+    int main(){
+        set<int, MyCompare> s;
+        s.insert(10);
+        s.insert(20);
+
+        for(set<int, MyCompare>::iterator it = s.begin(); it != s.end(); it ++){
+            cout << *it << endl;
+        }
+        return 0;
+    }
+
+
+	// 自定义数据类型排序
+	class Person{
+        public:
+        Person(string name, int age){
+            this->name = name;
+            this->age = age;
+        }
+        string name;
+        int age;
+    };
+
+    class MyCompare{
+        public:
+        // 从大到小
+        bool operator()(const Person* v1, const Person* v2){
+            return v1->age > v2->age;
+        }
+    };
+
+    int main(){
+        Person p1("xx", 1);
+        Person p2("xxx", 2);
+
+        set<Person*, MyCompare> s;
+        s.insert(&p1);
+        s.insert(&p2);
+
+        for(set<Person*, MyCompare>::iterator it = s.begin(); it != s.end(); it ++){
+            cout << (*it)->age << endl;
+        }
+        return 0;
+    }
+
+```
+
+
+
+
+
+### pair
+
+```c++
+	// 可以返回两个数据
+    pair<int, int> p(10, 10);
+    pair<int, int> p2 = make_pair(10, 10);
+    p.first;
+    p.second;
+```
+
+
+
+### map
+
+```c++
+    // map/multimap, key的特性与set相同,都排序
+    map<string, int> m;
+    m.insert(make_pair("hello1", 1));
+    m.insert(make_pair("hello2", 2));
+
+    m["hello3"] = 4;
+
+    // size empty swap
+    // insert clear erase 可以传入迭代器或者key
+
+    // 排序如果想自定义规则，需要写class
+    map<string, int, MyCompare> m;
+```
+
