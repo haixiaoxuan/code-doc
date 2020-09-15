@@ -2258,3 +2258,128 @@ push pop back front empty size
     map<string, int, MyCompare> m;
 ```
 
+
+
+
+
+### 函数对象
+
+```properties
+重载函数调用操作符的类，其对象称为函数对象
+函数对象在使用重载的（）时，类似函数调用，所以又叫仿函数
+可以当作函数参数来传递
+
+谓词：
+	返回bool的仿函数称为谓词
+	如果operator() 接受一个参数，叫一元谓词，两个参数叫二元谓词
+```
+
+
+
+
+
+### 内建函数对象
+
+```
+STL 内建函数对象
+#include<functional>
+
+算术仿函数
+	negate<int> 	一元取反仿函数
+	plus<int>		二元加法仿函数
+	...
+关系仿函数
+	greater<int>	二元大于仿函数
+	...
+逻辑仿函数
+	logical_not<bool>	
+```
+
+
+
+
+
+### 常用算法
+
+
+
+##### for_each
+
+```c++
+for_each(iterator beg, iterator end, _func)
+_func	函数或者函数对象
+```
+
+
+
+##### transform
+
+```c++
+搬运容器元素到另外的容器中
+transform(iterator beg1, iterator end1, iterator beg2, _func)
+   	note: 目标容器需要提前resize 开辟空间
+```
+
+
+
+##### 查找
+
+```
+find		找到返回该元素迭代器，否则返回end，存储自定义类型，需要重载 operator==
+find_if 	按照条件查找，find_if(iterator beg, end, _func)	_func 一元谓词
+adjacent_find 	查找相邻重复元素，返回第一个相邻重复元素的迭代器
+binary_search	查找指定元素是否存在，不可在无序数组中查找
+count	查找指定元素的个数
+count_if	按照条件统计元素个数
+```
+
+
+
+##### 排序
+
+```
+sort	对容器内的元素进行排序
+random_shuffle		指定范围内的元素随机调整次序
+merge	容器元素合并，并存储到另一容器中，被合并的两个容器必须是有序的，合并之后还是有序的
+reverse		反转指定范围内的元素
+```
+
+
+
+##### 拷贝和替换
+
+```
+copy
+replace		将容器指定范围内的元素满足条件的替换为新元素
+replace_if	将容器指定范围内的元素满足条件的替换为新元素
+swap
+```
+
+
+
+##### 算术生成算法
+
+```
+#include<numeric>
+accumulate		计算容器元素累计总和
+fill			向指定范围容器中添加指定元素
+```
+
+
+
+##### 集合算法
+
+```
+set_intersection		求两个集合的交集
+set_union		并集
+set_difference	差集
+```
+
+
+
+
+
+
+
+
+
