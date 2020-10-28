@@ -1982,6 +1982,16 @@ int main(){
     // 第三种方式
     for_each(v.begin(), v.end(), myPrint);
     
+    // 第四种遍历
+    for(int i = 0; i < v.size(); i++){
+        cout << v[i] << endl;
+    }
+    
+    // 第五种（auto的作用可以自动推断类型）
+    for(auto i : v){
+        cout << i << endl;
+    }
+    
     
     // 构造函数
     vector<> v(v.begin(), v.end())		// 将[begin, end) 之间的元素拷贝到新vector
@@ -2026,6 +2036,8 @@ int main(){
 	
     return 0;
 }
+
+note: vector支持比较运算，按照字典序排序
 ```
 
 
@@ -2131,6 +2143,15 @@ push pop back front empty size
 
 
 
+### priority_queue
+
+```
+#include <queue>
+优先级队列，默认大根堆
+```
+
+
+
 ### list
 
 ```c++
@@ -2167,6 +2188,8 @@ push pop back front empty size
     // size empty swap clear erase() 可以根据迭代器或者元素值删除
 	// find		返回元素的迭代器，否则返回end迭代器
 	// count	要么是0要么是1
+	// lower_bound 返回大于等于x的最小数的迭代器
+	// upper_bound 返回大于x的最小数的迭代器
 
 
 	// 自定义排序规则
@@ -2235,8 +2258,11 @@ push pop back front empty size
 	// 可以返回两个数据
     pair<int, int> p(10, 10);
     pair<int, int> p2 = make_pair(10, 10);
+	pair<int, int> p3 = {10, 10}
     p.first;
     p.second;
+
+note: pair 支持排序，会按照字典序排序，先比较first，然后second
 ```
 
 
