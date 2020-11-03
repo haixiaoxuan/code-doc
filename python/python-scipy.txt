@@ -1,10 +1,10 @@
-from scipy import sparse as sp
+ï»¿from scipy import sparse as sp
 
-# ´´½¨Ò»¸öÒ»ĞĞÎåÁĞµÄ¾ØÕó£¨ÏµÊı¾ØÕó compressed sparse columns£©
+# åˆ›å»ºä¸€ä¸ªä¸€è¡Œäº”åˆ—çš„çŸ©é˜µï¼ˆç³»æ•°çŸ©é˜µ compressed sparse columnsï¼‰
 m=sp.csc_matrix((1,5))
-m[0,2]=5    # ½«¾ØÕóµÚÒ»ĞĞµÚ¶şÁĞ¸³ÖµÎª5
+m[0,2]=5    # å°†çŸ©é˜µç¬¬ä¸€è¡Œç¬¬äºŒåˆ—èµ‹å€¼ä¸º5
 
-# ½«¾ØÕó×ª»»ÎªÍ¼Æ¬
+# å°†çŸ©é˜µè½¬æ¢ä¸ºå›¾ç‰‡
 pip install pillow
 from PIL import Image
 img = Image.fromarray(image_array, mode="1")

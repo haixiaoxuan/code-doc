@@ -1,7 +1,7 @@
-#! -*-coding=utf8-*-
+ï»¿#! -*-coding=utf8-*-
 
 ###############################
-# import modin.pandas as pd 	pandasµÄ¶àºË°æ±¾
+# import modin.pandas as pd 	pandasçš„å¤šæ ¸ç‰ˆæœ¬
 ###############################
 
 
@@ -9,162 +9,162 @@ import pandas as pd
 from pandas import Series
 import numpy as np
 
-pd.set_option('display.max_columns', 100000)  # a¾ÍÊÇÄãÒªÉèÖÃÏÔÊ¾µÄ×î´óÁĞÊı²ÎÊı
-pd.set_option('display.max_rows', 100000)  # b¾ÍÊÇÄãÒªÉèÖÃÏÔÊ¾µÄ×î´óµÄĞĞÊı²ÎÊı
-pd.set_option('display.width', 100000)  # x¾ÍÊÇÄãÒªÉèÖÃµÄÏÔÊ¾µÄ¿í¶È£¬·ÀÖ¹ÇáÒ×»»ĞĞ
+pd.set_option('display.max_columns', 100000)  # aå°±æ˜¯ä½ è¦è®¾ç½®æ˜¾ç¤ºçš„æœ€å¤§åˆ—æ•°å‚æ•°
+pd.set_option('display.max_rows', 100000)  # bå°±æ˜¯ä½ è¦è®¾ç½®æ˜¾ç¤ºçš„æœ€å¤§çš„è¡Œæ•°å‚æ•°
+pd.set_option('display.width', 100000)  # xå°±æ˜¯ä½ è¦è®¾ç½®çš„æ˜¾ç¤ºçš„å®½åº¦ï¼Œé˜²æ­¢è½»æ˜“æ¢è¡Œ
 
 
 """ 
-series ³£ÓÃ·½·¨£º
+series å¸¸ç”¨æ–¹æ³•ï¼š
 	value_count()
-df ³£ÓÃº¯Êı
-    Æ½¾ùÖµ £º           mean
-    ·Ö×é£º             groupby		Ö®ºó¿ÉÒÔÖ±½Ó head(10) ,·Ö×éÖ®ºó¿ÉÒÔÊ¹ÓÃ¾ÛºÏº¯Êı£¬Èç¹û²»Ï£Íû·Ö×éÁĞ±äÎªË÷ÒıÁĞ£¬¿ÉÒÔÖ¸¶¨as_index=False
-    Í³¼ÆÖ¸±ê£º          describe   Í³¼ÆÄÚÈİ£¨std±ê×¼²î£¬....£©
-    ×ªÖÃ£º             transpose
-    È¥ÖØ²¢count        nunique
-    ·Ö×é²¢count        value_counts
-    ¶ÔÃ¿¸öÔªËØÓ¦ÓÃº¯Êı   apply
-    °´ÕÕÄ³Ò»ÁĞÅÅĞò       sort_values() 
-    ÅĞ¶Ï¿ÕÖµ            isnull
-	ÅĞ¶Ï·Ç¿ÕÖµ			notnull
-    ÉèÖÃÖµ              set_value()
-	½«Ä³Ò»ÁĞÉèÎªindex					df.set_index("date")
-	»ù±¾ĞÅÏ¢			info()
+df å¸¸ç”¨å‡½æ•°
+    å¹³å‡å€¼ ï¼š           mean
+    åˆ†ç»„ï¼š             groupby		ä¹‹åå¯ä»¥ç›´æ¥ head(10) ,åˆ†ç»„ä¹‹åå¯ä»¥ä½¿ç”¨èšåˆå‡½æ•°ï¼Œå¦‚æœä¸å¸Œæœ›åˆ†ç»„åˆ—å˜ä¸ºç´¢å¼•åˆ—ï¼Œå¯ä»¥æŒ‡å®šas_index=False
+    ç»Ÿè®¡æŒ‡æ ‡ï¼š          describe   ç»Ÿè®¡å†…å®¹ï¼ˆstdæ ‡å‡†å·®ï¼Œ....ï¼‰
+    è½¬ç½®ï¼š             transpose
+    å»é‡å¹¶count        nunique
+    åˆ†ç»„å¹¶count        value_counts
+    å¯¹æ¯ä¸ªå…ƒç´ åº”ç”¨å‡½æ•°   apply
+    æŒ‰ç…§æŸä¸€åˆ—æ’åº       sort_values() 
+    åˆ¤æ–­ç©ºå€¼            isnull
+	åˆ¤æ–­éç©ºå€¼			notnull
+    è®¾ç½®å€¼              set_value()
+	å°†æŸä¸€åˆ—è®¾ä¸ºindex					df.set_index("date")
+	åŸºæœ¬ä¿¡æ¯			info()
 						apply()
-	Ìæ»»				replace()
-	Í³¼ÆĞÅÏ¢			describe()
-	²éÑ¯				query()			Ê¾Àı£º dftrain_raw.query('Survived == 0')
-	¿ÉÒÔÊ¹ÓÃº¯Êı¶ÔÁ½¸öÁĞ½øĞĞ²Ù×÷·µ»ØÒ»¸öĞÂµÄÁĞ  add(df["col1"],df["col2"])
+	æ›¿æ¢				replace()
+	ç»Ÿè®¡ä¿¡æ¯			describe()
+	æŸ¥è¯¢				query()			ç¤ºä¾‹ï¼š dftrain_raw.query('Survived == 0')
+	å¯ä»¥ä½¿ç”¨å‡½æ•°å¯¹ä¸¤ä¸ªåˆ—è¿›è¡Œæ“ä½œè¿”å›ä¸€ä¸ªæ–°çš„åˆ—  add(df["col1"],df["col2"])
 	
-df ³£ÓÃÊôĞÔ
+df å¸¸ç”¨å±æ€§
     index
-    columns       ¿ÉÒÔÖ±½Ó¸³Öµ£¬¸³ÖµÖ®ºóÁĞÃû¾Í»á±äÎªÏàÓ¦µÄÖµ
-    values        ×ª±äÎª npÖĞµÄarrayĞÎÊ½
-	dtypes		  ¸÷ÁĞµÄÀàĞÍ
-pd ³£ÓÃº¯Êı
-	ÈÕÆÚ×ª»»º¯Êı pd.to_datetime()..
-    ¶à¸ödfµş¼Ó  concat
-    ºÏ²¢º¯Êı    merge       (left, right, how='inner', on='Key')   Ò²¿ÉÒÔÔÚ on ÊôĞÔ´«Èë¹ı¸öÁĞÃû½øĞĞºÏ²¢
-			pd.merge(df1,df2,left_index=True, right_index=True) °´ÕÕË÷Òı½øĞĞºÏ²¢
-    ¹ØÁª        join      ºÍmerge²»Í¬£¬join²ÉÓÃË÷Òı½øĞĞ¹ØÁª
-    È¥ÖØ        unique
-	×ª»»		DataFrame(arr)	½«arr ×ª»»Îªdf£¬Ò²¿ÉÒÔ½«×Öµä×ª»»Îª df DataFrame({"a":[1,2,3],"b":[4,5,6]})
-	one-hot±àÂë		get_dummies		¿ÉÒÔ½«Ä³Ò»ÁĞ½øĞĞ±àÂë»òÕßÄ³¼¸ÁĞ£¬ pd.get_dummies(dfdata['Pclass'])
-    ÅĞ¶ÏÊÇ·ñÎª¿Õ	pd.isna		·µ»Ø²¼¶ûÖµ
+    columns       å¯ä»¥ç›´æ¥èµ‹å€¼ï¼Œèµ‹å€¼ä¹‹ååˆ—åå°±ä¼šå˜ä¸ºç›¸åº”çš„å€¼
+    values        è½¬å˜ä¸º npä¸­çš„arrayå½¢å¼
+	dtypes		  å„åˆ—çš„ç±»å‹
+pd å¸¸ç”¨å‡½æ•°
+	æ—¥æœŸè½¬æ¢å‡½æ•° pd.to_datetime()..
+    å¤šä¸ªdfå åŠ   concat
+    åˆå¹¶å‡½æ•°    merge       (left, right, how='inner', on='Key')   ä¹Ÿå¯ä»¥åœ¨ on å±æ€§ä¼ å…¥è¿‡ä¸ªåˆ—åè¿›è¡Œåˆå¹¶
+			pd.merge(df1,df2,left_index=True, right_index=True) æŒ‰ç…§ç´¢å¼•è¿›è¡Œåˆå¹¶
+    å…³è”        join      å’Œmergeä¸åŒï¼Œjoiné‡‡ç”¨ç´¢å¼•è¿›è¡Œå…³è”
+    å»é‡        unique
+	è½¬æ¢		DataFrame(arr)	å°†arr è½¬æ¢ä¸ºdfï¼Œä¹Ÿå¯ä»¥å°†å­—å…¸è½¬æ¢ä¸º df DataFrame({"a":[1,2,3],"b":[4,5,6]})
+	one-hotç¼–ç 		get_dummies		å¯ä»¥å°†æŸä¸€åˆ—è¿›è¡Œç¼–ç æˆ–è€…æŸå‡ åˆ—ï¼Œ pd.get_dummies(dfdata['Pclass'])
+    åˆ¤æ–­æ˜¯å¦ä¸ºç©º	pd.isna		è¿”å›å¸ƒå°”å€¼
 	
 """
 
-# Ò»Î¬ Series
+# ä¸€ç»´ Series
 d={"name":"xiaoxuan","age":18}
 l=[1,2]
-# index ²ÎÊı¿ÉÒÔÊ¡ÂÔ£¬»áÓĞÄ¬ÈÏµÄ 0 1 2 ×÷Îªindex
-# Èç¹û´æ×ÖµäµÄ»°¾ÍÄ¬ÈÏ°Ñ key ×÷Îª index
+# index å‚æ•°å¯ä»¥çœç•¥ï¼Œä¼šæœ‰é»˜è®¤çš„ 0 1 2 ä½œä¸ºindex
+# å¦‚æœå­˜å­—å…¸çš„è¯å°±é»˜è®¤æŠŠ key ä½œä¸º index
 series = pd.Series(d)
 print(series)
 
-# ¶şÎ¬ DataFrame
+# äºŒç»´ DataFrame
 df = {"name":Series(["xiaoxuan1","xiaoxuan2","xiaoxuan3"],[7,8,9]),
       "age":Series([18,19,20],[7,8,10])}
 df = pd.DataFrame(df)
-# ·µ»ØÒ»ÁĞºÍ·µ»Ø¶àÁĞ
+# è¿”å›ä¸€åˆ—å’Œè¿”å›å¤šåˆ—
 df["name"] ; df[["name","age"]]
-# Ôö¼ÓÁĞ
+# å¢åŠ åˆ—
 df["weight"] = Series([41,42,43],[7,8,9])
-# É¾³ıĞĞ axis=0 ´ú±íĞĞ, Èç¹ûÖ´ĞĞµÄ»°²¢²»»áÕæÕıÉ¾³ı£¨inplace=True ²Å»áÕæÕıÉ¾³ı£©
+# åˆ é™¤è¡Œ axis=0 ä»£è¡¨è¡Œ, å¦‚æœæ‰§è¡Œçš„è¯å¹¶ä¸ä¼šçœŸæ­£åˆ é™¤ï¼ˆinplace=True æ‰ä¼šçœŸæ­£åˆ é™¤ï¼‰
 df.drop(7,axis=0)
 
-# ÏÔÊ¾Ä³Ò»ĞĞ,°´ÕÕĞĞË÷Òı (iloc ²ÎÊıÎªÒªÏÔÊ¾µÄĞĞºÅ)
-df.loc[7] ; df.loc[[7,8]] ; df.iloc[1]	; df.iloc[:,1:]	¿ÉÒÔµ±³É array ½øĞĞÇĞ·Ö
-df.loc["name"] = df.apply(.., axis=0)	Ôö¼ÓÒ»ĞĞ
+# æ˜¾ç¤ºæŸä¸€è¡Œ,æŒ‰ç…§è¡Œç´¢å¼• (iloc å‚æ•°ä¸ºè¦æ˜¾ç¤ºçš„è¡Œå·)
+df.loc[7] ; df.loc[[7,8]] ; df.iloc[1]	; df.iloc[:,1:]	å¯ä»¥å½“æˆ array è¿›è¡Œåˆ‡åˆ†
+df.loc["name"] = df.apply(.., axis=0)	å¢åŠ ä¸€è¡Œ
 df.loc[(df["age"]>100 & df["score"] < 100),:]
 
-df.ix[1,"name"] ÄÃ³öµÚÒ»ĞĞµÄnameÁĞ   df.ix[1:7,["name","age"]]
-# ±íÊ¾ ĞĞË÷ÒıÎª7£¬µÄnameÁĞ
+df.ix[1,"name"] æ‹¿å‡ºç¬¬ä¸€è¡Œçš„nameåˆ—   df.ix[1:7,["name","age"]]
+# è¡¨ç¤º è¡Œç´¢å¼•ä¸º7ï¼Œçš„nameåˆ—
 df.loc[7,"name"] ; df.loc[[7,8],["name","age"]]
-# Ìõ¼şÉ¸Ñ¡
+# æ¡ä»¶ç­›é€‰
 df[df["age"]>19]  ; df[(df["age"]>18) & (df["weight"]==43) ]
-# ÖØÖÃË÷Òı (Ò²´æÔÚ inplace ²ÎÊı)
+# é‡ç½®ç´¢å¼• (ä¹Ÿå­˜åœ¨ inplace å‚æ•°)
 df.reset_index()
-df.set_index()  # ½«Ä³Ò»ÁĞÉèÎªË÷Òı
-# ¶à¼¶Ë÷Òı
+df.set_index()  # å°†æŸä¸€åˆ—è®¾ä¸ºç´¢å¼•
+# å¤šçº§ç´¢å¼•
 myIndex = pd.MultiIndex.from_tuples(list(zip([1, 1, 1], ["a", "b", "c"])))
 pd.DataFrame(np.random.randn(3,4),myIndex,columns=["A","B","C","D"])
 
-# Àà±ğÊı¾İ´¦Àí°ì·¨
-b=pd.Categorical(a[1])	´ËÊ±£¬bÓĞÊôĞÔ codes ºÍ categories
-a[1]=a[1].astype("category")	´ËÊ±£¬a[1] Îª categoryÀàĞÍ£¬Ò²ÓĞÊôĞÔ.cat.codes ºÍ .cat.categories
+# ç±»åˆ«æ•°æ®å¤„ç†åŠæ³•
+b=pd.Categorical(a[1])	æ­¤æ—¶ï¼Œbæœ‰å±æ€§ codes å’Œ categories
+a[1]=a[1].astype("category")	æ­¤æ—¶ï¼Œa[1] ä¸º categoryç±»å‹ï¼Œä¹Ÿæœ‰å±æ€§.cat.codes å’Œ .cat.categories
 
-# Êı¾İ´¦Àí
-    # 1 ¿ÕÖµ´¦Àí np.nan
-df.dropna(axis=0)   # É¾³ı´æÔÚÒ»¸ö»ò¶à¸ö¿ÕÖµµÄĞĞ subset=[""]´Ë²ÎÊı¿ÉÒÔÖ¸¶¨ÄÇĞ©ÁĞÎª¿Õ²Å±»É¾³ı
-df.drop_duplicates()	# É¾³ıÖØ¸´Öµ£¬Ä¬ÈÏÉ¾³ıÍêÈ«ÖØ¸´µÄĞĞ£¬¿ÉÒÔÊ¹ÓÃsubsetÖ¸¶¨ÁĞ£¬¿ÉÒÔÊ¹ÓÃkeep²ÎÊıÖ¸¶¨±£ÁôÄÄÒ»ĞĞ
-df.fillna("a")      # ½«ËùÓĞ¿ÕÖµÌæ»»Îª a
-df.fillna(value={"A":df.mean()["A"]})   # ½« A ÁĞµÄ¿ÕÖµÌæ»»Îª AÁĞµÄ¾ùÖµ
+# æ•°æ®å¤„ç†
+    # 1 ç©ºå€¼å¤„ç† np.nan
+df.dropna(axis=0)   # åˆ é™¤å­˜åœ¨ä¸€ä¸ªæˆ–å¤šä¸ªç©ºå€¼çš„è¡Œ subset=[""]æ­¤å‚æ•°å¯ä»¥æŒ‡å®šé‚£äº›åˆ—ä¸ºç©ºæ‰è¢«åˆ é™¤
+df.drop_duplicates()	# åˆ é™¤é‡å¤å€¼ï¼Œé»˜è®¤åˆ é™¤å®Œå…¨é‡å¤çš„è¡Œï¼Œå¯ä»¥ä½¿ç”¨subsetæŒ‡å®šåˆ—ï¼Œå¯ä»¥ä½¿ç”¨keepå‚æ•°æŒ‡å®šä¿ç•™å“ªä¸€è¡Œ
+df.fillna("a")      # å°†æ‰€æœ‰ç©ºå€¼æ›¿æ¢ä¸º a
+df.fillna(value={"A":df.mean()["A"]})   # å°† A åˆ—çš„ç©ºå€¼æ›¿æ¢ä¸º Aåˆ—çš„å‡å€¼
 
 
-# Êı¾İÍ¸ÊÓ±í
-pd.pivot_table(df,values='score',index="name")    # values ±íÊ¾ĞèÒª»ã×ÜµÄÊı¾İËùÔÚµÄÁĞ index ±íÊ¾°´¸ÃÁĞ½øĞĞ·Ö×éË÷Òı column ±íÊ¾×îºóµÄ½á¹ûÓ¦¸Ã¸Ä°´¸ÃÁĞ½øĞĞ·ÖÁĞ
+# æ•°æ®é€è§†è¡¨
+pd.pivot_table(df,values='score',index="name")    # values è¡¨ç¤ºéœ€è¦æ±‡æ€»çš„æ•°æ®æ‰€åœ¨çš„åˆ— index è¡¨ç¤ºæŒ‰è¯¥åˆ—è¿›è¡Œåˆ†ç»„ç´¢å¼• column è¡¨ç¤ºæœ€åçš„ç»“æœåº”è¯¥æ”¹æŒ‰è¯¥åˆ—è¿›è¡Œåˆ†åˆ—
 pd.crosstab()
 
-# ¶ÁÈ¡csvÊı¾İ
+# è¯»å–csvæ•°æ®
 pd.read_csv
 df.to_csv()
 
 pd.read_excel
 df.to_excel
 
-pd.read_table()	# ¶ÁÈ¡ÎÄ±¾
-pd.read_json()	# ¶ÁÈ¡json
+pd.read_table()	# è¯»å–æ–‡æœ¬
+pd.read_json()	# è¯»å–json
 
-# Êı¾İÔ¤´¦Àí
-# categorical  Êµ¼ÊÉÏÊÇ¼ÆËãÒ»¸öÁĞ±íĞÍÊı¾İÖĞµÄÀà±ğÊı£¬¼´²»ÖØ¸´Ïî£¬Ëü·µ»ØµÄÊÇÒ»¸öCategoricalDtype ÀàĞÍµÄ¶ÔÏó£¬Ïàµ±ÓÚÔÚÔ­À´Êı¾İÉÏ¸½¼ÓÉÏÀà±ğĞÅÏ¢ £¬
-# ¾ßÌåµÄÀà±ğ¿ÉÒÔÍ¨¹ıºÍ¶ÔÓ¦µÄĞòºÅ¿ÉÒÔÍ¨¹ı  codes  ºÍ categories À´²é¿´£º
+# æ•°æ®é¢„å¤„ç†
+# categorical  å®é™…ä¸Šæ˜¯è®¡ç®—ä¸€ä¸ªåˆ—è¡¨å‹æ•°æ®ä¸­çš„ç±»åˆ«æ•°ï¼Œå³ä¸é‡å¤é¡¹ï¼Œå®ƒè¿”å›çš„æ˜¯ä¸€ä¸ªCategoricalDtype ç±»å‹çš„å¯¹è±¡ï¼Œç›¸å½“äºåœ¨åŸæ¥æ•°æ®ä¸Šé™„åŠ ä¸Šç±»åˆ«ä¿¡æ¯ ï¼Œ
+# å…·ä½“çš„ç±»åˆ«å¯ä»¥é€šè¿‡å’Œå¯¹åº”çš„åºå·å¯ä»¥é€šè¿‡  codes  å’Œ categories æ¥æŸ¥çœ‹ï¼š
 res=pd.Categorical(["a","a","b"])
 print(res.codes)      #  [0 0 1]
 print(res.categories) #  ['a', 'b']
 
-# ·ÖÎ»Êı
-df[0].quantile([0.1,0.2])	# ½«Êı¾İÅÅĞòÈ»ºó·ÖÎªÈı¶Î£¬µÚÒ»¶ÎËùÕ¼±ÈÀıÎª0.1£¬µÚ¶ş¶ÎÒ²ÊÇ 0.1£¬µÚÈı¶ÎÎª 0.8
-pd.qcut([1,2,3,4,5,6,7,8,9,10],q=3,labels=False)	# ½«Êı¾İÅÅĞò£¬²¢Ê¹ÓÃ 0£¬1£¬2....µÄ±êÇ©¶ÔÊı¾İ½øĞĞ±àºÅ
-pd.cut(x=df[""],bins=[10,20,30,40], label=["µÍ","ÖĞ","ÖĞ","¸ß"])	 binsÒ²¿ÉÒÔÖ¸¶¨Êı×Ö£¨·ÖÎª¼¸×é£©
+# åˆ†ä½æ•°
+df[0].quantile([0.1,0.2])	# å°†æ•°æ®æ’åºç„¶ååˆ†ä¸ºä¸‰æ®µï¼Œç¬¬ä¸€æ®µæ‰€å æ¯”ä¾‹ä¸º0.1ï¼Œç¬¬äºŒæ®µä¹Ÿæ˜¯ 0.1ï¼Œç¬¬ä¸‰æ®µä¸º 0.8
+pd.qcut([1,2,3,4,5,6,7,8,9,10],q=3,labels=False)	# å°†æ•°æ®æ’åºï¼Œå¹¶ä½¿ç”¨ 0ï¼Œ1ï¼Œ2....çš„æ ‡ç­¾å¯¹æ•°æ®è¿›è¡Œç¼–å·
+pd.cut(x=df[""],bins=[10,20,30,40], label=["ä½","ä¸­","ä¸­","é«˜"])	 binsä¹Ÿå¯ä»¥æŒ‡å®šæ•°å­—ï¼ˆåˆ†ä¸ºå‡ ç»„ï¼‰
 
 ############################################################################
 
-»­Í¼£º
+ç”»å›¾ï¼š
 	>>> import matplotlib.pyplot as plt
 	>>> import seaborn as sns
-	>>> sns.set_style('whitegrid')		# Íø¸ñÏß
+	>>> sns.set_style('whitegrid')		# ç½‘æ ¼çº¿
 	>>> fig, ax = plt.subplots()
-	>>> biz_df['x'].hist(ax=ax, bins=100)	# ½«x·ÖÎª100·İ
-	>>> ax.set_yscale('log')		# ÉèÖÃ y µÄÏÔÊ¾·½Ê½
+	>>> biz_df['x'].hist(ax=ax, bins=100)	# å°†xåˆ†ä¸º100ä»½
+	>>> ax.set_yscale('log')		# è®¾ç½® y çš„æ˜¾ç¤ºæ–¹å¼
 	>>> ax.tick_params(labelsize=14)
 	>>> ax.set_xlabel('x', fontsize=14)
 	>>> ax.set_ylabel('y', fontsize=14)
 	
 
-Ê¹ÓÃPandasÀ´»­Í¼
+ä½¿ç”¨Pandasæ¥ç”»å›¾
 	Series.plot()	
-	Î»ÖÃ²ÎÊı£ºkind,    bar Öù×´Í¼£»hist Öù×´Í¼£» density ÇúÏßÍ¼
-			  figsize	Ôª×é(10,10)
+	ä½ç½®å‚æ•°ï¼škind,    bar æŸ±çŠ¶å›¾ï¼›hist æŸ±çŠ¶å›¾ï¼› density æ›²çº¿å›¾
+			  figsize	å…ƒç»„(10,10)
 			  fontsize	10
-			  rot		Ğı×ª
-	Ê¾Àı£º
+			  rot		æ—‹è½¬
+	ç¤ºä¾‹ï¼š
 	ax = dftrain_raw['Survived'].value_counts().plot(kind = 'bar', figsize = (12, 8), fontsize=15, rot = 0)
 	ax = dftrain_raw['Age'].plot(kind = 'hist', bins = 20, color= 'purple', figsize = (12,8), fontsize=15)
 	
 	ax = dftrain_raw.query('Survived == 0')['Age'].plot(kind = 'density', figsize = (12,8), fontsize=15)
 	dftrain_raw.query('Survived == 1')['Age'].plot(kind = 'density', figsize = (12,8), fontsize=15)
-	ax.legend(['Survived==0','Survived==1'], fontsize = 12)	# Ö¸¶¨±êÌâ
+	ax.legend(['Survived==0','Survived==1'], fontsize = 12)	# æŒ‡å®šæ ‡é¢˜
 	ax.set_ylabel('Density', fontsize = 15)
 	ax.set_xlabel('Age', fontsize = 15)
 
 ############################################################################
-# Ëæ»ú³éÈ¡Ñù±¾Êı¾İ
+# éšæœºæŠ½å–æ ·æœ¬æ•°æ®
 pd.read_csv("path", skiprows=lambda x: x>0 and np.random.rand() > 0.01)
-# replace ×öÊı¾İÇåÏ´, Ìæ»»µôÔà×Ö·ûa bÎª¿Õ
+# replace åšæ•°æ®æ¸…æ´—, æ›¿æ¢æ‰è„å­—ç¬¦a bä¸ºç©º
 df["col"]=df["col"].replace("[a,b]", "", regex=True).astype("float")
-# ĞĞ×ªÁĞ
+# è¡Œè½¬åˆ—
 df.melt....
 
 

@@ -1,213 +1,213 @@
-Æô¶¯·þÎñ
+ï»¿å¯åŠ¨æœåŠ¡
 	redis-server ./redis.conf
-	redis.conf ÖÐ requirepass ÉèÖÃredisÃÜÂë
-	×¢:ÅäÖÃÃÜÂëºó,¿Í»§¶ËÁ¬ÉÏ·þÎñÆ÷,ÐèÒªÏÈÖ´ÐÐÊÚÈ¨ÃüÁî
-	auth ÃÜÂë
+	redis.conf ä¸­ requirepass è®¾ç½®rediså¯†ç 
+	æ³¨:é…ç½®å¯†ç åŽ,å®¢æˆ·ç«¯è¿žä¸ŠæœåŠ¡å™¨,éœ€è¦å…ˆæ‰§è¡ŒæŽˆæƒå‘½ä»¤
+	auth å¯†ç 
 
 
-¹¤¾ß£º
-	redis-benchmark  ÐÔÄÜ²âÊÔ¹¤¾ß
-	redis-check-aof  ÈÕÖ¾ÎÄ¼þ¼ì²â¹¤(±ÈÈç¶ÏµçÔì³ÉÈÕÖ¾Ëð»µ,¿ÉÒÔ¼ì²â²¢ÐÞ¸´)
-	redis-check-dump  ¿ìÕÕÎÄ¼þ¼ì²â¹¤¾ß,Ð§¹ûÀàÉÏ
-	redis-cli  ¿Í»§¶Ë
-	redis-server ·þÎñ¶Ë
+å·¥å…·ï¼š
+	redis-benchmark  æ€§èƒ½æµ‹è¯•å·¥å…·
+	redis-check-aof  æ—¥å¿—æ–‡ä»¶æ£€æµ‹å·¥(æ¯”å¦‚æ–­ç”µé€ æˆæ—¥å¿—æŸå,å¯ä»¥æ£€æµ‹å¹¶ä¿®å¤)
+	redis-check-dump  å¿«ç…§æ–‡ä»¶æ£€æµ‹å·¥å…·,æ•ˆæžœç±»ä¸Š
+	redis-cli  å®¢æˆ·ç«¯
+	redis-server æœåŠ¡ç«¯
 
 
-Êý¾ÝÀàÐÍ
+æ•°æ®ç±»åž‹
 	string,link,set,order set, hash
 
 
-scan²Ù×÷£º
-	scanÊÇÔöÁ¿Ñ­»·£¬Óëkeys²»Í¬£¬keys»áÔì³É¼ÙËÀ×´Ì¬£¬ÒòÎªredisÊÇµ¥Ïß³Ì
-	SCANÃüÁî·µ»ØµÄÊÇÒ»¸öÓÎ±ê£¬´Ó0¿ªÊ¼±éÀú£¬µ½0½áÊø±éÀú
-	scan 0 match xiaoxuan* count 5  ´Ó0¿ªÊ¼±éÀú£¬·µ»ØÁËÓÎ±ê6£¬ÓÖ·µ»ØÁËÊý¾Ý£¬¼ÌÐøscan±éÀú£¬¾ÍÒª´Ó6¿ªÊ¼
+scanæ“ä½œï¼š
+	scanæ˜¯å¢žé‡å¾ªçŽ¯ï¼Œä¸Žkeysä¸åŒï¼Œkeysä¼šé€ æˆå‡æ­»çŠ¶æ€ï¼Œå› ä¸ºredisæ˜¯å•çº¿ç¨‹
+	SCANå‘½ä»¤è¿”å›žçš„æ˜¯ä¸€ä¸ªæ¸¸æ ‡ï¼Œä»Ž0å¼€å§‹éåŽ†ï¼Œåˆ°0ç»“æŸéåŽ†
+	scan 0 match xiaoxuan* count 5  ä»Ž0å¼€å§‹éåŽ†ï¼Œè¿”å›žäº†æ¸¸æ ‡6ï¼Œåˆè¿”å›žäº†æ•°æ®ï¼Œç»§ç»­scanéåŽ†ï¼Œå°±è¦ä»Ž6å¼€å§‹
 	scan 6 match xiaoxuan* count 5
 
 
-¶Ôkey µÄ²Ù×÷£º
-	dbsize 		²é¿´Êý¾Ý¿âÖÐkeyµÄ¸öÊý
-	select 2		Ñ¡Ôñ2ºÅ¿â
+å¯¹key çš„æ“ä½œï¼š
+	dbsize 		æŸ¥çœ‹æ•°æ®åº“ä¸­keyçš„ä¸ªæ•°
+	select 2		é€‰æ‹©2å·åº“
 	keys *
-	del key1 key2 ... Keyn		·µ»ØÖµ: ²»´æÔÚµÄkeyºöÂÔµô,·µ»ØÕæÕýÉ¾³ýµÄkeyµÄÊýÁ¿
-	rename key newkey			×¢:Èç¹ûnewkeyÒÑ´æÔÚ,ÔònewkeyµÄÔ­Öµ±»¸²¸Ç
-	renamenx key newkey			·µ»Ø: ·¢ÉúÐÞ¸Ä·µ»Ø1,Î´·¢ÉúÐÞ¸Ä·µ»Ø0£¬×¢: nx--> not exists, ¼´, newkey²»´æÔÚÊ±,×÷¸ÄÃû¶¯×÷
-	move key db			½«keyÒÆµ½ÁíÒ»¸ödb
-	flushdb				Çå¿Õµ±Ç°¿â
+	del key1 key2 ... Keyn		è¿”å›žå€¼: ä¸å­˜åœ¨çš„keyå¿½ç•¥æŽ‰,è¿”å›žçœŸæ­£åˆ é™¤çš„keyçš„æ•°é‡
+	rename key newkey			æ³¨:å¦‚æžœnewkeyå·²å­˜åœ¨,åˆ™newkeyçš„åŽŸå€¼è¢«è¦†ç›–
+	renamenx key newkey			è¿”å›ž: å‘ç”Ÿä¿®æ”¹è¿”å›ž1,æœªå‘ç”Ÿä¿®æ”¹è¿”å›ž0ï¼Œæ³¨: nx--> not exists, å³, newkeyä¸å­˜åœ¨æ—¶,ä½œæ”¹ååŠ¨ä½œ
+	move key db			å°†keyç§»åˆ°å¦ä¸€ä¸ªdb
+	flushdb				æ¸…ç©ºå½“å‰åº“
 	Flushall				
-	keys						Ö§³ÖÄ£ºý²éÑ¯£¬ÓÐ3¸öÍ¨Åä·û *, ? ,[]¡£·Ö±ð±íÊ¾ÈÎÒâ¶à¸ö×Ö·û£¬µ¥¸ö×Ö·û£¬Í¨ÅäÀ¨ºÅÄÚµÄÄ³Ò»¸ö×Ö·û
+	keys						æ”¯æŒæ¨¡ç³ŠæŸ¥è¯¢ï¼Œæœ‰3ä¸ªé€šé…ç¬¦ *, ? ,[]ã€‚åˆ†åˆ«è¡¨ç¤ºä»»æ„å¤šä¸ªå­—ç¬¦ï¼Œå•ä¸ªå­—ç¬¦ï¼Œé€šé…æ‹¬å·å†…çš„æŸä¸€ä¸ªå­—ç¬¦
 	set key_name value
 	get key_name
-	randomkey					·µ»ØËæ»úkey
-	exists key_name 			·µ»Ø: 0/1
-	type key_name 				·µ»ØkeyµÄÀàÐÍ
-	ttl key_name 				²éÑ¯keyµÄÉúÃüÖÜÆÚ£¬·µ»ØÃëÊý¡£²»´æÔÚ·µ»Ø-2£¬ÓÀ¾Ã·µ»Ø-1 | pttl(ms ºÁÃë)
-	expire key_name ÕûÐÍÖµ			ÉèÖÃkeyµÄÉúÃüÖÜÆÚ£¨s£© | pexpire key (msºÁÃë)
-	persist key_name 			½«Ä³Ò»keyÉèÎªÓÀ¾ÃÓÐÐ§
+	randomkey					è¿”å›žéšæœºkey
+	exists key_name 			è¿”å›ž: 0/1
+	type key_name 				è¿”å›žkeyçš„ç±»åž‹
+	ttl key_name 				æŸ¥è¯¢keyçš„ç”Ÿå‘½å‘¨æœŸï¼Œè¿”å›žç§’æ•°ã€‚ä¸å­˜åœ¨è¿”å›ž-2ï¼Œæ°¸ä¹…è¿”å›ž-1 | pttl(ms æ¯«ç§’)
+	expire key_name æ•´åž‹å€¼			è®¾ç½®keyçš„ç”Ÿå‘½å‘¨æœŸï¼ˆsï¼‰ | pexpire key (msæ¯«ç§’)
+	persist key_name 			å°†æŸä¸€keyè®¾ä¸ºæ°¸ä¹…æœ‰æ•ˆ
 	
 	
-×Ö·û´®²Ù×÷£º
-	set key value [ex ÃëÊý] / [px ºÁÃëÊý]  [nx] /[xx]
-				Èç: set a 1 ex 10 , 10ÃëÓÐÐ§ | Set a 1 px 9000  , 9ÃëÓÐÐ§
-					nx: ±íÊ¾key²»´æÔÚÊ±,Ö´ÐÐ²Ù×÷ | xx: ±íÊ¾key´æÔÚÊ±,Ö´ÐÐ²Ù×÷
-	setnx key value				Èç¹ûkey²»´æÔÚÔò½øÐÐset²Ù×÷£¬Èç¹û´æÔÚÔò·µ»Ø0
+å­—ç¬¦ä¸²æ“ä½œï¼š
+	set key value [ex ç§’æ•°] / [px æ¯«ç§’æ•°]  [nx] /[xx]
+				å¦‚: set a 1 ex 10 , 10ç§’æœ‰æ•ˆ | Set a 1 px 9000  , 9ç§’æœ‰æ•ˆ
+					nx: è¡¨ç¤ºkeyä¸å­˜åœ¨æ—¶,æ‰§è¡Œæ“ä½œ | xx: è¡¨ç¤ºkeyå­˜åœ¨æ—¶,æ‰§è¡Œæ“ä½œ
+	setnx key value				å¦‚æžœkeyä¸å­˜åœ¨åˆ™è¿›è¡Œsetæ“ä½œï¼Œå¦‚æžœå­˜åœ¨åˆ™è¿”å›ž0
 	mset k1 v1 k2 v2
 	get key
 	mget k1 k2 k3
-	setrange key offset value	½«×Ö·û´®offsetÎ»ÖÃÌæ»»Îªvalue£¬ Èç¹ûÆ«ÒÆÁ¿>×Ö·û³¤¶È, ¸Ã×Ö·û×Ô¶¯²¹0x00
+	setrange key offset value	å°†å­—ç¬¦ä¸²offsetä½ç½®æ›¿æ¢ä¸ºvalueï¼Œ å¦‚æžœåç§»é‡>å­—ç¬¦é•¿åº¦, è¯¥å­—ç¬¦è‡ªåŠ¨è¡¥0x00
 	append key value
-	getrange key start stop  	ÄÃ³ö[start, stop]Çø¼äÄÚµÄÖµ£¬×óÊý´ÓÁã¿ªÊ¼£¬ÓÒÊý´Ó-1 ¿ªÊ¼ £¬ getrange key_name -2 -1
-	getset key newvalue			»ñÈ¡¾ÉÖµ·µ»Ø£¬²¢ÉèÖÃÐÂÖµ
-	incr key					½«Ö¸¶¨keyµÄvalue+1Ö®ºó·µ»Ø
+	getrange key start stop  	æ‹¿å‡º[start, stop]åŒºé—´å†…çš„å€¼ï¼Œå·¦æ•°ä»Žé›¶å¼€å§‹ï¼Œå³æ•°ä»Ž-1 å¼€å§‹ ï¼Œ getrange key_name -2 -1
+	getset key newvalue			èŽ·å–æ—§å€¼è¿”å›žï¼Œå¹¶è®¾ç½®æ–°å€¼
+	incr key					å°†æŒ‡å®škeyçš„value+1ä¹‹åŽè¿”å›ž
 	incrby key number
 	incrbyfloat key floatnumber
-	decr key					ÉèÖÃvalue-1Ö®ºó·µ»Ø
+	decr key					è®¾ç½®value-1ä¹‹åŽè¿”å›ž
 	decrby key number
 	
-	getbit key offset			»ñÈ¡value¶þ½øÖÆÎ»ÉÏµÄÖµ0 or 1
-	setbit  key offset value	·µ»Ø: ¸ÃÎ»ÉÏµÄ¾ÉÖµ£¬Èç¹ûoffset¹ý´ó»áÔÚÖÐ¼äÌî³ä0£¬offset×î´óÎª2**32-1£¬ ¼´×î´óÖ§³Ö512M×Ö·û´®
-								Èç¹ûÏëµÃµ½È«Îª0µÄbit£¬setbit key_name 10000 0	key±ØÐë²»´æÔÚ
+	getbit key offset			èŽ·å–valueäºŒè¿›åˆ¶ä½ä¸Šçš„å€¼0 or 1
+	setbit  key offset value	è¿”å›ž: è¯¥ä½ä¸Šçš„æ—§å€¼ï¼Œå¦‚æžœoffsetè¿‡å¤§ä¼šåœ¨ä¸­é—´å¡«å……0ï¼Œoffsetæœ€å¤§ä¸º2**32-1ï¼Œ å³æœ€å¤§æ”¯æŒ512Må­—ç¬¦ä¸²
+								å¦‚æžœæƒ³å¾—åˆ°å…¨ä¸º0çš„bitï¼Œsetbit key_name 10000 0	keyå¿…é¡»ä¸å­˜åœ¨
 	bitop operation destkey key1 [key2 ...]
-								¶Ôkey1,key2..keyN×÷operation,²¢½«½á¹û±£´æµ½ destkey ÉÏ¡£operation ¿ÉÒÔÊÇ AND ¡¢ OR ¡¢ NOT ¡¢ XOR
-								¾­µäÓÃ·¨£º
-								¿ÉÒÔÊ¹ÓÃ Óëand ²Ù×÷Çó³öÎª1µÄ¸öÊý
+								å¯¹key1,key2..keyNä½œoperation,å¹¶å°†ç»“æžœä¿å­˜åˆ° destkey ä¸Šã€‚operation å¯ä»¥æ˜¯ AND ã€ OR ã€ NOT ã€ XOR
+								ç»å…¸ç”¨æ³•ï¼š
+								å¯ä»¥ä½¿ç”¨ ä¸Žand æ“ä½œæ±‚å‡ºä¸º1çš„ä¸ªæ•°
 	
 
-Á´±í½á¹¹£º
-	lpush key value				×÷ÓÃ: °ÑÖµ²åÈëµ½Á´½ÓÍ·²¿ | rpush | lpop
-	rpop key 					×÷ÓÃ: ·µ»Ø²¢É¾³ýÁ´±íÎ²ÔªËØ
-	lrange key start stop		·µ»Ø[start,stop]ËùÓÐÔªËØ£¬×óÊý´ÓÁã¿ªÊ¼£¬ÓÒÊý´Ó-1
-	lrem key count value		×÷ÓÃ: ´ÓkeyÁ´±íÖÐÉ¾³ý valueÖµ
-								×¢: É¾³ýcountµÄ¾ø¶ÔÖµ¸övalueºó½áÊø
-								Count>0 ´Ó±íÍ·É¾³ý
-								Count<0 ´Ó±íÎ²É¾³ý
-	ltrim key start stop		¼ôÇÐ[start, stop],²¢½«¼ôÇÐµÄÖµ¸³Óè key
-	lindex key index			·µ»ØindexËùÖ¸µÄÖµ
-	llen key					·µ»ØÁ´±íµÄÔªËØ¸öÊý
-	linsert key after|before search value		ÔÚkeyÁ´±íÖÐÑ°ÕÒsearch£¬²¢²åÈëvalue£¬Ö»»á²åÈëÒ»¸ö¡£
-	rpoplpush source dest		°ÑsourceµÄÎ²²¿ÄÃ³ö,·ÅÔÚdestµÄÍ·²¿
-	brpop|blpop key timeout		µÈ´ýµ¯³ökeyµÄÎ²/Í·ÔªËØ£¬ timeoutÎª0ÔòÒ»Ö±µÈ´ý
+é“¾è¡¨ç»“æž„ï¼š
+	lpush key value				ä½œç”¨: æŠŠå€¼æ’å…¥åˆ°é“¾æŽ¥å¤´éƒ¨ | rpush | lpop
+	rpop key 					ä½œç”¨: è¿”å›žå¹¶åˆ é™¤é“¾è¡¨å°¾å…ƒç´ 
+	lrange key start stop		è¿”å›ž[start,stop]æ‰€æœ‰å…ƒç´ ï¼Œå·¦æ•°ä»Žé›¶å¼€å§‹ï¼Œå³æ•°ä»Ž-1
+	lrem key count value		ä½œç”¨: ä»Žkeyé“¾è¡¨ä¸­åˆ é™¤ valueå€¼
+								æ³¨: åˆ é™¤countçš„ç»å¯¹å€¼ä¸ªvalueåŽç»“æŸ
+								Count>0 ä»Žè¡¨å¤´åˆ é™¤
+								Count<0 ä»Žè¡¨å°¾åˆ é™¤
+	ltrim key start stop		å‰ªåˆ‡[start, stop],å¹¶å°†å‰ªåˆ‡çš„å€¼èµ‹äºˆ key
+	lindex key index			è¿”å›žindexæ‰€æŒ‡çš„å€¼
+	llen key					è¿”å›žé“¾è¡¨çš„å…ƒç´ ä¸ªæ•°
+	linsert key after|before search value		åœ¨keyé“¾è¡¨ä¸­å¯»æ‰¾searchï¼Œå¹¶æ’å…¥valueï¼Œåªä¼šæ’å…¥ä¸€ä¸ªã€‚
+	rpoplpush source dest		æŠŠsourceçš„å°¾éƒ¨æ‹¿å‡º,æ”¾åœ¨destçš„å¤´éƒ¨
+	brpop|blpop key timeout		ç­‰å¾…å¼¹å‡ºkeyçš„å°¾/å¤´å…ƒç´ ï¼Œ timeoutä¸º0åˆ™ä¸€ç›´ç­‰å¾…
 
 
-set½á¹¹£º
+setç»“æž„ï¼š
 	sadd key value1 value2
-	srem value1 value2			·µ»ØÖµ: ºöÂÔ²»´æÔÚµÄÔªËØºó,ÕæÕýÉ¾³ýµôµÄÔªËØµÄ¸öÊý
-	spop key					É¾³ý¼¯ºÏÖÐµÄÒ»¸öËæ»úÔªËØ²¢·µ»Ø´ËÔªËØ
-	srandmember key				·µ»Ø¼¯ºÏÖÐËæ»úÔªËØ
-	sismember key  value		ÅÐ¶ÏvalueÊÇ·ñ´æÔÚÓÚ¼¯ºÏÖÐ
-	smembers key				·µ»Ø¼¯ºÏÖÐµÄËùÓÐÔªËØ
-	scard key					·µ»Ø¼¯ºÏÖÐÔªËØ¸öÊý
-	smove source dest value		°ÑsourceÖÐµÄvalueÉ¾³ý²¢Ìí¼Óµ½destÖÐ
-	sinter  key1 key2 key3		×÷ÓÃ: Çó³ökey1 key2 key3 Èý¸ö¼¯ºÏÖÐµÄ½»¼¯,²¢·µ»Ø
-	sinterstore dest key1 key2 key3		×÷ÓÃ: Çó³ökey1 key2 key3 Èý¸ö¼¯ºÏÖÐµÄ½»¼¯,²¢¸³¸ødest
-	suion key1 key2.. Keyn		×÷ÓÃ: Çó³ökey1 key2 keynµÄ²¢¼¯,²¢·µ»Ø
-	sdiff key1 key2 key3		×÷ÓÃ: Çó³ökey1Óëkey2 key3µÄ²î¼¯£¬¼´key1-key2-key3 
+	srem value1 value2			è¿”å›žå€¼: å¿½ç•¥ä¸å­˜åœ¨çš„å…ƒç´ åŽ,çœŸæ­£åˆ é™¤æŽ‰çš„å…ƒç´ çš„ä¸ªæ•°
+	spop key					åˆ é™¤é›†åˆä¸­çš„ä¸€ä¸ªéšæœºå…ƒç´ å¹¶è¿”å›žæ­¤å…ƒç´ 
+	srandmember key				è¿”å›žé›†åˆä¸­éšæœºå…ƒç´ 
+	sismember key  value		åˆ¤æ–­valueæ˜¯å¦å­˜åœ¨äºŽé›†åˆä¸­
+	smembers key				è¿”å›žé›†åˆä¸­çš„æ‰€æœ‰å…ƒç´ 
+	scard key					è¿”å›žé›†åˆä¸­å…ƒç´ ä¸ªæ•°
+	smove source dest value		æŠŠsourceä¸­çš„valueåˆ é™¤å¹¶æ·»åŠ åˆ°destä¸­
+	sinter  key1 key2 key3		ä½œç”¨: æ±‚å‡ºkey1 key2 key3 ä¸‰ä¸ªé›†åˆä¸­çš„äº¤é›†,å¹¶è¿”å›ž
+	sinterstore dest key1 key2 key3		ä½œç”¨: æ±‚å‡ºkey1 key2 key3 ä¸‰ä¸ªé›†åˆä¸­çš„äº¤é›†,å¹¶èµ‹ç»™dest
+	suion key1 key2.. Keyn		ä½œç”¨: æ±‚å‡ºkey1 key2 keynçš„å¹¶é›†,å¹¶è¿”å›ž
+	sdiff key1 key2 key3		ä½œç”¨: æ±‚å‡ºkey1ä¸Žkey2 key3çš„å·®é›†ï¼Œå³key1-key2-key3 
 	
 
-order set½á¹¹£º
+order setç»“æž„ï¼š
 	zadd key score1 value1 score2 value2 ..
 	zrem key value1 value2 ..	
-	zremrangebyscore key min max	É¾³ý scoreÔÚ [min,max] Ö®¼äµÄÔªËØ
-	zremrangebyrank key start end	É¾³ý°´ÕÕÅÅÃû
-	zrank key member			²éÑ¯memberµÄÅÅÃû(ÉýÐò£¬0Ãû¿ªÊ¼)
-	zrevrank key memeber		½µÐò
-	ZRANGE key start stop [WITHSCORES]	°Ñ¼¯ºÏÅÅÐòºó,·µ»ØÃû´Î[start,stop]µÄÔªËØ£¬Ä¬ÈÏÊÇÉýÐò£¬Withscores ÊÇ°ÑscoreÒ²´òÓ¡³öÀ´
+	zremrangebyscore key min max	åˆ é™¤ scoreåœ¨ [min,max] ä¹‹é—´çš„å…ƒç´ 
+	zremrangebyrank key start end	åˆ é™¤æŒ‰ç…§æŽ’å
+	zrank key member			æŸ¥è¯¢memberçš„æŽ’å(å‡åºï¼Œ0åå¼€å§‹)
+	zrevrank key memeber		é™åº
+	ZRANGE key start stop [WITHSCORES]	æŠŠé›†åˆæŽ’åºåŽ,è¿”å›žåæ¬¡[start,stop]çš„å…ƒç´ ï¼Œé»˜è®¤æ˜¯å‡åºï¼ŒWithscores æ˜¯æŠŠscoreä¹Ÿæ‰“å°å‡ºæ¥
 	zrevrange key start stop
 	zrangebyscore  key min max [withscores] limit offset N
-								×÷ÓÃ: ¼¯ºÏ(ÉýÐø)ÅÅÐòºó,È¡scoreÔÚ[min,max]ÄÚµÄÔªËØ,²¢Ìø¹ý offset¸ö, È¡³öN¸ö
-	zcard key					·µ»ØÔªËØ¸öÊý
-	zcount key min max			·µ»Ømin£¬maxÇø¼äÄÚÔªËØ¸öÊý
+								ä½œç”¨: é›†åˆ(å‡ç»­)æŽ’åºåŽ,å–scoreåœ¨[min,max]å†…çš„å…ƒç´ ,å¹¶è·³è¿‡ offsetä¸ª, å–å‡ºNä¸ª
+	zcard key					è¿”å›žå…ƒç´ ä¸ªæ•°
+	zcount key min max			è¿”å›žminï¼ŒmaxåŒºé—´å†…å…ƒç´ ä¸ªæ•°
 	zinterstore dest numkeys key1 [key2 ...]  [WEIGHTS weight [weight ...]]  [AGGREGATE SUM|MIN|MAX]
-				Çókey1,key2µÄ½»¼¯,key1,key2µÄÈ¨ÖØ·Ö±ðÊÇ weight1,weight2
-				¾ÛºÏ·½·¨ÓÃ: sum |min|max£¬ ¾ÛºÏµÄ½á¹û,±£´æÔÚdest¼¯ºÏÄÚ
-				 Aggregate sum->scoreÏà¼Ó   , min Çó×îÐ¡score, max ×î´óscore
-				¿ÉÒÔÍ¨¹ýweigthÉèÖÃ²»Í¬keyµÄÈ¨ÖØ, ½»¼¯Ê±,socre * weights
+				æ±‚key1,key2çš„äº¤é›†,key1,key2çš„æƒé‡åˆ†åˆ«æ˜¯ weight1,weight2
+				èšåˆæ–¹æ³•ç”¨: sum |min|maxï¼Œ èšåˆçš„ç»“æžœ,ä¿å­˜åœ¨desté›†åˆå†…
+				 Aggregate sum->scoreç›¸åŠ    , min æ±‚æœ€å°score, max æœ€å¤§score
+				å¯ä»¥é€šè¿‡weigthè®¾ç½®ä¸åŒkeyçš„æƒé‡, äº¤é›†æ—¶,socre * weights
 
 
-mapÊý¾ÝÀàÐÍ£º
+mapæ•°æ®ç±»åž‹ï¼š
 	hset key field value
 	hmset key field1 value1 [field2 value2 field3 value3 ......fieldn valuen]
 	hget key field
 	hmget key field1 field2 fieldN
-	hgetall key		ÄÃµ½ËùÓÐÖµ
+	hgetall key		æ‹¿åˆ°æ‰€æœ‰å€¼
 	hdel key field
 	hlen key
 	hexists key field
-	hinrby key field value		ÊÇ°ÑkeyÖÐµÄfieldÓòµÄÖµÔö³¤ÕûÐÍÖµvalue
+	hinrby key field value		æ˜¯æŠŠkeyä¸­çš„fieldåŸŸçš„å€¼å¢žé•¿æ•´åž‹å€¼value
 	hinrby float  key field value
 	hkeys key
 	hvals key
 
 
 
-ÊÂÎñ(Ö§³Ö¼òµ¥µÄÊÂÎñ)£º
+äº‹åŠ¡(æ”¯æŒç®€å•çš„äº‹åŠ¡)ï¼š
 			Mysql					Redis
-	¿ªÆô	start transaction		muitl
-	Óï¾ä	ÆÕÍ¨sql					ÆÕÍ¨ÃüÁî
-	Ê§°Ü	rollback »Ø¹ö			discard È¡Ïû
-	³É¹¦	commit					exec
+	å¼€å¯	start transaction		muitl
+	è¯­å¥	æ™®é€šsql					æ™®é€šå‘½ä»¤
+	å¤±è´¥	rollback å›žæ»š			discard å–æ¶ˆ
+	æˆåŠŸ	commit					exec
 
-	×¢: rollbackÓëdiscard µÄÇø±ð
-	Èç¹ûÒÑ¾­³É¹¦Ö´ÐÐÁË2ÌõÓï¾ä, µÚ3ÌõÓï¾ä³ö´í.
-	Rollbackºó,Ç°2ÌõµÄÓï¾äÓ°ÏìÏûÊ§.
-	DiscardÖ»ÊÇ½áÊø±¾´ÎÊÂÎñ,Ç°2ÌõÓï¾äÔì³ÉµÄÓ°ÏìÈÔÈ»»¹ÔÚ
+	æ³¨: rollbackä¸Ždiscard çš„åŒºåˆ«
+	å¦‚æžœå·²ç»æˆåŠŸæ‰§è¡Œäº†2æ¡è¯­å¥, ç¬¬3æ¡è¯­å¥å‡ºé”™.
+	RollbackåŽ,å‰2æ¡çš„è¯­å¥å½±å“æ¶ˆå¤±.
+	Discardåªæ˜¯ç»“æŸæœ¬æ¬¡äº‹åŠ¡,å‰2æ¡è¯­å¥é€ æˆçš„å½±å“ä»ç„¶è¿˜åœ¨
 
-	×¢:
-	ÔÚmutilºóÃæµÄÓï¾äÖÐ, Óï¾ä³ö´í¿ÉÄÜÓÐ2ÖÖÇé¿ö
-	1: Óï·¨¾ÍÓÐÎÊÌâ, 
-	ÕâÖÖ,execÊ±,±¨´í, ËùÓÐÓï¾äµÃ²»µ½Ö´ÐÐ
+	æ³¨:
+	åœ¨mutilåŽé¢çš„è¯­å¥ä¸­, è¯­å¥å‡ºé”™å¯èƒ½æœ‰2ç§æƒ…å†µ
+	1: è¯­æ³•å°±æœ‰é—®é¢˜, 
+	è¿™ç§,execæ—¶,æŠ¥é”™, æ‰€æœ‰è¯­å¥å¾—ä¸åˆ°æ‰§è¡Œ
 
-	2: Óï·¨±¾ÉíÃ»´í,µ«ÊÊÓÃ¶ÔÏóÓÐÎÊÌâ. ±ÈÈç zadd ²Ù×÷list¶ÔÏó
-	ExecÖ®ºó,»áÖ´ÐÐÕýÈ·µÄÓï¾ä,²¢Ìø¹ýÓÐ²»ÊÊµ±µÄÓï¾ä.
-Ëø£º
-	RedisµÄÊÂÎñÖÐ,ÆôÓÃµÄÊÇÀÖ¹ÛËø,Ö»¸ºÔð¼à²âkeyÃ»ÓÐ±»¸Ä¶¯.
-	watch key1 key2  ... keyN		×÷ÓÃ:¼àÌýkey1 key2..keyNÓÐÃ»ÓÐ±ä»¯,Èç¹ûÓÐ±ä, ÔòÊÂÎñÈ¡Ïû
-	unwatch 						×÷ÓÃ: È¡ÏûËùÓÐwatch¼àÌý
-	¿ªÆôÊÂÎñÖ®Ç°ÒªÏÈ¼àÌýkey£¬Èç¹ûexecÖ®ºó·µ»Ønil,ËµÃ÷¼àÊÓµÄkeyÒÑ¾­¸Ä±äÁË,ÊÂÎñ¾ÍÈ¡ÏûÁË.
-
-
-ÏûÏ¢¶©ÔÄ£º
-	¶©ÔÄ¶Ë: Subscribe ÆµµÀÃû³Æ
-	·¢²¼¶Ë: publish ÆµµÀÃû³Æ ·¢²¼ÄÚÈÝ
+	2: è¯­æ³•æœ¬èº«æ²¡é”™,ä½†é€‚ç”¨å¯¹è±¡æœ‰é—®é¢˜. æ¯”å¦‚ zadd æ“ä½œlistå¯¹è±¡
+	Execä¹‹åŽ,ä¼šæ‰§è¡Œæ­£ç¡®çš„è¯­å¥,å¹¶è·³è¿‡æœ‰ä¸é€‚å½“çš„è¯­å¥.
+é”ï¼š
+	Redisçš„äº‹åŠ¡ä¸­,å¯ç”¨çš„æ˜¯ä¹è§‚é”,åªè´Ÿè´£ç›‘æµ‹keyæ²¡æœ‰è¢«æ”¹åŠ¨.
+	watch key1 key2  ... keyN		ä½œç”¨:ç›‘å¬key1 key2..keyNæœ‰æ²¡æœ‰å˜åŒ–,å¦‚æžœæœ‰å˜, åˆ™äº‹åŠ¡å–æ¶ˆ
+	unwatch 						ä½œç”¨: å–æ¶ˆæ‰€æœ‰watchç›‘å¬
+	å¼€å¯äº‹åŠ¡ä¹‹å‰è¦å…ˆç›‘å¬keyï¼Œå¦‚æžœexecä¹‹åŽè¿”å›žnil,è¯´æ˜Žç›‘è§†çš„keyå·²ç»æ”¹å˜äº†,äº‹åŠ¡å°±å–æ¶ˆäº†.
 
 
-ÔËÎ¬£º
-	time		 	µ±Ç°·þÎñÆ÷Ê±¼ä
-	BGREWRITEAOF 	ºóÌ¨½ø³ÌÖØÐ´AOF
-	BGSAVE       	ºóÌ¨±£´ærdb¿ìÕÕ
-	SAVE         	±£´ærdb¿ìÕÕ
-	LASTSAVE     	ÉÏ´Î±£´æÊ±¼ä
-	Slaveof master-Host port    °Ñµ±Ç°ÊµÀýÉèÎªmasterµÄslave
+æ¶ˆæ¯è®¢é˜…ï¼š
+	è®¢é˜…ç«¯: Subscribe é¢‘é“åç§°
+	å‘å¸ƒç«¯: publish é¢‘é“åç§° å‘å¸ƒå†…å®¹
+
+
+è¿ç»´ï¼š
+	time		 	å½“å‰æœåŠ¡å™¨æ—¶é—´
+	BGREWRITEAOF 	åŽå°è¿›ç¨‹é‡å†™AOF
+	BGSAVE       	åŽå°ä¿å­˜rdbå¿«ç…§
+	SAVE         	ä¿å­˜rdbå¿«ç…§
+	LASTSAVE     	ä¸Šæ¬¡ä¿å­˜æ—¶é—´
+	Slaveof master-Host port    æŠŠå½“å‰å®žä¾‹è®¾ä¸ºmasterçš„slave
 	Showdown [save/nosave]
-	info			²é¿´redis·þÎñÆ÷ÐÅÏ¢
-	Config get ÅäÖÃÏî  
-	Config set ÅäÖÃÏî Öµ (ÌØÊâµÄÑ¡Ïî,²»ÔÊÐíÓÃ´ËÃüÁîÉèÖÃ,Èçslave-of, ÐèÒªÓÃµ¥¶ÀµÄslaveofÃüÁîÀ´ÉèÖÃ)
+	info			æŸ¥çœ‹redisæœåŠ¡å™¨ä¿¡æ¯
+	Config get é…ç½®é¡¹  
+	Config set é…ç½®é¡¹ å€¼ (ç‰¹æ®Šçš„é€‰é¡¹,ä¸å…è®¸ç”¨æ­¤å‘½ä»¤è®¾ç½®,å¦‚slave-of, éœ€è¦ç”¨å•ç‹¬çš„slaveofå‘½ä»¤æ¥è®¾ç½®)
 
 	
 	
-	×¢: Èç¹û²»Ð¡ÐÄÔËÐÐÁËflushall, Á¢¼´ shutdown nosave ,¹Ø±Õ·þÎñÆ÷
-	È»ºó ÊÖ¹¤±à¼­aofÎÄ¼þ, È¥µôÎÄ¼þÖÐµÄ ¡°flushall ¡±Ïà¹ØÐÐ, È»ºó¿ªÆô·þÎñÆ÷,¾Í¿ÉÒÔµ¼Èë»ØÔ­À´Êý¾Ý.Èç¹û,flushallÖ®ºó,ÏµÍ³Ç¡ºÃbgrewriteaofÁË,ÄÇÃ´aof¾ÍÇå¿ÕÁË,Êý¾Ý¶ªÊ§.
+	æ³¨: å¦‚æžœä¸å°å¿ƒè¿è¡Œäº†flushall, ç«‹å³ shutdown nosave ,å…³é—­æœåŠ¡å™¨
+	ç„¶åŽ æ‰‹å·¥ç¼–è¾‘aofæ–‡ä»¶, åŽ»æŽ‰æ–‡ä»¶ä¸­çš„ â€œflushall â€ç›¸å…³è¡Œ, ç„¶åŽå¼€å¯æœåŠ¡å™¨,å°±å¯ä»¥å¯¼å…¥å›žåŽŸæ¥æ•°æ®.å¦‚æžœ,flushallä¹‹åŽ,ç³»ç»Ÿæ°å¥½bgrewriteaofäº†,é‚£ä¹ˆaofå°±æ¸…ç©ºäº†,æ•°æ®ä¸¢å¤±.
 
 	
-HyperLogLogËã·¨Ê¹ÓÃ£º
-	´ËËã·¨Ê¹ÓÃÀ´½üËÆÍ³¼Æ»ùÊý¸öÊýµÄ£¬Ð§¹û½üËÆÓÚcount(distinct)£¬Õ¼ÓÃ¼«Ð¡ÄÚ´æ£¨Ê®¼¸k£©
-	PFADD hll ele£º½«eleÌí¼Ó½øhllµÄ»ùÊý¼ÆËãÖÐ
-			1. ÏÈ¶ÔeleÇóhash£¨Ê¹ÓÃµÄÊÇÒ»ÖÖ½Ð×öMurMurHashµÄËã·¨£©
-			2. ½«hashµÄµÍ14Î»(ÒòÎª×Ü¹²ÓÐ2µÄ14´Î·½¸öÍ°)×÷ÎªÍ°µÄ±àºÅ£¬Ñ¡Í°£¬¼ÇÍ°ÖÐµ±Ç°µÄÖµÎªcount
-			3. ´ÓµÄhashµÄµÚ15Î»¿ªÊ¼Êý0£¬¼ÙÉè´ÓµÚ15Î»¿ªÊ¼ÓÐn¸öÁ¬ÐøµÄ0£¨¼´Ç°µ¼0£©
-			4. Èç¹ûn´óÓÚcount£¬Ôò°ÑÑ¡ÖÐµÄÍ°µÄÖµÖÃÎªn£¬·ñÔò²»±ä
-	PFCOUNT hll£º¼ÆËãhllµÄ»ùÊý¡£
-	PFMERGE hll3 hll1 hll2£º½«hll1ºÍhll2ºÏ²¢³Éhll3
-	²Î¿¼£º https://www.jianshu.com/p/55defda6dcd2
+HyperLogLogç®—æ³•ä½¿ç”¨ï¼š
+	æ­¤ç®—æ³•ä½¿ç”¨æ¥è¿‘ä¼¼ç»Ÿè®¡åŸºæ•°ä¸ªæ•°çš„ï¼Œæ•ˆæžœè¿‘ä¼¼äºŽcount(distinct)ï¼Œå ç”¨æžå°å†…å­˜ï¼ˆåå‡ kï¼‰
+	PFADD hll eleï¼šå°†eleæ·»åŠ è¿›hllçš„åŸºæ•°è®¡ç®—ä¸­
+			1. å…ˆå¯¹eleæ±‚hashï¼ˆä½¿ç”¨çš„æ˜¯ä¸€ç§å«åšMurMurHashçš„ç®—æ³•ï¼‰
+			2. å°†hashçš„ä½Ž14ä½(å› ä¸ºæ€»å…±æœ‰2çš„14æ¬¡æ–¹ä¸ªæ¡¶)ä½œä¸ºæ¡¶çš„ç¼–å·ï¼Œé€‰æ¡¶ï¼Œè®°æ¡¶ä¸­å½“å‰çš„å€¼ä¸ºcount
+			3. ä»Žçš„hashçš„ç¬¬15ä½å¼€å§‹æ•°0ï¼Œå‡è®¾ä»Žç¬¬15ä½å¼€å§‹æœ‰nä¸ªè¿žç»­çš„0ï¼ˆå³å‰å¯¼0ï¼‰
+			4. å¦‚æžœnå¤§äºŽcountï¼Œåˆ™æŠŠé€‰ä¸­çš„æ¡¶çš„å€¼ç½®ä¸ºnï¼Œå¦åˆ™ä¸å˜
+	PFCOUNT hllï¼šè®¡ç®—hllçš„åŸºæ•°ã€‚
+	PFMERGE hll3 hll1 hll2ï¼šå°†hll1å’Œhll2åˆå¹¶æˆhll3
+	å‚è€ƒï¼š https://www.jianshu.com/p/55defda6dcd2
 
 
 ============================================
 redis
-	noeviction:			Ä¬ÈÏ²ßÂÔ£¬Èç¹ûÄÚ´æ´óÐ¡´ïµ½ãÐÖµ£¬ËùÓÐÉêÇëÄÚ´æµÄÖ¸Áî¶¼»á±¨´í
-	allkeys-lru: 		ËùÓÐµÄkey¶¼ÊÇÊ¹ÓÃ LRUËã·¨ÌÔÌ­
-	volatile-lru		ËùÓÐÉèÖÃÁË¹ýÆÚÊ±¼äµÄkeyÊ¹ÓÃLRUËã·¨ÌÔÌ­
+	noeviction:			é»˜è®¤ç­–ç•¥ï¼Œå¦‚æžœå†…å­˜å¤§å°è¾¾åˆ°é˜ˆå€¼ï¼Œæ‰€æœ‰ç”³è¯·å†…å­˜çš„æŒ‡ä»¤éƒ½ä¼šæŠ¥é”™
+	allkeys-lru: 		æ‰€æœ‰çš„keyéƒ½æ˜¯ä½¿ç”¨ LRUç®—æ³•æ·˜æ±°
+	volatile-lru		æ‰€æœ‰è®¾ç½®äº†è¿‡æœŸæ—¶é—´çš„keyä½¿ç”¨LRUç®—æ³•æ·˜æ±°
 	allkeys-random
 	volatile-random
-	volatile-ttl		ËùÓÐÉèÖÃÁË¹ýÆÚÊ±¼äµÄkey£¬¸ù¾Ý¹ýÆÚÊ±¼ä½øÐÐÌÔÌ­£¬Ô½Ôç¹ýÆÚ¾ÍÔ½Ôç±»ÌÔÌ­
+	volatile-ttl		æ‰€æœ‰è®¾ç½®äº†è¿‡æœŸæ—¶é—´çš„keyï¼Œæ ¹æ®è¿‡æœŸæ—¶é—´è¿›è¡Œæ·˜æ±°ï¼Œè¶Šæ—©è¿‡æœŸå°±è¶Šæ—©è¢«æ·˜æ±°
 
 
 	
