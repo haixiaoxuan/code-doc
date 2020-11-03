@@ -1,16 +1,16 @@
-pickle 自定义对象：
+锘縫ickle 鑷畾涔夊璞★細
 	https://www.ibm.com/developerworks/cn/linux/l-pypers/
 
-# 对列表中两两排列组合	
+# 瀵瑰垪琛ㄤ腑涓や袱鎺掑垪缁勫悎	
 from itertools import combinations
 for i in combinations([1,2,3,4],2):
 
-# 对列表中元素进行计数
+# 瀵瑰垪琛ㄤ腑鍏冪礌杩涜璁℃暟
 from collections import Counter
 Counter([])
 
-# 对嵌套列表进行解嵌套
+# 瀵瑰祵濂楀垪琛ㄨ繘琛岃В宓屽
 sum([[],[],[]],[])
 
-# 将数字转换为指定字节数的字节数组
+# 灏嗘暟瀛楄浆鎹负鎸囧畾瀛楄妭鏁扮殑瀛楄妭鏁扮粍
 (300).to_bytes(length=2, byteorder='little')
