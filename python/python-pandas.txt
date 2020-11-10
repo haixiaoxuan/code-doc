@@ -17,6 +17,8 @@ pd.set_option('display.width', 100000)  # x就是你要设置的显示的宽度�
 """ 
 series 常用方法：
 	value_count()
+	pd.to_numeric    将series的类型转为数字
+
 df 常用函数
     平均值 ：           mean
     分组：             groupby		之后可以直接 head(10) ,分组之后可以使用聚合函数，如果不希望分组列变为索引列，可以指定as_index=False
@@ -31,7 +33,6 @@ df 常用函数
     设置值              set_value()
 	将某一列设为index					df.set_index("date")
 	基本信息			info()
-						apply()
 	替换				replace()
 	统计信息			describe()
 	查询				query()			示例： dftrain_raw.query('Survived == 0')
