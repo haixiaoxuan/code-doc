@@ -1,13 +1,13 @@
---½ö¶Ô myisam ÀàĞÍµÄ±íÓĞÓÃ--
-mysql±¸·İ£¨server£©£º
+--ä»…å¯¹ myisam ç±»å‹çš„è¡¨æœ‰ç”¨--
+mysqlå¤‡ä»½ï¼ˆserverï¼‰ï¼š
 	mysqldump -uroot -pabcd1234 --all-databases > /home/hadoop/backup-root.sql
 	mysqldump -uhive -pabcd1234 --all-databases > /home/hadoop/backup-hive.sql
 	
-mysql»¹Ô­£¨datanode01£©£º
-	¿ªÆômysql·şÎñ£º
+mysqlè¿˜åŸï¼ˆdatanode01ï¼‰ï¼š
+	å¼€å¯mysqlæœåŠ¡ï¼š
 		systemctl start mariadb
 		systemctl enable mariadb
-	´´½¨hiveÓÃ»§²¢ÊÚÓèÈ¨ÏŞ£º
+	åˆ›å»ºhiveç”¨æˆ·å¹¶æˆäºˆæƒé™ï¼š
 		CREATE DATABASE hive CHARACTER SET utf8 ;  
 		CREATE USER 'hive'@'%' IDENTIFIED BY 'abcd1234';
 		GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'%';
@@ -16,7 +16,7 @@ mysql»¹Ô­£¨datanode01£©£º
 		CREATE USER 'hive'@'localhost' IDENTIFIED BY 'abcd1234';
 		GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'localhost';
 		FLUSH PRIVILEGES;
-	½øĞĞ±¸·İ»Ö¸´£º
+	è¿›è¡Œå¤‡ä»½æ¢å¤ï¼š
 		mysql -uroot -pabcd1234 < backup-root.sql
 		mysql -uhive -pabcd1234 < backup-hive.sql
 		

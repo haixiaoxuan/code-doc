@@ -3,7 +3,7 @@
 import json, pprint, requests, textwrap
 
 
-# Æô¶¯Ò»¸ö»á»°
+# å¯åŠ¨ä¸€ä¸ªä¼šè¯
 host = 'http://namenode01:8998'
 data = {'kind': 'spark'}
 headers = {'Content-Type': 'application/json'}
@@ -16,7 +16,7 @@ print(response.json())
  'log': ['stdout: ', '\nstderr: ', '\nYARN Diagnostics: ']}
 """
 
-# »á»°Æô¶¯Íê³ÉÖ®ºó»á×ª±äÎª¿ÕÏĞ×´Ì¬
+# ä¼šè¯å¯åŠ¨å®Œæˆä¹‹åä¼šè½¬å˜ä¸ºç©ºé—²çŠ¶æ€
 session_url=host+response.headers["location"]
 print(session_url)  # 'http://namenode01:8998/sessions/3'
 response = requests.get(session_url, headers=headers)
@@ -33,7 +33,7 @@ print(response.json())
 }
 """
 
-# Ö´ĞĞ scala ÃüÁî
+# æ‰§è¡Œ scala å‘½ä»¤
 statements_url = session_url + '/statements'
 data = {'code': '1 + 1'}
 response = requests.post(statements_url, data=json.dumps(data), headers=headers)
@@ -42,7 +42,7 @@ print(response.json())
 {'id': 0, 'code': '1 + 1', 'state': 'waiting', 'output': None, 'progress': 0.0}
 """
 
-# ²éÑ¯½á¹û
+# æŸ¥è¯¢ç»“æœ
 statement_url = host + response.headers['location']
 print(statement_url)  # http://namenode01:8998/sessions/3/statements/0
 response = requests.get(statement_url, headers=headers)
@@ -57,7 +57,7 @@ print(response.json())
  'progress': 1.0}
 """
 
-# ¹Ø±Õsession
+# å…³é—­session
 session_url = 'http://localhost:8998/sessions/0'
 requests.delete(session_url, headers=headers)
 

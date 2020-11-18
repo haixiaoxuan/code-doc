@@ -1,30 +1,30 @@
  
-ÔÊÐíÔ¶³ÌÖ÷»úÁ¬½Ó£º
+å…è®¸è¿œç¨‹ä¸»æœºè¿žæŽ¥ï¼š
 	grant all on *.* to root@'%' identified by 'abcd1234' with grant option;
 	flush privileges;
 
-Êý¾ÝÇ¨ÒÆ£º£¨¿ÉÒÔÔÚstudent1ÖÐ¼ÓÈëÒ»ÁÐ×ÔÔöÖ÷¼ü£©
+æ•°æ®è¿ç§»ï¼šï¼ˆå¯ä»¥åœ¨student1ä¸­åŠ å…¥ä¸€åˆ—è‡ªå¢žä¸»é”®ï¼‰
 	insert into student1 (name,age) select * from student; 
-	Ð§ÂÊ£º	100ÍòÊý¾ÝÁ½¸ö×Ö¶Î£¨5s£©
-			Ò»ÒÚÆßÇ§ÍòÊý¾Ý 14 ¸ö×Ö¶Î£¨1676s£©
+	æ•ˆçŽ‡ï¼š	100ä¸‡æ•°æ®ä¸¤ä¸ªå­—æ®µï¼ˆ5sï¼‰
+			ä¸€äº¿ä¸ƒåƒä¸‡æ•°æ® 14 ä¸ªå­—æ®µï¼ˆ1676sï¼‰
 
-½¨Á¢Ë÷Òý£º
-	create index index_test on student(id); Ð´¶à¸ö×Ö¶Î¾ÍÊÇÁªºÏË÷Òý
-ÐÞ¸Ä±í½á¹¹£º
+å»ºç«‹ç´¢å¼•ï¼š
+	create index index_test on student(id); å†™å¤šä¸ªå­—æ®µå°±æ˜¯è”åˆç´¢å¼•
+ä¿®æ”¹è¡¨ç»“æž„ï¼š
 	alter table student change id newId int;
 	
-ÅúÁ¿µ¼Èë£º
+æ‰¹é‡å¯¼å…¥ï¼š
 	LOAD DATA LOCAL INFILE 'E:/data.txt' INTO TABLE xiaoxuan1 FIELDS TERMINATED BY ' ' LINES TERMINATED BY '\n';  
-	Èç¹ûÖ¸¶¨ LOCAL¹Ø¼ü´Ê£¬Ôò±íÃ÷´Ó¿Í»§Ö÷»úÉÏ°´Â·¾¶¶ÁÈ¡ÎÄ¼þ¡£Èç¹ûÃ»ÓÐÖ¸¶¨£¬ÔòÎÄ¼þÔÚ·þÎñÆ÷ÉÏ°´Â·¾¶¶ÁÈ¡ÎÄ¼þ¡£
-	¿ÉÒÔÖ¸¶¨²åÈëË³Ðò£º
+	å¦‚æžœæŒ‡å®š LOCALå…³é”®è¯ï¼Œåˆ™è¡¨æ˜Žä»Žå®¢æˆ·ä¸»æœºä¸ŠæŒ‰è·¯å¾„è¯»å–æ–‡ä»¶ã€‚å¦‚æžœæ²¡æœ‰æŒ‡å®šï¼Œåˆ™æ–‡ä»¶åœ¨æœåŠ¡å™¨ä¸ŠæŒ‰è·¯å¾„è¯»å–æ–‡ä»¶ã€‚
+	å¯ä»¥æŒ‡å®šæ’å…¥é¡ºåºï¼š
 	LOAD DATA LOCAL INFILE 'dump.txt' INTO TABLE mytbl (b, c, a);
 	
-Èç¹û´æÔÚÔò¸üÐÂ£¬²»´æÔÚÔò²åÈë
+å¦‚æžœå­˜åœ¨åˆ™æ›´æ–°ï¼Œä¸å­˜åœ¨åˆ™æ’å…¥
 	INSERT INTO tablename(field1,field2, field3, ...) VALUES(value1, value2, value3, ...) 
 	ON DUPLICATE KEY UPDATE field1=value1,field2=value2, field3=value3, ...;
 
 ==========================================================================
-postgresql ¿ÉÒÔÍ¨¹ýÉèÖÃµÝÔöÐòÁÐÀ´ÊµÏÖµÝÔöÖ÷¼ü£º
+postgresql å¯ä»¥é€šè¿‡è®¾ç½®é€’å¢žåºåˆ—æ¥å®žçŽ°é€’å¢žä¸»é”®ï¼š
 	CREATE SEQUENCE test_c_id_seq
 	START WITH 1
 	INCREMENT BY 1
