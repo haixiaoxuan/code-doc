@@ -1,24 +1,24 @@
-1. ²é¿´±íµÄÍ³¼ÆĞÅÏ¢£º
+1. æŸ¥çœ‹è¡¨çš„ç»Ÿè®¡ä¿¡æ¯ï¼š
 	SELECT relname, relkind, reltuples, relpages FROM pg_class WHERE relname LIKE 'tb_grid_export%'
-	°üº¬ ±íÃû£¬ÀàĞÍ£¬ĞĞÊı£¬ËùÕ¼Ò³Êı£¨ÔÚÖ´ĞĞÄ³Ğ©DDL²Ù×÷Ê±²Å»á¸üĞÂÕâĞ©Í³¼ÆĞÅÏ¢£©
+	åŒ…å« è¡¨åï¼Œç±»å‹ï¼Œè¡Œæ•°ï¼Œæ‰€å é¡µæ•°ï¼ˆåœ¨æ‰§è¡ŒæŸäº›DDLæ“ä½œæ—¶æ‰ä¼šæ›´æ–°è¿™äº›ç»Ÿè®¡ä¿¡æ¯ï¼‰
 	
-2. Ê¹ÓÃ with ½¨ÁÙÊ±±íµÄ·½Ê½£¬Ğ§ÂÊ¸ü¸ß¡£
+2. ä½¿ç”¨ with å»ºä¸´æ—¶è¡¨çš„æ–¹å¼ï¼Œæ•ˆç‡æ›´é«˜ã€‚
 
-3. ²ÎÊıĞŞ¸Ä
-	ÅäÖÃÎÄ¼şÃû³Æ postgresql.conf
-	²é¿´µ±Ç°»á»°µÄ²ÎÊı show all
-	²é¿´Ä³¸ö²ÎÊıµÄÖµ  show enable_bitmapscan
-	²é¿´´Ë²ÎÊıµÄÏêÏ¸ĞÅÏ¢  select * from pg_settings where name in ('enable_bitmapscan')
-	ÔÚµ±Ç°»á»°½øĞĞĞŞ¸Ä  set work_mem='16MB'; £¨reset ²ÎÊıÃû|all	£©»Ö¸´
-	Ö»ÔÚµ±Ç°ÊÂÎñÄÚÉúĞ§ set local work_mem='8MB';
+3. å‚æ•°ä¿®æ”¹
+	é…ç½®æ–‡ä»¶åç§° postgresql.conf
+	æŸ¥çœ‹å½“å‰ä¼šè¯çš„å‚æ•° show all
+	æŸ¥çœ‹æŸä¸ªå‚æ•°çš„å€¼  show enable_bitmapscan
+	æŸ¥çœ‹æ­¤å‚æ•°çš„è¯¦ç»†ä¿¡æ¯  select * from pg_settings where name in ('enable_bitmapscan')
+	åœ¨å½“å‰ä¼šè¯è¿›è¡Œä¿®æ”¹  set work_mem='16MB'; ï¼ˆreset å‚æ•°å|all	ï¼‰æ¢å¤
+	åªåœ¨å½“å‰äº‹åŠ¡å†…ç”Ÿæ•ˆ set local work_mem='8MB';
 	
-4. joinµÄÈıÖÖ£¨https://yq.aliyun.com/articles/70992£©
-	£¨Èç¹ûÏëÇ¿ÖÆÊ¹ÓÃÄ³ÖÖjoin£¬Ôò¿ÉÒÔ½«ÁíÍâÁ½ÖÖÉèÖÃÎªoff£©
-	nestloop ²ÎÊıÃû³Æ£º enable_nestloop
+4. joinçš„ä¸‰ç§ï¼ˆhttps://yq.aliyun.com/articles/70992ï¼‰
+	ï¼ˆå¦‚æœæƒ³å¼ºåˆ¶ä½¿ç”¨æŸç§joinï¼Œåˆ™å¯ä»¥å°†å¦å¤–ä¸¤ç§è®¾ç½®ä¸ºoffï¼‰
+	nestloop å‚æ•°åç§°ï¼š enable_nestloop
 	merge				enable_mergejoin
 	hash 				enable_hashjoin
 	
-5. ²é¿´ËùÓĞ±íµÄ´óĞ¡£º
+5. æŸ¥çœ‹æ‰€æœ‰è¡¨çš„å¤§å°ï¼š
 	select relname, pg_size_pretty(pg_relation_size(relid)) from pg_stat_user_tables 
 	where schemaname='public' order by pg_relation_size(relid) desc;
 

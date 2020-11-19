@@ -1,26 +1,26 @@
-Æô¶¯
+å¯åŠ¨
 	bin/kafka-server-start.sh config/server.properties
-	bin/kafka-server-start.sh -daemon config/server.properties 	ºóÌ¨Æô¶¯
+	bin/kafka-server-start.sh -daemon config/server.properties 	åå°å¯åŠ¨
 
-Í£Ö¹
+åœæ­¢
 	kafka-server-stop.sh stop
 
-³£ÓÃ²Ù×÷£º
-	./kafka-topics.sh --zookeeper master:2181 --list	ÁĞ³öËùÓĞÖ÷Ìâ
-	./kafka-topics.sh --zookeeper master:2181 --create --replication-factor 1 --partitions 1 -topic xiaoxuan	´´½¨Ö÷Ìâ
+å¸¸ç”¨æ“ä½œï¼š
+	./kafka-topics.sh --zookeeper master:2181 --list	åˆ—å‡ºæ‰€æœ‰ä¸»é¢˜
+	./kafka-topics.sh --zookeeper master:2181 --create --replication-factor 1 --partitions 1 -topic xiaoxuan	åˆ›å»ºä¸»é¢˜
 	./kafka-topics.sh --zookeeper master:2181 --delete --topic xiaoxuan
-			×¢Òâ: ĞèÒª server.properties ÖĞÉèÖÃ delete.topic.enable=true ·ñÔòÖ»ÊÇ±ê¼ÇÉ¾³ı
-	./kafka-topics.sh --zookeeper master:2181 --describe --topic xiaoxuan 	²é¿´Ä³¸öÖ÷ÌâÏêÇé
-	./kafka-topics.sh --zookeeper master:2181 --alter --topic xiaoxuan --partitions 2	ĞŞ¸ÄÖ÷Ìâ·ÖÇøÊı
+			æ³¨æ„: éœ€è¦ server.properties ä¸­è®¾ç½® delete.topic.enable=true å¦åˆ™åªæ˜¯æ ‡è®°åˆ é™¤
+	./kafka-topics.sh --zookeeper master:2181 --describe --topic xiaoxuan 	æŸ¥çœ‹æŸä¸ªä¸»é¢˜è¯¦æƒ…
+	./kafka-topics.sh --zookeeper master:2181 --alter --topic xiaoxuan --partitions 2	ä¿®æ”¹ä¸»é¢˜åˆ†åŒºæ•°
 			
 	
-	./kafka-console-producer.sh --broker-list master:9092 --topic xiaoxuan 		Æô¶¯Éú²úÕß
-	./kafka-console-consumer.sh  --zookeeper master:2181 --topic xiaoxuan	Æô¶¯Ïû·ÑÕß(¾ÉAPI, ½«Æ«ÒÆÁ¿±£´æÔÚzookeeperÖĞ)
-	./kafka-console-consumer.sh  --bootstrap-server master:9092 --topic xiaoxuan	Æô¶¯Ïû·ÑÕß(ĞÂAPI, ½«Æ«ÒÆÁ¿±£´æÔÚkafkaÖĞ) 
+	./kafka-console-producer.sh --broker-list master:9092 --topic xiaoxuan 		å¯åŠ¨ç”Ÿäº§è€…
+	./kafka-console-consumer.sh  --zookeeper master:2181 --topic xiaoxuan	å¯åŠ¨æ¶ˆè´¹è€…(æ—§API, å°†åç§»é‡ä¿å­˜åœ¨zookeeperä¸­)
+	./kafka-console-consumer.sh  --bootstrap-server master:9092 --topic xiaoxuan	å¯åŠ¨æ¶ˆè´¹è€…(æ–°API, å°†åç§»é‡ä¿å­˜åœ¨kafkaä¸­) 
 	./kafka-console-consumer.sh  --bootstrap-server master:9092 --from-beginning --topic xiaoxuan 
 	
-	./kafka-consumer-groups.sh --bootstrap-server master:9092 --list	ÏÔÊ¾Ê¹ÓÃ java api ´´½¨µÄÏû·ÑÕß×é
-	./kafka-consumer-groups.sh --zookeeper master:2181 --list			ÏÔÊ¾Ê¹ÓÃ zookeeper ´´½¨µÄÏû·ÑÕß×é
+	./kafka-consumer-groups.sh --bootstrap-server master:9092 --list	æ˜¾ç¤ºä½¿ç”¨ java api åˆ›å»ºçš„æ¶ˆè´¹è€…ç»„
+	./kafka-consumer-groups.sh --zookeeper master:2181 --list			æ˜¾ç¤ºä½¿ç”¨ zookeeper åˆ›å»ºçš„æ¶ˆè´¹è€…ç»„
 	
-	./kafka-consumer-groups.sh --bootstrap-server master:9092 --group console-consumer-20897 --describe		ÏÔÊ¾Ö¸¶¨×éµÄÏêÏ¸ĞÅÏ¢(°üÀ¨Ïû·ÑÖ÷Ìâ£¬·ÖÇø£¬Æ«ÒÆÁ¿£¬log-endµÈĞÅÏ¢)
+	./kafka-consumer-groups.sh --bootstrap-server master:9092 --group console-consumer-20897 --describe		æ˜¾ç¤ºæŒ‡å®šç»„çš„è¯¦ç»†ä¿¡æ¯(åŒ…æ‹¬æ¶ˆè´¹ä¸»é¢˜ï¼Œåˆ†åŒºï¼Œåç§»é‡ï¼Œlog-endç­‰ä¿¡æ¯)
 	./kafka-consumer-groups.sh --zookeeper master:2181 --group console-consumer-20897 --describe

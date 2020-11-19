@@ -1,9 +1,9 @@
-³£ÓÃÃüÁî£º
+å¸¸ç”¨å‘½ä»¤ï¼š
 	sqoop help
 	sqoop list-databases --connect jdbc:mysql://hadoop102:3306/ --username root --password root
 	sqoop list-databases --connect jdbc:postgresql://172.30.4.160:5432/ --username postgres --password Radar.1234
 
-	# pg¿â -> HDFS
+	# pgåº“ -> HDFS
 	sqoop import \
 	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
 	--username postgres --password Radar.1234 \
@@ -13,7 +13,7 @@
 	--num-mappers 1 \
 	--fields-terminated-by "\t"
 	
-	# ²éÑ¯µ¼Èë
+	# æŸ¥è¯¢å¯¼å…¥
 	sqoop import \
 	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
 	--username postgres --password Radar.1234 \
@@ -23,7 +23,7 @@
 	--fields-terminated-by "\t" \
 	--query 'select building_id from tmp_flex_bak where 1=1 and $CONDITIONS;'
 	
-	# µ¼ÈëÖ¸¶¨ÁĞ(¶àÁĞÊ±£¬¶ººÅ·Ö¸îÊ±²»ÄÜ¼Ğ¿Õ¸ñ)
+	# å¯¼å…¥æŒ‡å®šåˆ—(å¤šåˆ—æ—¶ï¼Œé€—å·åˆ†å‰²æ—¶ä¸èƒ½å¤¹ç©ºæ ¼)
 	sqoop import \
 	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
 	--username postgres --password Radar.1234 \
@@ -32,7 +32,7 @@
 	--columns google_gri,google_gci \
 	--table tmp_flex_bak
 	
-	# RDBMS -> Hive (·ÖÁ½²½£¬ÏÈµ¼Èëµ½HDFSÁÙÊ±Ä¿Â¼/user/..,ÔÚµ¼Èëµ½Hive,×Ô¶¯´´½¨hive±í)
+	# RDBMS -> Hive (åˆ†ä¸¤æ­¥ï¼Œå…ˆå¯¼å…¥åˆ°HDFSä¸´æ—¶ç›®å½•/user/..,åœ¨å¯¼å…¥åˆ°Hive,è‡ªåŠ¨åˆ›å»ºhiveè¡¨)
 	sqoop import \
 	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
 	--username postgres --password Radar.1234 \
@@ -43,7 +43,7 @@
 	--hive-overwrite \
 	--hive-table tmp_flex
 
-	# RDBMS -> HBase (°æ±¾²»Í¬£¬ÓĞÊ±²»»á´´½¨Hbase±í£¬ĞèÒªÊÖ¶¯´´½¨)
+	# RDBMS -> HBase (ç‰ˆæœ¬ä¸åŒï¼Œæœ‰æ—¶ä¸ä¼šåˆ›å»ºHbaseè¡¨ï¼Œéœ€è¦æ‰‹åŠ¨åˆ›å»º)
 	sqoop import \
 	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
 	--username postgres --password Radar.1234 \
@@ -57,7 +57,7 @@
 	--split-by id
 
 	
-	# µ¼³ö Hive/HDFS -> RDBMS (RDBMSÖĞµÄ±íĞèÒªÊÂÏÈ´´½¨)
+	# å¯¼å‡º Hive/HDFS -> RDBMS (RDBMSä¸­çš„è¡¨éœ€è¦äº‹å…ˆåˆ›å»º)
 	sqoop export \
 	--connect jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 \
 	--username postgres --password Radar.1234 \
@@ -66,7 +66,7 @@
 	--export-dir /user/hive/warehouse/tmp_flex \
 	--input-fields-terminated-by "\t"
 	
-	# script·½Ê½(sqoop --options-file xx.opt)
+	# scriptæ–¹å¼(sqoop --options-file xx.opt)
 	export 
 	--connect 
 	jdbc:postgresql://172.30.4.160:5432/radar5gv13_1119 
@@ -85,23 +85,23 @@
 	
 	
 =======================================================================
-ÎÊÌâ1. HiveÖĞµÄNullÔÚµ×²ãÊÇÒÔ¡°\N¡±À´´æ´¢£¬¶øMySQLÖĞµÄNullÔÚµ×²ã¾ÍÊÇNull£¬ÎªÁË±£Ö¤Êı¾İÁ½¶ËµÄÒ»ÖÂĞÔ¡£
-	ÔÚµ¼³öÊı¾İÊ±²ÉÓÃ--input-null-stringºÍ--input-null-non-stringÁ½¸ö²ÎÊı¡£
-	µ¼ÈëÊı¾İÊ±²ÉÓÃ--null-stringºÍ--null-non-string¡£
+é—®é¢˜1. Hiveä¸­çš„Nullåœ¨åº•å±‚æ˜¯ä»¥â€œ\Nâ€æ¥å­˜å‚¨ï¼Œè€ŒMySQLä¸­çš„Nullåœ¨åº•å±‚å°±æ˜¯Nullï¼Œä¸ºäº†ä¿è¯æ•°æ®ä¸¤ç«¯çš„ä¸€è‡´æ€§ã€‚
+	åœ¨å¯¼å‡ºæ•°æ®æ—¶é‡‡ç”¨--input-null-stringå’Œ--input-null-non-stringä¸¤ä¸ªå‚æ•°ã€‚
+	å¯¼å…¥æ•°æ®æ—¶é‡‡ç”¨--null-stringå’Œ--null-non-stringã€‚
 
-ÎÊÌâ2. export mapÈÎÎñÊ§°Üµ¼ÖÂÊı¾İÖØ¸´ÎÊÌâ
+é—®é¢˜2. export mapä»»åŠ¡å¤±è´¥å¯¼è‡´æ•°æ®é‡å¤é—®é¢˜
 	--staging-table app_cource_study_report_tmp 
 	--clear-staging-table 
 	--input-null-string '\N'
-	²ÉÓÃÁÙÊ±±í --staging-table
-	ÓÃÀ´±£Ö¤ÔÚÊı¾İµ¼Èë¹ØÏµÊı¾İ¿â±íµÄ¹ı³ÌÖĞÊÂÎñ°²È«ĞÔµÄ
+	é‡‡ç”¨ä¸´æ—¶è¡¨ --staging-table
+	ç”¨æ¥ä¿è¯åœ¨æ•°æ®å¯¼å…¥å…³ç³»æ•°æ®åº“è¡¨çš„è¿‡ç¨‹ä¸­äº‹åŠ¡å®‰å…¨æ€§çš„
 =======================================================================
 
 
 
-Ê¹ÓÃsqoop ½«postgresqlÖĞµÄ±íµ¼ÈëhiveÖĞ£º
+ä½¿ç”¨sqoop å°†postgresqlä¸­çš„è¡¨å¯¼å…¥hiveä¸­ï¼š
 	-------------------------------------------------------------------
-	¼òµ¥Ê¹ÓÃ£º
+	ç®€å•ä½¿ç”¨ï¼š
 	sqoop import --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
 		--username postgres --password Radar.1234 \
 		--table a_test \
@@ -118,7 +118,7 @@
 
 		
 	-----------------------------------------------------------------
-	Ö±½Óµ¼Èë£¬²»ÓÃ´´½¨hive±í
+	ç›´æ¥å¯¼å…¥ï¼Œä¸ç”¨åˆ›å»ºhiveè¡¨
 	spm_grid  hz_anntenna_5g	
 	sqoop import --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
 		--username postgres --password Radar.1234  \
@@ -127,37 +127,37 @@
 		--hive-database postgresql_data \
 		-m 30
 		
-	Èç¹ûÃ»ÓĞÖ÷¼ü£¬ÇëÌí¼Ó -m 1 ²ÎÊı(±íÊ¾Ö»ÓĞÒ»¸ömap)
-		Ò»°ãÓë --split-by Á¬ÓÃ£¬Ö¸¶¨ÓÃÄÄ¸ö×Ö¶Î½øĞĞÇĞ¸îmapÈÎÎñ
-		Ò»°ã --split-by Ö»¿ÉÒÔÖ¸¶¨Êı×ÖÀàĞÍµÄ×Ö¶Î
+	å¦‚æœæ²¡æœ‰ä¸»é”®ï¼Œè¯·æ·»åŠ  -m 1 å‚æ•°(è¡¨ç¤ºåªæœ‰ä¸€ä¸ªmap)
+		ä¸€èˆ¬ä¸ --split-by è¿ç”¨ï¼ŒæŒ‡å®šç”¨å“ªä¸ªå­—æ®µè¿›è¡Œåˆ‡å‰²mapä»»åŠ¡
+		ä¸€èˆ¬ --split-by åªå¯ä»¥æŒ‡å®šæ•°å­—ç±»å‹çš„å­—æ®µ
 
 
 	-------------------------------------------------------------------
-	½«postgresqlµ¼ÈëhiveÊ±£¬Èç¹ûÓĞÌØÊâÊı¾İÀàĞÍ»á±¨ ERROR orm.ClassWriter: No Java type for SQL type 1111 for column geom
-	´ËÊ±¿ÉÒÔÊ¹ÓÃ query ½øĞĞÊı¾İÀàĞÍ×ª»»
+	å°†postgresqlå¯¼å…¥hiveæ—¶ï¼Œå¦‚æœæœ‰ç‰¹æ®Šæ•°æ®ç±»å‹ä¼šæŠ¥ ERROR orm.ClassWriter: No Java type for SQL type 1111 for column geom
+	æ­¤æ—¶å¯ä»¥ä½¿ç”¨ query è¿›è¡Œæ•°æ®ç±»å‹è½¬æ¢
 	sqoop import  --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
 		--username postgres --password Radar.1234 \
 		--query "select google_gci, google_gri, clutter, height, building_height, building_id, building_group_id, lon,lat, geom::text from  spm_grid where \$CONDITIONS" \
 		--hive-import --hive-database postgresql_data --hive-table spm_grid \
 		--target-dir /data/postgresql \
 		--split-by google_gci
-	µ¼Èë¹ı³Ì£»
-		1.ÏÈ½«Êı¾İ¿âÖĞµÄÊı¾İµ¼Èëµ½ HDFS Ö¸¶¨Ä¿Â¼»òÕßÊÇ Ä¬ÈÏµÄÂ·¾¶
-		2.´´½¨hive±í
-		3.½«ÁÙÊ±Ä¿Â¼µÄÊı¾İload½øÈëhive±í
+	å¯¼å…¥è¿‡ç¨‹ï¼›
+		1.å…ˆå°†æ•°æ®åº“ä¸­çš„æ•°æ®å¯¼å…¥åˆ° HDFS æŒ‡å®šç›®å½•æˆ–è€…æ˜¯ é»˜è®¤çš„è·¯å¾„
+		2.åˆ›å»ºhiveè¡¨
+		3.å°†ä¸´æ—¶ç›®å½•çš„æ•°æ®loadè¿›å…¥hiveè¡¨
 ----------------------------------------------------------------------
 
-	²ÎÊı£º
-		--lines-terminated-by "\n"  \ Ö¸¶¨ĞĞ·Ö¸ô·û
-		--hive-overwrite  \	Ö¸¶¨¸²¸Çµ¼Èë
-		--create-hive-table  \	Ö¸¶¨×Ô¶¯´´½¨hive±í£¨Ö»»á´´½¨±í£¬²»»á´´½¨¿â£©
+	å‚æ•°ï¼š
+		--lines-terminated-by "\n"  \ æŒ‡å®šè¡Œåˆ†éš”ç¬¦
+		--hive-overwrite  \	æŒ‡å®šè¦†ç›–å¯¼å…¥
+		--create-hive-table  \	æŒ‡å®šè‡ªåŠ¨åˆ›å»ºhiveè¡¨ï¼ˆåªä¼šåˆ›å»ºè¡¨ï¼Œä¸ä¼šåˆ›å»ºåº“ï¼‰
 
 
 ======================================================================================================================
 ======================================================================================================================
 ======================================================================================================================
-µ¼³ö£º(¹ØÏµĞÍÊı¾İ¿âÖĞµÄ±íĞèÒªÊÖ¶¯´´½¨,Èç¹û±¨´í£¬Ö¸Ã÷×Ö¶Î)
-ÕâÊôÓÚ×·¼ÓµÄ·½Ê½µ¼Èë
+å¯¼å‡ºï¼š(å…³ç³»å‹æ•°æ®åº“ä¸­çš„è¡¨éœ€è¦æ‰‹åŠ¨åˆ›å»º,å¦‚æœæŠ¥é”™ï¼ŒæŒ‡æ˜å­—æ®µ)
+è¿™å±äºè¿½åŠ çš„æ–¹å¼å¯¼å…¥
 sqoop export --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
 --username postgres --password Radar.1234 \
 --table a_test \
@@ -167,7 +167,7 @@ sqoop export --connect jdbc:postgresql://172.30.4.160/radar_hz_lb \
 	
 
 
-×¢Òâ£ºÔÚÊ¹ÓÃsqoopµÄÊ±ºòÓÃjdbcÁ¬½ÓÊı¾İ¿âµÄÊ±ºò¾¡Á¿²»ÒªÊ¹ÓÃlocalhost»ò127.0.0.1£¬Ó¦¸ÃÓÃÖ÷»úµÄIP£¬ÎªÊ²Ã´ÄØ£¿ÒòÎªÔÚÊ¹ÓÃsqoopµ×²ãÊÇ»áµ÷ÓÃmapreduceÈ¥×öÊı¾İµÄÇ¨ÒÆ£¬²ÉÓÃlocalhostÊ±£¬resourcemanager°Ñtask·Öµ½Ã¿¸öworkerµÄÊ±ºò£¬ËûÃÇµÄjdbcÒ²ÊÇÁ¬½Ólocalhost»ò127.0.0.1£¬ÊÇÎŞ·¨ÓëÔ¶³ÌµÄÊı¾İÍ¨ĞÅµÄ£¬ÕâÊ±ºòÅÜmapreduce¾Í»á±¨´í¡£
+æ³¨æ„ï¼šåœ¨ä½¿ç”¨sqoopçš„æ—¶å€™ç”¨jdbcè¿æ¥æ•°æ®åº“çš„æ—¶å€™å°½é‡ä¸è¦ä½¿ç”¨localhostæˆ–127.0.0.1ï¼Œåº”è¯¥ç”¨ä¸»æœºçš„IPï¼Œä¸ºä»€ä¹ˆå‘¢ï¼Ÿå› ä¸ºåœ¨ä½¿ç”¨sqoopåº•å±‚æ˜¯ä¼šè°ƒç”¨mapreduceå»åšæ•°æ®çš„è¿ç§»ï¼Œé‡‡ç”¨localhostæ—¶ï¼ŒresourcemanageræŠŠtaskåˆ†åˆ°æ¯ä¸ªworkerçš„æ—¶å€™ï¼Œä»–ä»¬çš„jdbcä¹Ÿæ˜¯è¿æ¥localhostæˆ–127.0.0.1ï¼Œæ˜¯æ— æ³•ä¸è¿œç¨‹çš„æ•°æ®é€šä¿¡çš„ï¼Œè¿™æ—¶å€™è·‘mapreduceå°±ä¼šæŠ¥é”™ã€‚
 
 ==================================================================================
 successful example
