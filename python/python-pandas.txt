@@ -14,6 +14,14 @@ pd.set_option('display.max_rows', 100000)  # b就是你要设置显示的最大�
 pd.set_option('display.width', 100000)  # x就是你要设置的显示的宽度，防止轻易换行
 
 
+pandas 数据类型
+	float16, float32, float64
+	int8, int16, int32, int64, uint8, uint16, uint32, uint64
+	datatime64(八个字节)
+	bool
+	object(可变字节)
+
+
 """ 
 series 常用方法：
 	value_count()
@@ -22,7 +30,7 @@ series 常用方法：
 df 常用函数
     平均值 ：           mean
     分组：             groupby		之后可以直接 head(10) ,分组之后可以使用聚合函数，如果不希望分组列变为索引列，可以指定as_index=False
-    统计指标：          describe   统计内容（std标准差，....）
+    统计指标：          describe   统计内容（std标准差，count, count(distinct), max...）
     转置：             transpose
     去重并count        nunique
     分组并count        value_counts
@@ -55,6 +63,13 @@ pd 常用函数
     判断是否为空	pd.isna		返回布尔值
 	
 """
+
+# read_csv 参数
+pd.read_csv()
+	dtype={"name": object, "age": uint8}	可以在读入之前为每一列指定数据类型
+	parse_dates=['date']					可以指定需要解析为date数据类型的列
+	infer_datetime_format=True
+
 
 # 一维 Series
 d={"name":"xiaoxuan","age":18}
@@ -92,9 +107,13 @@ df.set_index()  # 将某一列设为索引
 myIndex = pd.MultiIndex.from_tuples(list(zip([1, 1, 1], ["a", "b", "c"])))
 pd.DataFrame(np.random.randn(3,4),myIndex,columns=["A","B","C","D"])
 
+
 # 类别数据处理办法
 b=pd.Categorical(a[1])	此时，b有属性 codes 和 categories
-a[1]=a[1].astype("category")	此时，a[1] 为 category类型，也有属性.cat.codes 和 .cat.categories
+a[1]=a[1].astype("category")	此时，a[1] 为 category类型，使用 Series属性.cat.codes 和 .cat.categories (分别返回category之后的数值列和 index_mapping)
+			如果 count(distinct) 数量相对于整体记录数很少，就可以使用 category来减少内存占用
+			缺点: 无法进行 min max 等计算
+
 
 # 数据处理
     # 1 空值处理 np.nan
@@ -133,6 +152,21 @@ pd.cut(x=df[""],bins=[10,20,30,40], label=["低","中","中","高"])	 bins也可
 # rank 排序函数
 df.group("user_id").prob.rank()     # 对每个user的prob进行排序，相当与 row_number()，如果有相同的值，可以选择 method='average'|'max'|'min'|'dense'|'first'
                                     https://blog.csdn.net/code_porter/article/details/86517233
+
+
+# 得到df的大小
+df.info(memory_usage='deep')	# 显示数据类型以及df所占的大小
+
+# 通过列类型来选择列
+df.select_dtypes(include=['object'])
+
+
+# 使用数字类型优化内存
+df.apply(pd.to_numeric,downcast='unsigned')	# 可以将数字类型向下转型，变为无符号类型
+
+
+# datatime类型 使用
+pandas.to_datetime(xx, format="%Y%m%d")		# format 为最终显示的格式, datatime为八个字节的大小
 
 
 ############################################################################
