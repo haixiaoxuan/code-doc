@@ -153,6 +153,13 @@ pd.cut(x=df[""],bins=[10,20,30,40], label=["低","中","中","高"])	 bins也可
 df.group("user_id").prob.rank()     # 对每个user的prob进行排序，相当与 row_number()，如果有相同的值，可以选择 method='average'|'max'|'min'|'dense'|'first'
                                     https://blog.csdn.net/code_porter/article/details/86517233
 
+# argpartition
+    a = np.array([9, 4, 4, 3, 3, 9, 0, 4, 6, 0])
+    print(np.argpartition(a, 4)) #将数组a中所有元素（包括重复元素）从小到大排列，比第5大的元素小的放在前面，大的放在后面，输出新数组索引  [6 9 4 3 7 2 1 5 8 0]
+    a[np.argpartition(a, 4)]     #输出新数组索引对应的数组  array([0, 0, 3, 3, 4, 4, 4, 9, 6, 9])
+
+    np.argpartition(a, -5)      倒数第五个
+
 
 # 得到df的大小
 df.info(memory_usage='deep')	# 显示数据类型以及df所占的大小
