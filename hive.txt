@@ -1,122 +1,122 @@
-½«²éÑ¯½á¹ûµ¼Èëµ½hiveĞÂ±íÖĞ
+å°†æŸ¥è¯¢ç»“æœå¯¼å…¥åˆ°hiveæ–°è¡¨ä¸­
 	create table test1 as (select id from test where id = 1);
-½«²éÑ¯½á¹ûµ¼Èëµ½hiveÖĞÒÑ´æÔÚµÄ±íÖĞ
+å°†æŸ¥è¯¢ç»“æœå¯¼å…¥åˆ°hiveä¸­å·²å­˜åœ¨çš„è¡¨ä¸­
 	insert into table test1 select * from test;
-ĞŞ¸ÄÁĞµÄÀàĞÍ
+ä¿®æ”¹åˆ—çš„ç±»å‹
 	alter table resource_ltecell change enodebid enodebid string;
 	select cast(ash as int) from wine limit 10;
-ĞŞ¸Ä±íÃû
+ä¿®æ”¹è¡¨å
 	alter table ltekpi_day rename to ltekpi_day_1;
-¸´ÖÆ±í½á¹¹
+å¤åˆ¶è¡¨ç»“æ„
 	create table table2 like table1;
-Ìí¼ÓÁĞ£º
+æ·»åŠ åˆ—ï¼š
 	alter table table_name add columns (new_col int comment 'a comment');
-É¾³ı±íµÄÊı¾İ
-	truncate table table_name partition (dt='ÈÕÆÚ');
-²åÈëÊı¾İ£º
-	insert overwrite table table_name select * from table_name where Ìõ¼ş;
-	insert overwrite table table_name partition (a=1, b=2) select * from table_name where Ìõ¼ş;	# ¿ÉÒÔ×Ô¶¯´´½¨·ÖÇø
-	insert overwrite table table_name partition (a, b) select *, '' as a, '' as b from table_name where Ìõ¼ş;	# ¶¯Ì¬´´½¨·ÖÇø
+åˆ é™¤è¡¨çš„æ•°æ®
+	truncate table table_name partition (dt='æ—¥æœŸ');
+æ’å…¥æ•°æ®ï¼š
+	insert overwrite table table_name select * from table_name where æ¡ä»¶;
+	insert overwrite table table_name partition (a=1, b=2) select * from table_name where æ¡ä»¶;	# å¯ä»¥è‡ªåŠ¨åˆ›å»ºåˆ†åŒº
+	insert overwrite table table_name partition (a, b) select *, '' as a, '' as b from table_name where æ¡ä»¶;	# åŠ¨æ€åˆ›å»ºåˆ†åŒº
 
-É¾³ı·ÖÇø£º
+åˆ é™¤åˆ†åŒºï¼š
 	alter table test drop if exists partition (job="${JOBNAME}");
 	alter table test drop if exists partition (job="${JOBNAME}") , partition (job="...");
-²é¿´·ÖÇø
+æŸ¥çœ‹åˆ†åŒº
 alter table table1 add partition(p_day = '20190708',p_city = '932',p_city = 'MDT');
 alter table table1 add partition(p_day = '20190708',p_city = '932',p_city = 'MDT') partition(p_day = '20190708',p_city = '932',p_city = 'MDT');
 show partitions table1;
-ĞŞ¸Ä·ÖÇøÃû³Æ£º
-alter table ±íÃû partition (grade='oldname') rename to partition (grade='newname');
-ĞŞ¸Ä·ÖÇøÎ»ÖÃ£º
-alter table ±íÃû partition (grade=' ') set location 'hdfs://vdata1:9000/'
+ä¿®æ”¹åˆ†åŒºåç§°ï¼š
+alter table è¡¨å partition (grade='oldname') rename to partition (grade='newname');
+ä¿®æ”¹åˆ†åŒºä½ç½®ï¼š
+alter table è¡¨å partition (grade=' ') set location 'hdfs://vdata1:9000/'
 
-desc formatted ±íÃû; ²é¿´ÏêÏ¸ĞÅÏ¢
+desc formatted è¡¨å; æŸ¥çœ‹è¯¦ç»†ä¿¡æ¯
 
 ============================================================
-º¯Êı£º
-	collect_list		group byÖ®ºó£¬½«Ö¸¶¨µÄÁĞ×ªÎªÊı×é, È¡Öµ¿ÉÒÔÊ¹ÓÃ [index]
+å‡½æ•°ï¼š
+	collect_list		group byä¹‹åï¼Œå°†æŒ‡å®šçš„åˆ—è½¬ä¸ºæ•°ç»„, å–å€¼å¯ä»¥ä½¿ç”¨ [index]
 	collect_set			
 	
-	explode		 ´«ÈëÊı×é£¬·µ»Ø¶àÁĞ£¬Ïàµ±ÓÚflatmap
-		Ê¹ÓÃÊµÀı£ºlateral view explode(split(student, ','))t Ïàµ±ÓÚÊÇÒ»¸öĞéÄâ±í£¬ÓëÔ­±íµÑ¿¨¶ù»ı
+	explode		 ä¼ å…¥æ•°ç»„ï¼Œè¿”å›å¤šåˆ—ï¼Œç›¸å½“äºflatmap
+		ä½¿ç”¨å®ä¾‹ï¼šlateral view explode(split(student, ','))t ç›¸å½“äºæ˜¯ä¸€ä¸ªè™šæ‹Ÿè¡¨ï¼Œä¸åŸè¡¨ç¬›å¡å„¿ç§¯
 			select id, student_name from classinfo lateral view explode(split(student, ','))t as student_name;
-	posexplode	Ôö¼ÓµİÔö±àºÅ
-		Ê¹ÓÃÊµÀı£º
+	posexplode	å¢åŠ é€’å¢ç¼–å·
+		ä½¿ç”¨å®ä¾‹ï¼š
 			select id, student_id + 1 as student_id, student_name from classinfo lateral view posexplode(split(student, ','))t as student_id, student_name; 
-	explode		¶àÁĞÊ¹ÓÃ  
-		Ê¹ÓÃÊµÀı£º
+	explode		å¤šåˆ—ä½¿ç”¨  
+		ä½¿ç”¨å®ä¾‹ï¼š
 		select id, student_name, student_score from classinfo 
 		lateral view explode(split(student, ','))t as student_name
 		lateral view explode(split(score, ','))t as student_score
-	posexplode ¶àÁĞÊ¹ÓÃ ... 
+	posexplode å¤šåˆ—ä½¿ç”¨ ... 
 	
-	row_number() over(partition by .. order by .. )		row_number ¿ÉÒÔÌæ»»Îª rank()¡¢dense_rank() ÔÚ´¦ÀíÏàÍ¬ÖµµÄÅÅÃûÓĞĞ©²»Í¬¶øÒÑ
+	row_number() over(partition by .. order by .. )		row_number å¯ä»¥æ›¿æ¢ä¸º rank()ã€dense_rank() åœ¨å¤„ç†ç›¸åŒå€¼çš„æ’åæœ‰äº›ä¸åŒè€Œå·²
 
 	
 ============================================================
-Êı¾İµ¼Èëµ¼³ö£º
+æ•°æ®å¯¼å…¥å¯¼å‡ºï¼š
 import/export
-	ExportÃüÁî¿ÉÒÔµ¼³öÒ»ÕÅ±í»ò·ÖÇøµÄÊı¾İºÍÔªÊı¾İĞÅÏ¢µ½Ò»¸öÊä³öÎ»ÖÃ£¬²¢ÇÒµ¼³öÊı¾İ¿ÉÒÔ±»ÒÆ¶¯µ½ÁíÒ»¸öhadoop¼¯Èº»òhiveÊµÀı£¬
-	²¢ÇÒ¿ÉÒÔÍ¨¹ıimportÃüÁîµ¼ÈëÊı¾İ¡£
+	Exportå‘½ä»¤å¯ä»¥å¯¼å‡ºä¸€å¼ è¡¨æˆ–åˆ†åŒºçš„æ•°æ®å’Œå…ƒæ•°æ®ä¿¡æ¯åˆ°ä¸€ä¸ªè¾“å‡ºä½ç½®ï¼Œå¹¶ä¸”å¯¼å‡ºæ•°æ®å¯ä»¥è¢«ç§»åŠ¨åˆ°å¦ä¸€ä¸ªhadoopé›†ç¾¤æˆ–hiveå®ä¾‹ï¼Œ
+	å¹¶ä¸”å¯ä»¥é€šè¿‡importå‘½ä»¤å¯¼å…¥æ•°æ®ã€‚
 	
 ============================================================
-²ÎÊıÉèÖÃ£º(²é¿´µ±Ç°²ÎÊı¿ÉÒÔ£ºset hive.mapred.mode)
+å‚æ•°è®¾ç½®ï¼š(æŸ¥çœ‹å½“å‰å‚æ•°å¯ä»¥ï¼šset hive.mapred.mode)
 
-	ÉèÖÃmapÄÚ´æ´óĞ¡£º
+	è®¾ç½®mapå†…å­˜å¤§å°ï¼š
 	set mapreduce.map.memory.mb=4096;
 	set mapreduce.map.java.opts=-Xmx3600m;
 
-	µ±ÓĞµÑ¿¨¶û»ı²úÉúÊ±£º
+	å½“æœ‰ç¬›å¡å°”ç§¯äº§ç”Ÿæ—¶ï¼š
 	set hive.mapred.mode=nonstrict;
 	set hive.strict.checks.cartesian.product=false;
 
 	hive.exec.parallel=true
-¡¡¡¡hive.exec.parallel.thread.number=8					²¢ĞĞ¶È £¨Ä¬ÈÏÊÇ8£©
+ã€€ã€€hive.exec.parallel.thread.number=8					å¹¶è¡Œåº¦ ï¼ˆé»˜è®¤æ˜¯8ï¼‰
 
-	set mapreduce.input.fileinputformat.split.maxsize=50000000(50M);		ÉèÖÃmapÊı£»
-	hive.exec.reducers.bytes.per.reducer=256000000		£¨Ã¿¸öreduce´¦ÀíµÄÊı¾İÁ¿£©reduceÊıÁ¿= reduceÊäÈëÊı¾İ´óĞ¡ / 256M
-	mapred.reduce.tasks=-1								Èç¹ûÕâ¸ö²ÎÊıÖ¸¶¨ÁË£¬¾Í²»»áÓÃ±ğµÄº¯ÊıÀ´¹ÀËãreduce¸öÊı(¾­²âÊÔ²»¿ÉÒÔ¸Ä±ämapÊı£¬¿ÉÒÔ¸Ä±äreduceÊı)
-	set mapred.task.timeout=6000000;					ÉèÖÃ³¬Ê±Ê±¼ä
-	set mapreduce.job.reduces=20;						¿ÉÒÔÉèÖÃreduce¸öÊı
+	set mapreduce.input.fileinputformat.split.maxsize=50000000(50M);		è®¾ç½®mapæ•°ï¼›
+	hive.exec.reducers.bytes.per.reducer=256000000		ï¼ˆæ¯ä¸ªreduceå¤„ç†çš„æ•°æ®é‡ï¼‰reduceæ•°é‡= reduceè¾“å…¥æ•°æ®å¤§å° / 256M
+	mapred.reduce.tasks=-1								å¦‚æœè¿™ä¸ªå‚æ•°æŒ‡å®šäº†ï¼Œå°±ä¸ä¼šç”¨åˆ«çš„å‡½æ•°æ¥ä¼°ç®—reduceä¸ªæ•°(ç»æµ‹è¯•ä¸å¯ä»¥æ”¹å˜mapæ•°ï¼Œå¯ä»¥æ”¹å˜reduceæ•°)
+	set mapred.task.timeout=6000000;					è®¾ç½®è¶…æ—¶æ—¶é—´
+	set mapreduce.job.reduces=20;						å¯ä»¥è®¾ç½®reduceä¸ªæ•°
 	
 	
-	************* ÊäÈë¶ËĞ¡ÎÄ¼şºÏ²¢
-	set mapred.max.split.size=256000000		Ã¿¸ömapµÄ×î´ó´óĞ¡£¬¾ö¶¨ÁËºÏ²¢ºóµÄÎÄ¼şÊı
-	set mapred.min.split.size.per.node=100000000		Ã¿¸ömapµÄ×îĞ¡´óĞ¡£¬¾ö¶¨ÁËÊÇ·ñĞèÒªºÏ²¢
-	set mapred.min.split.size.per.rack=100000000		Ò»¸ö½»»»»úÏÂ×îĞ¡µÄsplitµÄ´óĞ¡£¬¾ö¶¨ÁËÊÇ·ñĞèÒª¿ç»ú¼ÜºÏ²¢
-	set hive.input.format=org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;   Ö´ĞĞÇ°½øĞĞĞ¡ÎÄ¼şºÏ²¢
-	************* ½á¹û¶ËĞ¡ÎÄ¼şºÏ²¢
-	set hive.merge.mapfiles			ÔÚmap-only jobºóºÏ²¢ÎÄ¼ş£¬Ä¬ÈÏÊÇ true
-	set hive.merge.mapredfiles		ÔÚmap-reduce jobºóºÏ²¢ÎÄ¼ş£¬Ä¬ÈÏÊÇfalse		
-	set hive.merge.size.per.task	ºÏ²¢ºóµÄÃ¿¸öÎÄ¼şµÄ´óĞ¡£¬Ä¬ÈÏÊÇ256000000
-	set hive.merge.smallfiles.avgsize	Æ½¾ùÎÄ¼ş´óĞ¡£¬ÊÇ¾ö¶¨ÊÇ·ñºÏ²¢µÄãĞÖµ£¬Ä¬ÈÏÊÇ160000000 (16M)
+	************* è¾“å…¥ç«¯å°æ–‡ä»¶åˆå¹¶
+	set mapred.max.split.size=256000000		æ¯ä¸ªmapçš„æœ€å¤§å¤§å°ï¼Œå†³å®šäº†åˆå¹¶åçš„æ–‡ä»¶æ•°
+	set mapred.min.split.size.per.node=100000000		æ¯ä¸ªmapçš„æœ€å°å¤§å°ï¼Œå†³å®šäº†æ˜¯å¦éœ€è¦åˆå¹¶
+	set mapred.min.split.size.per.rack=100000000		ä¸€ä¸ªäº¤æ¢æœºä¸‹æœ€å°çš„splitçš„å¤§å°ï¼Œå†³å®šäº†æ˜¯å¦éœ€è¦è·¨æœºæ¶åˆå¹¶
+	set hive.input.format=org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;   æ‰§è¡Œå‰è¿›è¡Œå°æ–‡ä»¶åˆå¹¶
+	************* ç»“æœç«¯å°æ–‡ä»¶åˆå¹¶
+	set hive.merge.mapfiles			åœ¨map-only jobååˆå¹¶æ–‡ä»¶ï¼Œé»˜è®¤æ˜¯ true
+	set hive.merge.mapredfiles		åœ¨map-reduce jobååˆå¹¶æ–‡ä»¶ï¼Œé»˜è®¤æ˜¯false		
+	set hive.merge.size.per.task	åˆå¹¶åçš„æ¯ä¸ªæ–‡ä»¶çš„å¤§å°ï¼Œé»˜è®¤æ˜¯256000000
+	set hive.merge.smallfiles.avgsize	å¹³å‡æ–‡ä»¶å¤§å°ï¼Œæ˜¯å†³å®šæ˜¯å¦åˆå¹¶çš„é˜ˆå€¼ï¼Œé»˜è®¤æ˜¯160000000 (16M)
 	
-	************* ·ÀÖ¹Êı¾İÇãĞ±
-	set hive.optimize.skewjoin=true			joinÊ±½øĞĞÊı¾İÇãĞ±´¦Àí
-	set hive.skewjoin.key=100000			Èç¹ûÍ¬Ò»¸ökey³¬¹ı 100000Ôò½øĞĞ´¦Àí
-	set hive.groupby.skewindata=true		ÓĞÊı¾İÇãĞ±µÄÊ±ºò»á½øĞĞ¸ºÔØ¾ùºâ
+	************* é˜²æ­¢æ•°æ®å€¾æ–œ
+	set hive.optimize.skewjoin=true			joinæ—¶è¿›è¡Œæ•°æ®å€¾æ–œå¤„ç†
+	set hive.skewjoin.key=100000			å¦‚æœåŒä¸€ä¸ªkeyè¶…è¿‡ 100000åˆ™è¿›è¡Œå¤„ç†
+	set hive.groupby.skewindata=true		æœ‰æ•°æ®å€¾æ–œçš„æ—¶å€™ä¼šè¿›è¡Œè´Ÿè½½å‡è¡¡
 	
-	************ map¶Ë¾ÛºÏºÍjoin
+	************ mapç«¯èšåˆå’Œjoin
 	hive.map.aggr=true
-	hive.auto.convert.join=true					¿ªÆômap¶Ëjoin£¨v0.7Ö®Ç°ĞèÒªÊ¹ÓÃ /*+ mapjoin(A)*/ °µÊ¾£©
-	hive.mapjoin.smalltable.filesize=25000000	ÉèÖÃĞ¡±í´óĞ¡£¨Ê¹ÓÃmap¶ËjoinÖ®Ç°ÏÈÉèÖÃ£©
+	hive.auto.convert.join=true					å¼€å¯mapç«¯joinï¼ˆv0.7ä¹‹å‰éœ€è¦ä½¿ç”¨ /*+ mapjoin(A)*/ æš—ç¤ºï¼‰
+	hive.mapjoin.smalltable.filesize=25000000	è®¾ç½®å°è¡¨å¤§å°ï¼ˆä½¿ç”¨mapç«¯joinä¹‹å‰å…ˆè®¾ç½®ï¼‰
 	select /*+ mapjoin(A)*/ f.a,f.b from A t join B f  on ( f.a=t.a and f.ftime=20110802) 
 	
-	************ ±¾µØÄ£Ê½
+	************ æœ¬åœ°æ¨¡å¼
 	hive.exec.mode.local.auto=true
 	
-	************* ¿ªÆô¶¯Ì¬·ÖÇø
+	************* å¼€å¯åŠ¨æ€åˆ†åŒº
 	hive.exec.dynamic.partition=true
 	hive.exec.dynamic.partition.mode=nonstrict
 	
-	************* ÕıÔò £¨ÉèÎªnoneÊ±£¬¿ÉÒÔÊ¹ÓÃ£©
+	************* æ­£åˆ™ ï¼ˆè®¾ä¸ºnoneæ—¶ï¼Œå¯ä»¥ä½¿ç”¨ï¼‰
 	hive.support.quoted.identifiers=none
 	
-ºÜ¶àÊ±ºòÄã»á·¢ÏÖÈÎÎñÖĞ²»¹ÜÊı¾İÁ¿¶à´ó£¬²»¹ÜÄãÓĞÃ»ÓĞÉèÖÃµ÷Õûreduce¸öÊıµÄ²ÎÊı£¬ÈÎÎñÖĞÒ»Ö±¶¼Ö»ÓĞÒ»¸öreduceÈÎÎñ£»
-ÆäÊµÖ»ÓĞÒ»¸öreduceÈÎÎñµÄÇé¿ö£¬³ıÁËÊı¾İÁ¿Ğ¡ÓÚhive.exec.reducers.bytes.per.reducer²ÎÊıÖµµÄÇé¿öÍâ£¬»¹ÓĞÒÔÏÂÔ­Òò£º
-	a)    Ã»ÓĞgroup byµÄ»ã×Ü
-	b)    ÓÃÁËOrder by
-	c)    ÓĞµÑ¿¨¶û»ı
+å¾ˆå¤šæ—¶å€™ä½ ä¼šå‘ç°ä»»åŠ¡ä¸­ä¸ç®¡æ•°æ®é‡å¤šå¤§ï¼Œä¸ç®¡ä½ æœ‰æ²¡æœ‰è®¾ç½®è°ƒæ•´reduceä¸ªæ•°çš„å‚æ•°ï¼Œä»»åŠ¡ä¸­ä¸€ç›´éƒ½åªæœ‰ä¸€ä¸ªreduceä»»åŠ¡ï¼›
+å…¶å®åªæœ‰ä¸€ä¸ªreduceä»»åŠ¡çš„æƒ…å†µï¼Œé™¤äº†æ•°æ®é‡å°äºhive.exec.reducers.bytes.per.reducerå‚æ•°å€¼çš„æƒ…å†µå¤–ï¼Œè¿˜æœ‰ä»¥ä¸‹åŸå› ï¼š
+	a)    æ²¡æœ‰group byçš„æ±‡æ€»
+	b)    ç”¨äº†Order by
+	c)    æœ‰ç¬›å¡å°”ç§¯
 ===========================================================
 
 create table resource_ltecell ( )
@@ -127,36 +127,36 @@ LINES TERMINATED BY '\n'
 STORED AS TEXTFILE;
 
 ===========================================================
-Êı¾İµ¼Èë£º	
+æ•°æ®å¯¼å…¥ï¼š	
 	load data local inpath '/home/hadoop/xiexiaoxuan-test/softmax/data/train.feature3' into table test1;
-	load data local inpath '/home/vdata/day15/*' into table test partition ();	// Ö±½Óµ¼ÈëÊı¾İµ½·ÖÇø
-	load data local inpath '/home/vdata/day15/data3' overwrite into table test; // ¸²¸Çµ¼Èë
-Êı¾İµ¼³ö£º
+	load data local inpath '/home/vdata/day15/*' into table test partition ();	// ç›´æ¥å¯¼å…¥æ•°æ®åˆ°åˆ†åŒº
+	load data local inpath '/home/vdata/day15/data3' overwrite into table test; // è¦†ç›–å¯¼å…¥
+æ•°æ®å¯¼å‡ºï¼š
 	insert overwrite local directory '/home/hadoop/xiexiaoxuan-test/3-20/day_result' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' select * from day_result;
 
 ============================================================
 
-´æ´¢¸ñÊ½£º 
-	textfile	Ä¬ÈÏµÄ´æ´¢ĞĞ¸ñÊ½£¬¿ÉÒÔÊ¹ÓÃgzip·½Ê½Ñ¹Ëõ£¨Ñ¹Ëõºó²»Ö§³Ösplit£¬¼´²»Ö§³Ö²¢ĞĞ´¦Àí£© 
-	Sequencefile	Ö§³Ösplit£¬Ö§³ÖÈıÖÖÑ¹ËõÑ¡Ôñ NONE£¬RECORD£¬BLOCK £¨Í¨¹ı set mapred.output.compression.type ÉèÖÃ£©
+å­˜å‚¨æ ¼å¼ï¼š 
+	textfile	é»˜è®¤çš„å­˜å‚¨è¡Œæ ¼å¼ï¼Œå¯ä»¥ä½¿ç”¨gzipæ–¹å¼å‹ç¼©ï¼ˆå‹ç¼©åä¸æ”¯æŒsplitï¼Œå³ä¸æ”¯æŒå¹¶è¡Œå¤„ç†ï¼‰ 
+	Sequencefile	æ”¯æŒsplitï¼Œæ”¯æŒä¸‰ç§å‹ç¼©é€‰æ‹© NONEï¼ŒRECORDï¼ŒBLOCK ï¼ˆé€šè¿‡ set mapred.output.compression.type è®¾ç½®ï¼‰
 	orc | parquet
 	
-Ñ¹ËõÎÊÌâ£º
-	Ö»ÓĞtextfile ¸ñÊ½µÄÊı¾İ²ÅÄÜ±¾µØload½øÈëhive±í£¬Èç¹ûÊÇÆäËû¸ñÊ½µÄ±í£¬ÏÈµ¼Èëµ½textfile¸ñÊ½µÄ±íÖĞ£¬È»ºóÔÙ insert overwrite table test select * from test;
+å‹ç¼©é—®é¢˜ï¼š
+	åªæœ‰textfile æ ¼å¼çš„æ•°æ®æ‰èƒ½æœ¬åœ°loadè¿›å…¥hiveè¡¨ï¼Œå¦‚æœæ˜¯å…¶ä»–æ ¼å¼çš„è¡¨ï¼Œå…ˆå¯¼å…¥åˆ°textfileæ ¼å¼çš„è¡¨ä¸­ï¼Œç„¶åå† insert overwrite table test select * from test;
 
-	SET hive.exec.compress.intermediate=true;	¿ªÆôÖĞ¼äÊı¾İÑ¹Ëõ
+	SET hive.exec.compress.intermediate=true;	å¼€å¯ä¸­é—´æ•°æ®å‹ç¼©
 	set hive.intermediate.compression.codec= ....
-	SET hive.exec.compress.output=true;			¶Ô×îÖÕÉú³Éhive±íÑ¹Ëõ »ò £¨ SET mapred.output.compress=true; £©
-	SET mapred.output.compression.codec=org.apache.hadoop.io.compress.DefaultCodec;  £¨GzipCodec | BZip2Codec | SnappyCodec | Lz4Codec£©	
+	SET hive.exec.compress.output=true;			å¯¹æœ€ç»ˆç”Ÿæˆhiveè¡¨å‹ç¼© æˆ– ï¼ˆ SET mapred.output.compress=true; ï¼‰
+	SET mapred.output.compression.codec=org.apache.hadoop.io.compress.DefaultCodec;  ï¼ˆGzipCodec | BZip2Codec | SnappyCodec | Lz4Codecï¼‰	
 										com.hadoop.compression.lzo.LzoCodec
 	set io.compression.codecs = ...
-	Ò²¿ÉÒÔÍ¨¹ı½¨±íÊ±Ö¸¶¨Ñ¹Ëõ¸ñÊ½  stored as orc tblproperties ("orc.compress"="SNAPPY") 
+	ä¹Ÿå¯ä»¥é€šè¿‡å»ºè¡¨æ—¶æŒ‡å®šå‹ç¼©æ ¼å¼  stored as orc tblproperties ("orc.compress"="SNAPPY") 
 
 	
 ============================================================
-½â¾öcomment×¢ÊÍÂÒÂëÎÊÌâ£º
-	µ±Ê¹ÓÃmysql´æ´¢ÔªÊı¾İÊ±£¬»á½«ÔªÊı¾İ¿âhiveÉèÎª alter database hive character set latin1;
-	Ö»ĞèÒª°ÑÊı¾İ¿âÖĞ´æ´¢ÖĞÎÄ×¢ÊÍµÄÄ³Ğ©ÁĞ¸ÄÎª utf8 ¼´¿É
+è§£å†³commentæ³¨é‡Šä¹±ç é—®é¢˜ï¼š
+	å½“ä½¿ç”¨mysqlå­˜å‚¨å…ƒæ•°æ®æ—¶ï¼Œä¼šå°†å…ƒæ•°æ®åº“hiveè®¾ä¸º alter database hive character set latin1;
+	åªéœ€è¦æŠŠæ•°æ®åº“ä¸­å­˜å‚¨ä¸­æ–‡æ³¨é‡Šçš„æŸäº›åˆ—æ”¹ä¸º utf8 å³å¯
 	alter table COLUMNS_V2 modify column COMMENT varchar(256) character set utf8;
 	alter table TABLE_PARAMS modify column PARAM_VALUE varchar(4000) character set utf8;
 	
@@ -164,13 +164,13 @@ STORED AS TEXTFILE;
 	
 ============================================================
 
-´íÎó
+é”™è¯¯
 	1. Error: Java heap space
 		container: org.apache.hadoop.mapred.YarnChild: Error running child : java.lang.OutOfMemoryError: Java heap space
-		mnistÊı¾İ¼¯, ÎÄ±¾ÎÄ¼ş213M, 768¸ö×Ö¶Î, ×ª»»ÎªORC¸ñÊ½Ê±³ö´í¡£
-		·½°¸1£º½«mapÈÎÎñÔö¶à£¬ÔöÖÁ40¸öÈÔÈ»Ê§°Ü£¬Ã¿¸ömapÄ¬ÈÏ1GÄÚ´æ
-		·½°¸2£º½«mapÄÚ´æÔö´óÖÁ8G£¬½â¾ö¡£
-		note: ÔÚorc±íÖĞÓĞÒ»¸öÊôĞÔ rawDataSize£ºÔ­Ê¼Êı¾İ´óĞ¡ = Êı¾İÀàĞÍ´óĞ¡ * numRows.(²»µÈÓÚÎïÀíÎÄ¼ş´óĞ¡) 
+		mnistæ•°æ®é›†, æ–‡æœ¬æ–‡ä»¶213M, 768ä¸ªå­—æ®µ, è½¬æ¢ä¸ºORCæ ¼å¼æ—¶å‡ºé”™ã€‚
+		æ–¹æ¡ˆ1ï¼šå°†mapä»»åŠ¡å¢å¤šï¼Œå¢è‡³40ä¸ªä»ç„¶å¤±è´¥ï¼Œæ¯ä¸ªmapé»˜è®¤1Gå†…å­˜
+		æ–¹æ¡ˆ2ï¼šå°†mapå†…å­˜å¢å¤§è‡³8Gï¼Œè§£å†³ã€‚
+		note: åœ¨orcè¡¨ä¸­æœ‰ä¸€ä¸ªå±æ€§ rawDataSizeï¼šåŸå§‹æ•°æ®å¤§å° = æ•°æ®ç±»å‹å¤§å° * numRows.(ä¸ç­‰äºç‰©ç†æ–‡ä»¶å¤§å°) 
 	
 
 

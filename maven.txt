@@ -1,4 +1,4 @@
-°¢ÀïÔÆ²Ö¿âµØÖ·£º
+é˜¿é‡Œäº‘ä»“åº“åœ°å€ï¼š
 	<mirror>
       <id>nexus-aliyun</id>
       <mirrorOf>*</mirrorOf>
@@ -6,12 +6,12 @@
       <url>http://maven.aliyun.com/nexus/content/groups/public</url>
     </mirror>
 	
-Ê¹ÓÃ maven ÏÂÔØ jar £º
-	call mvn -f pom.xml dependency:copy-dependencies	»áÔÚÍ¬¼¶Ä¿Â¼³öÏÖ traget/dependency ÎÄ¼ş¼Ğ£¨jar°üÔÚÀïÃæ£©¡£
+ä½¿ç”¨ maven ä¸‹è½½ jar ï¼š
+	call mvn -f pom.xml dependency:copy-dependencies	ä¼šåœ¨åŒçº§ç›®å½•å‡ºç° traget/dependency æ–‡ä»¶å¤¹ï¼ˆjaråŒ…åœ¨é‡Œé¢ï¼‰ã€‚
 	
 	
-IDEAÅäÖÃ junit4 ¡ª¡ª> https://blog.csdn.net/hanchao5272/article/details/79197989
-IDEA×Ô´øµÄ´òjar°ü·½Ê½²»ÊÊÓÃÓÚ maven¹¤³Ì£¬https://blog.csdn.net/freecrystal_alex/article/details/78296851
+IDEAé…ç½® junit4 â€”â€”> https://blog.csdn.net/hanchao5272/article/details/79197989
+IDEAè‡ªå¸¦çš„æ‰“jaråŒ…æ–¹å¼ä¸é€‚ç”¨äº mavenå·¥ç¨‹ï¼Œhttps://blog.csdn.net/freecrystal_alex/article/details/78296851
 
-jsonÓëmap»¥×ª --> https://www.cnblogs.com/heqiyoujing/p/9840424.html
+jsonä¸mapäº’è½¬ --> https://www.cnblogs.com/heqiyoujing/p/9840424.html
 

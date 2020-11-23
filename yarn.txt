@@ -1,7 +1,7 @@
 yarn application -kill appid
 yarn logs -applicationId application_1557381717644_0012	
 
-½«yarnÆ½Ì¨ĞŞ¸ÄÎª¹«Æ½µ÷¶È²ßÂÔ£º
+å°†yarnå¹³å°ä¿®æ”¹ä¸ºå…¬å¹³è°ƒåº¦ç­–ç•¥ï¼š
 		<property>
 		<name>yarn.resourcemanager.scheduler.class</name>
 		<value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
@@ -10,29 +10,29 @@ yarn logs -applicationId application_1557381717644_0012
 		<name>yarn.scheduler.fair.preemption</name>
 		<value>true</value>
 		</property>
-		<!-- ÏÂÃæÅäÖÃÓÃÀ´ÉèÖÃ¼¯ÈºÀûÓÃÂÊµÄ·§Öµ£¬ Ä¬ÈÏÖµ0.8f£¬×î¶à¿ÉÒÔÇÀÕ¼µ½¼¯ÈºËùÓĞ×ÊÔ´µÄ80% -->
+		<!-- ä¸‹é¢é…ç½®ç”¨æ¥è®¾ç½®é›†ç¾¤åˆ©ç”¨ç‡çš„é˜€å€¼ï¼Œ é»˜è®¤å€¼0.8fï¼Œæœ€å¤šå¯ä»¥æŠ¢å åˆ°é›†ç¾¤æ‰€æœ‰èµ„æºçš„80% -->
 		<property>
 		<name>yarn.scheduler.fair.preemption.cluster-utilization-threshold</name>
 		<value>1.0</value>
 		</property>
 
-µ÷½Úyarn Æ½Ì¨×ÊÔ´
-	yarn.nodemanager.resource.memory-mb Ã¿¸ö½Úµã·ÖÅäµÄÄÚ´æ 
-	yarn.nodemanager.resource.cpu-vcores Ã¿¸ö½Úµã·ÖÅäµÄĞéÄâCPU
+è°ƒèŠ‚yarn å¹³å°èµ„æº
+	yarn.nodemanager.resource.memory-mb æ¯ä¸ªèŠ‚ç‚¹åˆ†é…çš„å†…å­˜ 
+	yarn.nodemanager.resource.cpu-vcores æ¯ä¸ªèŠ‚ç‚¹åˆ†é…çš„è™šæ‹ŸCPU
 
 
-²é¿´hadoopµÄÅäÖÃ²ÎÊı
+æŸ¥çœ‹hadoopçš„é…ç½®å‚æ•°
 	hdfs getconf -confkey  dfs.data.dir
-hdfs À©Èİ£º
+hdfs æ‰©å®¹ï¼š
 	https://www.cnblogs.com/Stomach-ache/p/3703179.html
-	¿ÉÒÔÖ¸¶¨Á½¸öÄ¿Â¼»òÕß×öÄ¿Â¼Ç¨ÒÆ£¨https://blog.csdn.net/qq1010885678/article/details/50513425£©
-	¼ÓÉÏÈçÏÂÅäÖÃ£¬ÖØÆô¼¯Èº¼´¿É¡£
-	<!-- Ö¸¶¨Á½¸öÄ¿Â¼ -->
+	å¯ä»¥æŒ‡å®šä¸¤ä¸ªç›®å½•æˆ–è€…åšç›®å½•è¿ç§»ï¼ˆhttps://blog.csdn.net/qq1010885678/article/details/50513425ï¼‰
+	åŠ ä¸Šå¦‚ä¸‹é…ç½®ï¼Œé‡å¯é›†ç¾¤å³å¯ã€‚
+	<!-- æŒ‡å®šä¸¤ä¸ªç›®å½• -->
 	<property>
 		<name>dfs.datanode.data.dir</name>
 		<value>file:///${hadoop.tmp.dir}/dfs/data,file:///home/hadoop/hdfs-data/data</value>
 	</property>
-	Èç¹ûÁ½¸ö´ÅÅÌ·ÖÅä²»¾ù£¬¿ÉÒÔÉèÖÃÈçÏÂ²ßÂÔ£¨Ä¬ÈÏÊÇÂÖÑ¯£¬ÕâÑùÉèÖÃÊ±£¬»á¸ù¾İ¿Õ¼ä´óĞ¡À´ÅĞ¶ÏĞ´Èë£©
+	å¦‚æœä¸¤ä¸ªç£ç›˜åˆ†é…ä¸å‡ï¼Œå¯ä»¥è®¾ç½®å¦‚ä¸‹ç­–ç•¥ï¼ˆé»˜è®¤æ˜¯è½®è¯¢ï¼Œè¿™æ ·è®¾ç½®æ—¶ï¼Œä¼šæ ¹æ®ç©ºé—´å¤§å°æ¥åˆ¤æ–­å†™å…¥ï¼‰
 	https://blog.csdn.net/doudoukb24/article/details/8184726
 	<property>
 		<name>dfs.datanode.fsdataset.volume.choosing.policy</name>

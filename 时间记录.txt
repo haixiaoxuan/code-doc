@@ -1,37 +1,37 @@
-sqoopµ¼Êý¾Ýµ½hive
-	Ò»ÒÚÆßÇ§ÌõÊý¾Ý£¬24GÊý¾Ý£¬30¸ömap     20·ÖÖÓ£¨ÓÐÉÔÎ¢µÄÊý¾ÝÇãÐ±£© | ÎÞÊý¾ÝÇãÐ± 8 ·ÖÖÓ
-spark-sql µ¼Êý¾Ýµ½HDFS
-	°ËÇ§ÍòÊý¾Ý£¬10GÊý¾Ý£¬128¸ötask£¬32¸öexecutor£¨4G£© |  9 ·ÖÖÓ  £¨ÈÝÒ×³öÎÊÌâ£©
+sqoopå¯¼æ•°æ®åˆ°hive
+	ä¸€äº¿ä¸ƒåƒæ¡æ•°æ®ï¼Œ24Gæ•°æ®ï¼Œ30ä¸ªmap     20åˆ†é’Ÿï¼ˆæœ‰ç¨å¾®çš„æ•°æ®å€¾æ–œï¼‰ | æ— æ•°æ®å€¾æ–œ 8 åˆ†é’Ÿ
+spark-sql å¯¼æ•°æ®åˆ°HDFS
+	å…«åƒä¸‡æ•°æ®ï¼Œ10Gæ•°æ®ï¼Œ128ä¸ªtaskï¼Œ32ä¸ªexecutorï¼ˆ4Gï¼‰ |  9 åˆ†é’Ÿ  ï¼ˆå®¹æ˜“å‡ºé—®é¢˜ï¼‰
 
 sql:
-	insert into  	Ò»°ÙÍòÍòÊý¾ÝÁ½¸ö×Ö¶Î£¨5s£©
-					Ò»ÒÚÆßÇ§ÍòÊý¾Ý 14 ¸ö×Ö¶Î£¨28·ÖÖÓ£©
-	count²Ù×÷		Ò»ÒÚÆßÇ§ÍòÊý¾Ý 14 ¸ö×Ö¶Î£¨78s£©
+	insert into  	ä¸€ç™¾ä¸‡ä¸‡æ•°æ®ä¸¤ä¸ªå­—æ®µï¼ˆ5sï¼‰
+					ä¸€äº¿ä¸ƒåƒä¸‡æ•°æ® 14 ä¸ªå­—æ®µï¼ˆ28åˆ†é’Ÿï¼‰
+	countæ“ä½œ		ä¸€äº¿ä¸ƒåƒä¸‡æ•°æ® 14 ä¸ªå­—æ®µï¼ˆ78sï¼‰
 	
-	pymysql²åÊý¾Ý£º	Ò»°ÙÍòÌõÊý¾Ý£¨15 ·ÖÖÓ£©
-					Ò»°ÙÍòÌõÊý¾Ý£¨¶àÏß³Ì Á½·Ö°ë£©
+	pymysqlæ’æ•°æ®ï¼š	ä¸€ç™¾ä¸‡æ¡æ•°æ®ï¼ˆ15 åˆ†é’Ÿï¼‰
+					ä¸€ç™¾ä¸‡æ¡æ•°æ®ï¼ˆå¤šçº¿ç¨‹ ä¸¤åˆ†åŠï¼‰
 					
-	mysql 10G 8000ÍòÊý¾Ý ½¨Ë÷Òý £¨5·ÖÖÓ£©
+	mysql 10G 8000ä¸‡æ•°æ® å»ºç´¢å¼• ï¼ˆ5åˆ†é’Ÿï¼‰
 					
 					
 					
 ================================================================================
-¹ÊÕÏ¼ÇÂ¼£º
-	1. hive £¨3¸ö½Úµã£¬ÅÜ37GÊý¾Ý £¬select count(distinct(id)) from xx£©
-		½ø³Ì¹Òµô£¬ÏÔÊ¾ £ºjava.lang.OutOfMemoryError: unable to create new native thread
-		½â¾ö£º¿ÉÒÔÍ¨¹ýÐÞ¸Ä ulimit£¬vim /etc/security/limits.conf	
-			µ÷´óÓÃ»§½ø³ÌÊý
-		£¨±¾À´°ë¸öÐ¡Ê±¶¼ÅÜ²»Íê£¬½ø³ÌÒ»Ö±¹Òµô£¬ÐÞ¸ÄºóÈýÊ®ÃëÅÜÍê£©
-	2. tensorflowonspark ±¨´í
+æ•…éšœè®°å½•ï¼š
+	1. hive ï¼ˆ3ä¸ªèŠ‚ç‚¹ï¼Œè·‘37Gæ•°æ® ï¼Œselect count(distinct(id)) from xxï¼‰
+		è¿›ç¨‹æŒ‚æŽ‰ï¼Œæ˜¾ç¤º ï¼šjava.lang.OutOfMemoryError: unable to create new native thread
+		è§£å†³ï¼šå¯ä»¥é€šè¿‡ä¿®æ”¹ ulimitï¼Œvim /etc/security/limits.conf	
+			è°ƒå¤§ç”¨æˆ·è¿›ç¨‹æ•°
+		ï¼ˆæœ¬æ¥åŠä¸ªå°æ—¶éƒ½è·‘ä¸å®Œï¼Œè¿›ç¨‹ä¸€ç›´æŒ‚æŽ‰ï¼Œä¿®æ”¹åŽä¸‰åç§’è·‘å®Œï¼‰
+	2. tensorflowonspark æŠ¥é”™
 		No such file or directory: 'executor_id'
-		ÐèÒª¹Ø±Õ¶¯Ì¬×ÊÔ´·ÖÅä
+		éœ€è¦å…³é—­åŠ¨æ€èµ„æºåˆ†é…
 		--conf spark.dynamicAllocation.enabled=false
-	3. tensorflowonspark ÖÐ TF½Úµã²»ÄÜ·ÃÎÊ HDFS
-		Ô­Òò£º Ã»ÓÐÅäÖÃhadoop¶¯Ì¬Á´½Ó¿âµÄPath
-	4. spark sql ÄÚ´æÒç³ö
-		Ô­Òò£º Ã»ÓÐµ÷½Úsql²¢ÐÐ¶È
-	5. spark sql Õ»ÄÚ´æÒç³ö
-		Ê¹ÓÃ || Æ´½Ó Æß°Ù¸ö×Ö¶Î£¬µ¼ÖÂ·½·¨Ç¶Ì×¹ýÉî£¬ÄÚ´æÒç³ö
-		¸Ä½ø£¬Ê¹ÓÃ concatÆ´½Ó
+	3. tensorflowonspark ä¸­ TFèŠ‚ç‚¹ä¸èƒ½è®¿é—® HDFS
+		åŽŸå› ï¼š æ²¡æœ‰é…ç½®hadoopåŠ¨æ€é“¾æŽ¥åº“çš„Path
+	4. spark sql å†…å­˜æº¢å‡º
+		åŽŸå› ï¼š æ²¡æœ‰è°ƒèŠ‚sqlå¹¶è¡Œåº¦
+	5. spark sql æ ˆå†…å­˜æº¢å‡º
+		ä½¿ç”¨ || æ‹¼æŽ¥ ä¸ƒç™¾ä¸ªå­—æ®µï¼Œå¯¼è‡´æ–¹æ³•åµŒå¥—è¿‡æ·±ï¼Œå†…å­˜æº¢å‡º
+		æ”¹è¿›ï¼Œä½¿ç”¨ concatæ‹¼æŽ¥
 	6. spark-sklearn
-		ÌáÉýÐ§ÂÊ
+		æå‡æ•ˆçŽ‡
