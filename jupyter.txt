@@ -14,4 +14,11 @@
     %who_ls
     %who_ls str     显示当前的所有字符串变量
 
-5. 
+5. 快捷键
+    shift + enter   运行整个单元格，并跳到下一个单元格
+    ctrl + enter    运行这个单元格，但是并不跳到下个单元格(可以用来执行多次)
+
+6. 显示pd apply方法的处理进度
+    from tqdm import notebook
+    notebook.tqdm().pandas()
+    pandas.DataFrame 拥有了三个新的方法 progress_apply, progress_applymap progress_map 分别对应 apply applymap map
