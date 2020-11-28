@@ -15,3 +15,13 @@ IDEA自带的打jar包方式不适用于 maven工程，https://blog.csdn.net/fre
 
 json与map互转 --> https://www.cnblogs.com/heqiyoujing/p/9840424.html
 
+
+==================================================================================================================
+
+1. optional 标签：
+        <dependency>
+            xxx...
+            <optional>true</optional>       表示当前依赖是可选的，如果默认是不被继承的
+        </dependency>
+
+
