@@ -160,7 +160,11 @@ STORED AS TEXTFILE;
 	alter table COLUMNS_V2 modify column COMMENT varchar(256) character set utf8;
 	alter table TABLE_PARAMS modify column PARAM_VALUE varchar(4000) character set utf8;
 	
-	
+
+============================================================
+
+    /root/.hivehistory      # 存储历史执行过的hql
+    ${HIVE_HOME}/bin/.hiverc    # hive命令初始化脚本
 	
 ============================================================
 
