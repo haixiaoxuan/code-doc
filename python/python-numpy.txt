@@ -17,6 +17,7 @@ np.set_printoptions(threshold=10)
 
 # 去重
 np.unique(arr, return_counts=True)  # 返回对应的元素count
+np.unique(data, return_inverse=True)    # 可以做 index -> item
 
 
 # 数组与矩阵转换
