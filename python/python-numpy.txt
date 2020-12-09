@@ -15,6 +15,11 @@ np.set_printoptions(suppress=True)
 np.set_printoptions(threshold=10)
 
 
+# 去重
+np.unique(arr, return_counts=True)  # 返回对应的元素count
+np.unique(data, return_inverse=True)    # 可以做 index -> item
+
+
 # 数组与矩阵转换
 np.mat()	转为矩阵
 矩阵.I		矩阵求逆

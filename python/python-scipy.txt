@@ -1,8 +1,14 @@
 ﻿from scipy import sparse as sp
 
-# 创建一个一行五列的矩阵（系数矩阵 compressed sparse columns）
-m=sp.csc_matrix((1,5))
+# 创建一个一行五列的矩阵（稀疏矩阵 compressed sparse columns）
+m=sp.csc_matrix((1,5))  # (c表示列优先，也可以和 csr一样使用
+)
 m[0,2]=5    # 将矩阵第一行第二列赋值为5
+
+
+# csr 稀疏矩阵 (r 表示行优先)
+sp.csr_matrix(([1,2,3,4,5], ([1,2,3,4,5], [1,2,3,4,5])))    # zip(参数2, 参数3)表示坐标， 参数1表示data
+
 
 # 将矩阵转换为图片
 pip install pillow
