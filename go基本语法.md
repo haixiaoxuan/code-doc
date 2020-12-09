@@ -1493,7 +1493,7 @@ func main() {
 }
 ```
 
-select
+##### select
 
 ```go
 	var ch1 chan int = make(chan int, 10)

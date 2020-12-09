@@ -2,9 +2,19 @@
   结构命名采用驼峰命名法，字段命名使用下划线进行连接
   
 字段规则：
-  限定修饰符 | 数据类型 | 字段名称
-  限定修饰符：
-    required 表示必须字段
-    optional 可选字段
-    repeated 相当于这个字段是数组
-  
+  message限定修饰符 | 数据类型 | 字段名称
+      限定修饰符：
+        required 表示必须字段
+        optional 可选字段
+        repeated 相当于这个字段是数组
+  service
+        rpc
+
+组建类型:
+    message
+    service
+
+
+默认值:
+    如果不提供值的话，protoc会生成默认值
+    字符串默认值为"", bool默认值为 false, 数值默认值为0
