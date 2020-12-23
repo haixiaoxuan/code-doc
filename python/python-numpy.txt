@@ -15,6 +15,11 @@ np.set_printoptions(suppress=True)
 np.set_printoptions(threshold=10)
 
 
+# 去重
+np.unique(arr, return_counts=True)  # 返回对应的元素count
+np.unique(data, return_inverse=True)    # 可以做 index -> item
+
+
 # 数组与矩阵转换
 np.mat()	转为矩阵
 矩阵.I		矩阵求逆
@@ -115,7 +120,8 @@ a = a[...,np.newaxis]   # 等价于上面的
 
 # 数据复制
 np.repeat   # 例:np.repeat([1,2,3], 2) => [1,1,2,2,3,3]
-np.tile     # 例:np.repeat([1,2,3], 2) => [1,2,3,1,2,3]
+np.tile     # 例:np.tile([1,2,3], 2) => [1,2,3,1,2,3]
+				np.tile([1,2,3], (2,2)) => [[1,2,3,1,2,3], [1,2,3,1,2,3]]
 
 
 # 累计和
@@ -129,3 +135,8 @@ arr[[0,1], [0,1]]       获取 [0,0], [1,1] 两个点
 # 两个矩阵比较取其中较大或较小,也可以是矩阵和数字
 np.minimum
 np.maximum
+
+# 广播
+arr1.shape = (3,3)
+arr2.shape = (3)
+arr1 + arr2 	# 表示将arr1中的每一行加上arr2

@@ -176,6 +176,17 @@ df.apply(pd.to_numeric,downcast='unsigned')	# 可以将数字类型向下转型�
 pandas.to_datetime(xx, format="%Y%m%d")		# format 为最终显示的格式, datatime为八个字节的大小
 
 
+# map apply applymap
+map是 Series的函数，DataFrame中没有map，将自定义函数应用于每个元素
+apply()将一个函数作用于DataFrame中的每个行或者列， 例 df["data1", "data2"].apply(lambda x: s.sum(), axis=1)
+applymap() 将一个函数作用于 DataFrame中的每一个元素
+
+经典用法: data["user_id"].map() 传入字典, 对 user_id 进行映射
+
+
+df["name"].str      可以使用字符串操作对name列进行处理
+
+
 ############################################################################
 
 画图：
@@ -205,6 +216,8 @@ pandas.to_datetime(xx, format="%Y%m%d")		# format 为最终显示的格式, data
 	ax.legend(['Survived==0','Survived==1'], fontsize = 12)	# 指定标题
 	ax.set_ylabel('Density', fontsize = 15)
 	ax.set_xlabel('Age', fontsize = 15)
+
+
 
 ############################################################################
 # 随机抽取样本数据

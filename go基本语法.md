@@ -1493,7 +1493,7 @@ func main() {
 }
 ```
 
-select
+##### select
 
 ```go
 	var ch1 chan int = make(chan int, 10)
@@ -1809,4 +1809,184 @@ func main() {
 	// 比较并交换
 	atomic.CompareAndSwapInt64(&a, 789, 123)
 ```
+
+
+
+
+
+##### Context
+
+https://zhuanlan.zhihu.com/p/68792989
+
+```
+context 主要用来在 goroutine 之间传递上下文信息，包括：取消信号、超时时间、截止时间、k-v 等。
+context 几乎成为了并发控制和超时控制的标准做法。
+
+context.Context 类型的值可以协调多个 groutine 中的代码执行“取消”操作，并且可以存储键值对。最重要的是它是并发安全的。
+与它协作的 API 都可以由外部控制执行“取消”操作，例如：取消一个 HTTP 请求的执行。
+```
+
+
+
+使用
+
+```go
+// 创建根节点的函数 ，返回一个空的context
+func Background() Context
+
+// 创建子节点的context
+func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
+func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
+func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
+func WithValue(parent Context, key, val interface{}) Context
+
+// context 会在函数传递间传递。只需要在适当的时间调用 cancel 函数向 goroutines 发出取消信号或者调用 Value 函数取出 context 中的值。
+
+
+// 官方建议:
+1. 不要将 Context 塞到结构体里。直接将 Context 类型作为函数的第一参数，而且一般都命名为 ctx。
+2. 不要向函数传入一个 nil 的 context，如果你实在不知道传什么，标准库给你准备好了一个 context：todo。
+3. 不要把本应该作为函数参数的类型塞到 context 中，context 存储的应该是一些共同的数据。例如：登陆的 session、cookie 等。
+4. 同一个 context 可能会被传递到多个 goroutine，别担心，context 是并发安全的。
+```
+
+
+
+传递共享数据
+
+```go
+// 对于 Web 服务端开发，往往希望将一个请求处理的整个过程串起来，这就非常依赖于 Thread Local（对于 Go 可理解为单个协程所独有） 的变量，而在 Go 语言中并没有这个概念，因此需要在函数调用的时候传递 context。
+
+package main
+
+import (
+    "context"
+    "fmt"
+)
+
+func main() {
+    ctx := context.Background()
+    process(ctx)
+
+    ctx = context.WithValue(ctx, "traceId", "qcrao-2019")
+    process(ctx)
+}
+
+func process(ctx context.Context) {
+    traceId, ok := ctx.Value("traceId").(string)
+    if ok {
+        fmt.Printf("process over. trace_id=%s\n", traceId)
+    } else {
+        fmt.Printf("process over. no trace_id\n")
+    }
+}
+
+// 执行结果：
+// process over. no trace_id
+// process over. trace_id=qcrao-2019
+```
+
+
+
+
+
+取消 goroutine
+
+```go
+// 我们先来设想一个场景：打开外卖的订单页，地图上显示外卖小哥的位置，而且是每秒更新 1 次。app 端向后台发起 websocket 连接（现实中可能是轮询）请求后，后台启动一个协程，每隔 1 秒计算 1 次小哥的位置，并发送给端。如果用户退出此页面，则后台需要“取消”此过程，退出 goroutine，系统回收资源。
+
+func Perform(ctx context.Context) {
+    for {
+        calculatePos()
+        sendResult()
+
+        select {
+        case <-ctx.Done():
+            // 被取消，直接返回
+            return
+        case <-time.After(time.Second):
+            // block 1 秒钟 
+        }
+    }
+}
+
+
+func main(){
+  	ctx, cancel := context.WithTimeout(context.Background(), time.Hour)
+    go Perform(ctx)
+
+    // ……
+    // app 端返回页面，调用cancel 函数
+    cancel()  
+}
+
+// 注意一个细节，WithTimeOut 函数返回的 context 和 cancelFun 是分开的。context 本身并没有取消函数，这样做的原因是取消函数只能由外层函数调用，防止子节点 context 调用取消函数，从而严格控制信息的流向：由父节点 context 流向子节点 context。
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
