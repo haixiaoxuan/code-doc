@@ -1996,7 +1996,11 @@ go get github.com/astaxie/beego@v1.11.1
 
 
 
+私有仓库依赖:
 
+​		export GOPRIVATE="git.xindong.com"
+
+​		https://segmentfault.com/a/1190000021127791?utm_source=tag-newest
 
 
 
