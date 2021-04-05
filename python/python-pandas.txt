@@ -45,6 +45,10 @@ df 常用函数
 	统计信息			describe()
 	查询				query()			示例： dftrain_raw.query('Survived == 0')
 	可以使用函数对两个列进行操作返回一个新的列  add(df["col1"],df["col2"])
+    重命名列名       rename(column={"old": "new"})
+    插入一列         insert(0, "column1", col)  将col插入到第一列，列名为column1
+    计算相关性矩阵    df.corr()
+                    可以配合 seaborn 将相关性矩阵画成热力图
 	
 df 常用属性
     index
