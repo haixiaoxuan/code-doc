@@ -16,8 +16,8 @@
 	
 	./kafka-console-producer.sh --broker-list master:9092 --topic xiaoxuan 		启动生产者
 	./kafka-console-consumer.sh  --zookeeper master:2181 --topic xiaoxuan	启动消费者(旧API, 将偏移量保存在zookeeper中)
-	./kafka-console-consumer.sh  --bootstrap-server master:9092 --topic xiaoxuan	启动消费者(新API, 将偏移量保存在kafka中) 
-	./kafka-console-consumer.sh  --bootstrap-server master:9092 --from-beginning --topic xiaoxuan 
+	./kafka-console-consumer.sh  --bootstrap-server master:9092 --topic xiaoxuan --consumer.config ../config/consumer.properties	启动消费者(新API, 将偏移量保存在kafka中)
+	./kafka-console-consumer.sh  --bootstrap-server master:9092 --from-beginning --topic xiaoxuan
 	
 	./kafka-consumer-groups.sh --bootstrap-server master:9092 --list	显示使用 java api 创建的消费者组
 	./kafka-consumer-groups.sh --zookeeper master:2181 --list			显示使用 zookeeper 创建的消费者组
