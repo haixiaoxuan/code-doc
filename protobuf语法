@@ -18,3 +18,7 @@
 默认值:
     如果不提供值的话，protoc会生成默认值
     字符串默认值为"", bool默认值为 false, 数值默认值为0
+
+
+使用 GoLand 写proto文件时，如果不能引用到本项目的其他proto文件，解决方案如下:
+https://blog.csdn.net/swiftlc/article/details/106822313

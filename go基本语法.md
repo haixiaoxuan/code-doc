@@ -1928,23 +1928,79 @@ func main(){
 
 
 
+##### go module
+
+https://zhuanlan.zhihu.com/p/92992277?utm_source=wechat_session
+
+```
+step1.
+	对go的环境变量进行变更
+	go env -w GO111MODULE=on
+	go env -w GOPROXY=https://goproxy.cn,direct
+
+step2.
+	cd xxx/xxx/test/
+	go mod init test(test为项目名)	# 初始化，生成 go.mod 文件
+	
+step3.
+	go mod tidy		# tidy会检测该文件夹目录下所有引入的依赖,写入 go.mod 文件
+
+step4.
+	go mod download
+	# 此时，依赖会全部下载到GO_PATH/pkg/mod下，采用多版本并存的方式，并且会在根目录下生成go.sum. 放入GO_PATH下是无用的
+
+step5.
+	go mod vendor	# 导出项目所有依赖到 vendor目录
+	
+	
+note:
+	go mod download 命令可以在我们手动修改 go.mod 文件后，手动更新项目的依赖关系；go mod tidy 与 go mod download 命令类似，但不同的是它会移除掉 go.mod 中没被使用的 require 模块。
+```
 
 
 
+常用命令 : 
+
+go env	查看go的环境变量
+
+| go mod init     | 生成 go.mod 文件                 |
+| --------------- | -------------------------------- |
+| go mod download | 下载 go.mod 文件中指明的所有依赖 |
+| go mod tidy     | 整理现有的依赖                   |
+| go mod graph    | 查看现有的依赖结构               |
+| go mod edit     | 编辑 go.mod 文件                 |
+| go mod vendor   | 导出项目所有的依赖到vendor目录   |
+| go mod verify   | 校验一个模块是否被篡改过         |
+| go mod why      | 查看为什么需要依赖某模块         |
 
 
 
+go get 包名		下载相应的包，在项目根目录下执行
+
+| go get             | 拉取依赖，会进行指定性拉取（更新），并不会更新所依赖的其它模块。 |
+| ------------------ | ------------------------------------------------------------ |
+| go get -u          | 更新现有的依赖，会强制更新它所依赖的其它全部模块，不包括自身。 |
+| go get -u -t ./... | 更新所有直接依赖和间接依赖的模块版本，包括单元测试中用到的。 |
 
 
 
+**依赖的升级和降级**
+
+```go
+go list -m -u all
+//如果我想要升级（降级）某个 package 则只需要 go get 即可，比如：
+go get package@version
+// version 的格式为 v(major).(minor).(patch)
+go get github.com/astaxie/beego@v1.11.1
+```
 
 
 
+私有仓库依赖:
 
+​		export GOPRIVATE="git.xindong.com"
 
-
-
-
+​		https://segmentfault.com/a/1190000021127791?utm_source=tag-newest
 
 
 

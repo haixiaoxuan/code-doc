@@ -137,6 +137,9 @@ map数据类型：
 	hkeys key
 	hvals key
 
+======================================================================================================================
+redis pipeline:
+    note: 非原子性
 
 
 事务(支持简单的事务)：
@@ -179,7 +182,7 @@ map数据类型：
 	Slaveof master-Host port    把当前实例设为master的slave
 	Showdown [save/nosave]
 	info			查看redis服务器信息
-	Config get 配置项  
+	Config get 配置项  ``
 	Config set 配置项 值 (特殊的选项,不允许用此命令设置,如slave-of, 需要用单独的slaveof命令来设置)
 
 	
