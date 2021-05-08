@@ -1,0 +1,26 @@
+# 安装:
+    两种方式: pip | yum
+
+# 配置文件地址
+/etc/ansible/hosts
+
+# 主机连通性测试
+ansible web -m ping         # web 为机器组名称
+
+# common 模块
+ansible web -m command -a 'ss -ntl'     # 不支持管道
+
+# shell 模块
+ansible web -m shell -a 'docker image ls | grep smash'
+
+# copy 模块, 默认会进行递归
+ansible web -m copy -a 'src=~/hello dest=/data/hello'
+
+# script 模块，在远程机器执行本地脚本
+ansible web -m script -a '/tmp/df.sh'
+
+
+# 增加ansible执行任务并行度
+环境变量：export ANSIBLE_FORKS=100
+ansible.cfg这个配置文件里设置：forks=100
+运行ansible命令时增加参数：-f 100
