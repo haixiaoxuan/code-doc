@@ -24,3 +24,11 @@ ansible web -m script -a '/tmp/df.sh'
 环境变量：export ANSIBLE_FORKS=100
 ansible.cfg这个配置文件里设置：forks=100
 运行ansible命令时增加参数：-f 100
+
+
+# 图形界面安装
+# 闭源
+https://www.cnblogs.com/fusheng11711/p/12220932.html
+
+# 开源UI awx
+https://blog.csdn.net/networken/article/details/111883547

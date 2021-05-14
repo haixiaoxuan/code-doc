@@ -89,7 +89,10 @@ db.COLLECTION_NAME.insertOne(document)      -- 存在则更新，否则插入
 ```
 
 
+```
 
+rs.printReplicationInfo()     查看 oplog 的状态，输出信息包括 oplog 日志大小，操作日志记录的起始时间。
+```
 
 
 

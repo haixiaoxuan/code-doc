@@ -1,0 +1,44 @@
+https://www.elastic.co/guide/en/logstash/7.4/plugins-outputs-elasticsearch.html#plugins-outputs-elasticsearch-sniffing_delay
+
+
+# input插件需要监听Logstash进程所在节点的端口，请使用8000~9000范围内的端口。
+input {
+    kafka {
+        bootstrap_servers => "10.27.125.224:9092,10.27.125.223:9092,10.27.125.222:9092"
+        group_id => "test"
+        topics => ["test"]
+        consumer_threads => 3
+        decorate_events => false        # 是否包含元数据 topic,key,offset等
+        auto_commit_interval_ms => "5000"
+        auto_offset_reset => "earliest"
+        codec => "json"
+    }
+}
+filter {
+    ruby {
+        code => "
+            value = event.get('app')
+            require 'digest/md5'
+            md5 = Digest::MD5::hexdigest(value)
+            event.set('app_md5', md5)
+        "
+    }
+}
+output {
+  # 支持output中添加file_extend output配置，即可在管道部署完成后直接查看输出结果，进行结果验证与调试
+  # 请勿修改系统指定路径，注释或删除file_extend output部分配置，可关闭配置调试。详情见下方提示
+  # file_extend {
+  #   path => "/ssd/1/ls-cn-7pp256k32002/logstash/logs/debug/{pipelineid}"
+  # }
+
+  elasticsearch {
+    action => "index"
+    hosts => ["es-cn-i7m269rfj002c6e63.elasticsearch.aliyuncs.com:9200"]
+    index => "check-log_%{[app_md5]}_%{[dt]}"
+    user => "elastic"
+    password => "Xiaoxuan123"
+    document_id => "%{[log_id]}"
+    doc_as_upsert => true
+    id => "{[log_id]}"
+  }
+}
