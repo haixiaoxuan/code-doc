@@ -94,8 +94,10 @@ df["weight"] = Series([41,42,43],[7,8,9])
 # 删除行 axis=0 代表行, 如果执行的话并不会真正删除（inplace=True 才会真正删除）
 df.drop(7,axis=0)
 
-# 显示某一行,按照行索引 (iloc 参数为要显示的行号)
-df.loc[7] ; df.loc[[7,8]] ; df.iloc[1]	; df.iloc[:,1:]	可以当成 array 进行切分
+# 显示某一行, 按照index进行索引
+df.loc[7] ; df.loc[[7,8]] ; df.loc[1:10]
+# 按照行数进行索引，只能填数字
+df.iloc[1]	; df.iloc[:,1:]	可以当成 array 进行切分
 df.loc["name"] = df.apply(.., axis=0)	增加一行
 df.loc[(df["age"]>100 & df["score"] < 100),:]
 df.loc[df[xx] == xx, column]        # 根据条件只拿指定的列或者只改变指定的列名
@@ -103,7 +105,9 @@ df.loc[df[xx] == xx, column]        # 根据条件只拿指定的列或者只改
 df.ix[1,"name"] 拿出第一行的name列   df.ix[1:7,["name","age"]]
 # 表示 行索引为7，的name列
 df.loc[7,"name"] ; df.loc[[7,8],["name","age"]]
-# 条件筛选
+
+
+# 条件筛选(多条件筛选)
 df[df["age"]>19]  ; df[(df["age"]>18) & (df["weight"]==43) ]
 # 重置索引 (也存在 inplace 参数)
 df.reset_index()
