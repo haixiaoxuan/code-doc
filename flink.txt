@@ -1,0 +1,10 @@
+note:
+    1. flink 分布式缓存
+        Flink实现的分布式缓存和Hadoop有异曲同工之妙。目的是在本地读取文件，并把他放在 taskmanager 节点中，防止task重复拉取。
+        // register a file from HDFS
+        env.registerCachedFile("hdfs:///path/to/your/file", "hdfsFile")
+
+        // register a local executable file (script, executable, ...)
+        env.registerCachedFile("file:///path/to/exec/file", "localExecFile", true)
+
+    2. Flink 提供了CheckpointedFunction与CheckpointListener这样两个接口，CheckpointedFunction中有snapshotState方法，每次checkpoint触发执行方法，通常会将缓存数据放入状态中，可以理解为一个hook，这个方法里面可以实现预提交，CheckpointListyener中有notifyCheckpointComplete方法，checkpoint完成之后的通知方法，这里可以做一些额外的操作。例如FLinkKafkaConumerBase使用这个来完成Kafka offset的提交，在这个方法里面可以实现提交操作。在2PC中提到如果对应流程例如某个checkpoint失败的话，那么checkpoint就会回滚，不会影响数据一致性，那么如果在通知checkpoint成功的之后失败了，那么就会在initalizeSate方法中完成事务的提交，这样可以保证数据的一致性。最主要是根据checkpoint的状态文件来判断的。
