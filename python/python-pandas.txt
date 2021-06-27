@@ -44,7 +44,8 @@ df 常用函数
     去重并count        nunique
     分组并count        value_counts
     对每个元素应用函数   apply
-    按照某一列排序       sort_values() 
+    按照某一列排序       sort_values()     # 参数 by 可以传入排序字段列表
+    按照索引排列        sort_index()
     判断空值            isnull
 	判断非空值			notnull
     设置值              set_value()
@@ -120,7 +121,7 @@ df.loc[7,"name"] ; df.loc[[7,8],["name","age"]]
 # 条件筛选(多条件筛选)
 df[df["age"]>19]  ; df[(df["age"]>18) & (df["weight"]==43) ]
 # 重置索引 (也存在 inplace 参数)
-df.reset_index()        # 将索引变为列
+df.reset_index()        # 将索引变为列, drop=True将原索引删除，使用递增索引替换
 df.set_index()  # 将某一列设为索引, 或者某几列设为索引
 # 多级索引
 myIndex = pd.MultiIndex.from_tuples(list(zip([1, 1, 1], ["a", "b", "c"])))
