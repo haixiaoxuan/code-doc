@@ -12,6 +12,15 @@ import numpy as np
 pd.set_option('display.max_columns', 100000)  # a就是你要设置显示的最大列数参数
 pd.set_option('display.max_rows', 100000)  # b就是你要设置显示的最大的行数参数
 pd.set_option('display.width', 100000)  # x就是你要设置的显示的宽度，防止轻易换行
+pd.set_option ('display.max_colwidth',500)  # 最大列宽
+pd.set_option( 'display.precision',2)   # 设置float精度，只影响显示，不影响底层精度
+pd.set_option('display.float_format','{:,}'.format) # 数字格式化显示()
+pd.set_option('display.float_format',  '{:,.2f}'.format)    # 并且设置数字精度
+pd.set_option('display.float_format', '{:.2f}%'.format) # 按百分比显示
+
+
+pd.reset_option('all') #重置所有设置选项
+
 
 
 pandas 数据类型
