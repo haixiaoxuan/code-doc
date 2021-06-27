@@ -47,8 +47,9 @@ df 常用函数
 	可以使用函数对两个列进行操作返回一个新的列  add(df["col1"],df["col2"])
     重命名列名       rename(column={"old": "new"})
     插入一列         insert(0, "column1", col)  将col插入到第一列，列名为column1
-    计算相关性矩阵    df.corr()
+    计算相关性矩阵    df.corr()        # 可以计算两列之间的相关性
                     可以配合 seaborn 将相关性矩阵画成热力图
+    重新排列索引顺序   df.reindex()     # 将索引按照给定的顺序重新排列，如果出现之前没有的索引则数据置空
 	
 df 常用属性
     index
@@ -110,8 +111,8 @@ df.loc[7,"name"] ; df.loc[[7,8],["name","age"]]
 # 条件筛选(多条件筛选)
 df[df["age"]>19]  ; df[(df["age"]>18) & (df["weight"]==43) ]
 # 重置索引 (也存在 inplace 参数)
-df.reset_index()
-df.set_index()  # 将某一列设为索引
+df.reset_index()        # 将索引变为列
+df.set_index()  # 将某一列设为索引, 或者某几列设为索引
 # 多级索引
 myIndex = pd.MultiIndex.from_tuples(list(zip([1, 1, 1], ["a", "b", "c"])))
 pd.DataFrame(np.random.randn(3,4),myIndex,columns=["A","B","C","D"])
@@ -195,6 +196,13 @@ applymap() 将一个函数作用于 DataFrame中的每一个元素
 
 df["name"].str      可以使用字符串操作对name列进行处理
 
+############################################################################
+笛卡儿积:
+    求a列和b列的笛卡尔集，c为值
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6], "c": [True, True, False]})
+    df = df.set_index(["a", "b"])
+    df = df.unstack(level=-1).fillna(False)
+    df.columns = df.columns.get_level_values(1)
 
 ############################################################################
 
