@@ -60,6 +60,8 @@ df 常用函数
     计算相关性矩阵    df.corr()        # 可以计算两列之间的相关性
                     可以配合 seaborn 将相关性矩阵画成热力图
     重新排列索引顺序   df.reindex()     # 将索引按照给定的顺序重新排列，如果出现之前没有的索引则数据置空
+    根据字段子集去重   data.duplicated(subset=["col1", "col2"], keep='first')
+
 	
 df 常用属性
     index
@@ -84,6 +86,8 @@ pd.read_csv()
 	dtype={"name": object, "age": uint8}	可以在读入之前为每一列指定数据类型
 	parse_dates=['date']					可以指定需要解析为date数据类型的列
 	infer_datetime_format=True
+	chunksize   # 如果文件太大，可以分块处理
+	可以配合 to_csv 中 model="a" 来追加写入
 
 
 # 一维 Series
@@ -190,6 +194,7 @@ df.select_dtypes(include=['object'])
 
 # 使用数字类型优化内存
 df.apply(pd.to_numeric,downcast='unsigned')	# 可以将数字类型向下转型，变为无符号类型
+# downcast也可以是 integer， 可以最大限度的减小dataFrame的大小
 
 
 # datatime类型 使用
