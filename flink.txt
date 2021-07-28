@@ -11,3 +11,21 @@ note:
 
     3. 窗口出发机制:  ContinuousProcessingTimeTrigger 可以根据时间间隔间歇性触发窗口
         https://blog.csdn.net/yangxiaobo118/article/details/99103112
+
+
+
+    4. mini_batch, 间隔触发输出结果
+        table.exec.mini-batch.enabled : true
+            -- minibatch 是下面两个任意一个符合条件就会起触发计算
+            -- 60s 一次
+        table.exec.mini-batch.allow-latency : 60 s
+            -- 数量达到 10000000000 触发一次
+            -- 设置为 10000000000 是为了让上面的 allow-latency 触发，每 60s 输出一次来满足我们的需求
+        table.exec.mini-batch.size : 10000000000
+
+
+    5. state ttl
+        -- 设置 1 天的 ttl，如果一天过后
+        -- 这个词条还没有更新，则直接删除
+        table.exec.state.ttl : 86400 s
+        https://ci.apache.org/projects/flink/flink-docs-release-1.13/docs/dev/table/config/
