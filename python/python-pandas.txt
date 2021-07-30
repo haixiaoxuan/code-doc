@@ -81,6 +81,18 @@ pd 常用函数
 	
 """
 
+query:
+    df.query('brand == "Python数据之道"')   等价于 df[df['brand']=="Python数据之道"]
+    筛选条件也可以是数字或者表达式  df.query('col == 10')  df.query('col > col2')  df.query('col * 2 < col2 ** 2')
+
+    df.query('brand == @name')      通过变量筛选
+    df.query('brand in ["Python数据之道","价值前瞻"]')      通过列表筛选
+
+    多条件组合 使用 & 或 and 或 | 或 or
+    列名有空格，使用 ``
+
+
+
 # read_csv 参数
 pd.read_csv()
 	dtype={"name": object, "age": uint8}	可以在读入之前为每一列指定数据类型
