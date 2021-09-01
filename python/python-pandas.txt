@@ -138,7 +138,7 @@ df.loc[7,"name"] ; df.loc[[7,8],["name","age"]]
 df[df["age"]>19]  ; df[(df["age"]>18) & (df["weight"]==43) ]
 # 重置索引 (也存在 inplace 参数)
 df.reset_index()        # 将索引变为列, drop=True将原索引删除，使用递增索引替换
-df.set_index()  # 将某一列设为索引, 或者某几列设为索引
+df.set_index()  # 将某一列设为索引, 或者某几列设为索引, drop=False保留原来的列
 # 多级索引
 myIndex = pd.MultiIndex.from_tuples(list(zip([1, 1, 1], ["a", "b", "c"])))
 pd.DataFrame(np.random.randn(3,4),myIndex,columns=["A","B","C","D"])

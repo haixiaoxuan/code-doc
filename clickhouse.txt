@@ -1,0 +1,10 @@
+
+聚合函数：
+    sumIf(column，cond)
+    countIf(column，cond)
+    argMinIf(column，cond)
+
+
+arrayJoin   # 将数组中的元素变为一列
+arrayConcat # 多个数组叠加为一个数组
+groupArray  # 将分组内的元素组成数组
