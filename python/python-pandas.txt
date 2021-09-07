@@ -50,7 +50,7 @@ df 常用函数
 	判断非空值			notnull
     设置值              set_value()
 	将某一列设为index					df.set_index("date")
-	基本信息			info()
+	基本信息			info()          # df.info(memory_usage='deep')
 	替换				replace()
 	统计信息			describe()
 	查询				query()			示例： dftrain_raw.query('Survived == 0')
@@ -188,6 +188,7 @@ pd.cut(x=df[""],bins=[10,20,30,40], label=["低","中","中","高"])	 bins也可
 # rank 排序函数
 df.group("user_id").prob.rank()     # 对每个user的prob进行排序，相当与 row_number()，如果有相同的值，可以选择 method='average'|'max'|'min'|'dense'|'first'
                                     https://blog.csdn.net/code_porter/article/details/86517233
+                                    https://mp.weixin.qq.com/s/i6EDKIDanklWrkfpImo9fA
 
 # argpartition
     a = np.array([9, 4, 4, 3, 3, 9, 0, 4, 6, 0])
@@ -206,6 +207,9 @@ df.select_dtypes(include=['object'])
 
 # 使用数字类型优化内存
 df.apply(pd.to_numeric,downcast='unsigned')	# 可以将数字类型向下转型，变为无符号类型
+# apply 加速
+import swifter
+df.swifter.apply
 # downcast也可以是 integer， 可以最大限度的减小dataFrame的大小
 
 
@@ -214,7 +218,7 @@ pandas.to_datetime(xx, format="%Y%m%d")		# format 为最终显示的格式, data
 
 
 # map apply applymap
-map是 Series的函数，DataFrame中没有map，将自定义函数应用于每个元素
+map是 Series的函数，DataFrame中没有map，将自定义函数应用于每个元素, 也可以直接传入字典，完成mapping
 apply()将一个函数作用于DataFrame中的每个行或者列， 例 df["data1", "data2"].apply(lambda x: s.sum(), axis=1)
 applymap() 将一个函数作用于 DataFrame中的每一个元素
 
