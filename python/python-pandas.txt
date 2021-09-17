@@ -200,6 +200,7 @@ df.group("user_id").prob.rank()     # 对每个user的prob进行排序，相当�
 
 # 得到df的大小
 df.info(memory_usage='deep')	# 显示数据类型以及df所占的大小
+df.memory_usage().sum()
 
 # 通过列类型来选择列
 df.select_dtypes(include=['object'])

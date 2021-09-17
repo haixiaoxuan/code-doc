@@ -1,0 +1,10 @@
+helm search repo mysql      # 在仓库中搜索mysql chart
+helm list                   # 列出已发布 release
+helm get manifest releaseName   # 查看最终生成的yml文件内容
+
+helm uninstall releaseName
+helm upgrade releaseName chartDir
+helm rollback releaseName 1     # 回退到版本一
+
+
+helm install test --dry-run mysql   # 可以输出yml来进行调试
