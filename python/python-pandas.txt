@@ -228,6 +228,15 @@ applymap() 将一个函数作用于 DataFrame中的每一个元素
 
 df["name"].str      可以使用字符串操作对name列进行处理
 
+
+# 计算新列 assign（与apply的区别 assign函数的操作，原数据是不变的，但是通过apply操作的数据已经变化了）
+df.assign(col3=lambda x: x.col1 / 2 + 20)   # col3为列名
+可以在同一个赋值中创建多个列，并且其中一个列还可以依赖于同一个赋值中定义的另一列，也就是中间生成的新列可以直接使用
+df.assign(
+    col7=lambda x: x.col2.str.upper(),
+    col8=lambda x: x.col7.str.title()  # col8中使用col7
+)
+
 ############################################################################
 笛卡儿积:
     求a列和b列的笛卡尔集，c为值
