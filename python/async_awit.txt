@@ -1,0 +1,48 @@
+异步框架：
+    tornado, fastapi, django 3.x asgi, aiohttp, sanic
+
+python 实现协程的四种方式:
+    1. greenlet
+    2. yield (yield from 生成器函数)
+    3. asyncio模块 (通过注解)
+    4. async, await 关键字
+
+
+########################################################
+    async func(): pass      称为协程函数
+    func()                  称为协程对象
+########################################################
+
+python3.7及以上运行协程对象的方式:
+    asyncio.run(tasks)      # 会自动创建事件循环
+
+await
+    后面只能跟: 协程对象，Future, task对象
+
+
+Task对象:
+    用于在事件循环中添加多个任务
+    用于并发调度协程，通过 asyncio.create_task(协程对象)的方式创建Task对象，这样会让协程[立即]加入事件循环中等待被调度执行
+    还可以使用loop.create_task() 或 ensure_future() 函数，不建议手动实例化task对象
+
+
+done, pending = asyncio.wait(task_list, timeout=None)
+    done中包含所有运行完的协程对象的返回结果
+
+
+Future
+    Task继承Future, task对象内部 await 结果的处理基于 Future
+
+
+异步迭代器
+    实现了 __aiter__() 和 __anext__() 方法的对象， __anext__必须返回一个awitable对象
+异步可迭代对象（可以在await for 中使用的对象）
+    通过 __aiter__() 返回一个异步迭代器
+
+
+异步上下文管理
+    实现 __aenter__() 和 __aexit__()
+    使用方式: async with
+
+uvloop
+    第三方实现的 事件循环，效率比自带的更高
