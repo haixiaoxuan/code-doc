@@ -237,6 +237,11 @@ df.assign(
     col8=lambda x: x.col7.str.title()  # col8中使用col7
 )
 
+df.pop("col1")		# 将col1返回，原始数据集中就没有col1了
+df.truncate(before=2, after=4)		# 返回索引在2-4之间的数据，原始数据将不存在这些数据
+df.clip(lower = -4, upper = 4)		# 将数据收缩在-4-4之间
+df.filter(items=['one', 'three'])	# 过滤得到 one, three 两列，也可以根据正则来df.filter(regex='e$', axis=1)
+
 ############################################################################
 笛卡儿积:
     求a列和b列的笛卡尔集，c为值
