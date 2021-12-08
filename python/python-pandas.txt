@@ -102,6 +102,14 @@ pd.read_csv()
 	可以配合 to_csv 中 model="a" 来追加写入
 
 
+# copy
+new = data.copy()
+
+
+# select_dtypes		这个函数的参数可设置为包含所有拥有特定数据类型的列，亦或者设置为排除具有特定数据类型的列
+framex =  df.select_dtypes(include="float64")
+
+
 # 一维 Series
 d={"name":"xiaoxuan","age":18}
 l=[1,2]
@@ -142,6 +150,11 @@ df.set_index()  # 将某一列设为索引, 或者某几列设为索引, drop=Fa
 # 多级索引
 myIndex = pd.MultiIndex.from_tuples(list(zip([1, 1, 1], ["a", "b", "c"])))
 pd.DataFrame(np.random.randn(3,4),myIndex,columns=["A","B","C","D"])
+
+# isin
+filter1 = df["value"].isin([112])
+filter2 = df["time"].isin([1949.000000])
+df [filter1 & filter2]
 
 
 # 类别数据处理办法
